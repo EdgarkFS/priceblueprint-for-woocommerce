@@ -74,12 +74,6 @@ class ConfigurableProduct extends \WC_Product {
 			true
 		);
 
-		wp_localize_script( 'prbp-admin-product', 'prbpAdminProduct', [
-			'i18n' => [
-				'price_required'    => __( 'Regular price is required for Configurable Products.', 'priceblueprint-for-woocommerce' ),
-				'template_required' => __( 'Please select a Price Blueprint for this Configurable Product.', 'priceblueprint-for-woocommerce' ),
-			],
-		] );
 	}
 
 	/**

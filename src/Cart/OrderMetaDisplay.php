@@ -21,8 +21,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OrderMetaDisplay {
 
 	public static function register(): void {
-		add_filter( 'woocommerce_hidden_order_itemmeta',           [ self::class, 'hideInternalKeys' ] );
-		add_action( 'woocommerce_checkout_create_order_line_item', [ self::class, 'saveToOrder' ], 10, 3 );
+		add_filter( 'woocommerce_hidden_order_itemmeta',              [ self::class, 'hideInternalKeys' ] );
+		add_filter( 'woocommerce_order_item_get_formatted_meta_data', [ self::class, 'hideFrontendMeta' ], 10, 1 );
+		add_action( 'woocommerce_checkout_create_order_line_item',    [ self::class, 'saveToOrder' ], 10, 3 );
+	}
+
+	/**
+	 * Remove internal prbp meta from the formatted list used by frontend templates
+	 * (order-received, My Account, emails). Complements hideInternalKeys() which
+	 * only covers the WP admin meta box.
+	 *
+	 * @param  \stdClass[] $formatted_meta
+	 * @return \stdClass[]
+	 */
+	public static function hideFrontendMeta( array $formatted_meta ): array {
+		$hidden = [ 'prbp_selections', 'prbp_template_id', 'prbp_base_price' ];
+		return array_values(
+			array_filter(
+				$formatted_meta,
+				static fn( \stdClass $meta ): bool => ! in_array( $meta->key, $hidden, true )
+			)
+		);
 	}
 
 	/**

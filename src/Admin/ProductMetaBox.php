@@ -22,7 +22,6 @@ class ProductMetaBox {
 		add_filter( 'woocommerce_product_data_tabs',    [ self::class, 'addTab' ],        10, 1 );
 		add_action( 'woocommerce_product_data_panels',  [ self::class, 'renderPanel' ] );
 		add_action( 'woocommerce_process_product_meta', [ self::class, 'save' ],          10, 1 );
-		add_action( 'admin_notices',                    [ self::class, 'showPriceError' ] );
 	}
 
 	/**
@@ -104,16 +103,6 @@ class ProductMetaBox {
 		return $options;
 	}
 
-	public static function showPriceError(): void {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( empty( $_GET['prbp_price_error'] ) ) {
-			return;
-		}
-		echo '<div class="notice notice-error is-dismissible"><p>'
-			. esc_html__( 'Regular price is required for Configurable Products.', 'priceblueprint-for-woocommerce' )
-			. '</p></div>';
-	}
-
 	public static function save( int $post_id ): void {
 		if ( ! isset( $_POST['prbp_product_meta_nonce_field'] )
 			|| ! wp_verify_nonce(
@@ -126,17 +115,6 @@ class ProductMetaBox {
 
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
-		}
-
-		$product_type = isset( $_POST['product-type'] ) ? sanitize_key( wp_unslash( $_POST['product-type'] ) ) : '';
-		if ( 'prbp_configurable_product' === $product_type ) {
-			$regular_price = isset( $_POST['_regular_price'] ) ? sanitize_text_field( wp_unslash( $_POST['_regular_price'] ) ) : '';
-			if ( '' === $regular_price ) {
-				WC()->session?->set( 'prbp_price_error_' . $post_id, true );
-				add_filter( 'redirect_post_location', static function ( string $location ) use ( $post_id ): string {
-					return add_query_arg( 'prbp_price_error', 1, $location );
-				} );
-			}
 		}
 
 		$template_id = isset( $_POST['prbp_template_id'] ) ? absint( $_POST['prbp_template_id'] ) : 0;

@@ -50,7 +50,7 @@ class PriceRecalculator {
 			foreach ( $selections as $sel ) {
 				foreach ( $fresh_rules as $rule ) {
 					if ( $rule['attribute'] === $sel['attribute']
-						&& $rule['value_slug'] === $sel['value_slug']
+						&& in_array( $sel['value_slug'], $rule['value_slugs'] ?? [], true )
 					) {
 						$additions += (float) $rule['price'];
 						break;

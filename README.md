@@ -50,8 +50,6 @@ No variations are created or stored. Rules grow linearly, not exponentially.
 
 ---
 
----
-
 ## Coding Standards
 
 - **Prefix:** `prbp_` for functions, hooks, meta keys, options

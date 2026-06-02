@@ -1,77 +1,78 @@
-=== PriceBlueprint — Configurable Product Pricing for WooCommerce ===
+=== PriceBlueprint - Configurable Product Pricing for WooCommerce ===
 Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
-Tested up to: 7.0
-Stable tag: 1.0.0
+Tested up to: 6.9
+Stable tag: 1.0.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Price WooCommerce products by attribute value — no variations needed. One reusable blueprint manages pricing across all linked products at once.
+Price WooCommerce products by attribute value. No variations needed. One blueprint handles pricing across every product linked to it.
 
 == Description ==
 
-Managing WooCommerce products with multiple attributes — sizes, materials, colors — means creating a variation for every combination. Five sizes × four colors × three materials equals sixty variations to create, price, and maintain. Change one price and you are editing dozens of records one by one.
+If you sell products with multiple attributes, you know the problem. Four sizes, three materials, two colors — that's 24 variations to create, price, and keep up to date. Raise the price on one material and you're editing records for the next hour.
 
-**PriceBlueprint eliminates that.**
+**PriceBlueprint takes a different approach.**
 
-Instead of variations, you create a **Price Blueprint** — a reusable template of pricing rules. Each rule maps an attribute value to a price add-on: Size XL adds $10, Material Leather adds $25, Color Gold adds $5. Assign that blueprint to as many products as you like. Update a rule once — every linked product reflects the new price immediately, no editing products one by one.
+You build a Price Blueprint, a set of pricing rules like "Size XL adds $10" or "Material Leather adds $25." Attach that blueprint to as many products as you want. When something changes, you update the rule once and every linked product is done.
 
-**Key features:**
+**What's included:**
 
-* **Reusable Price Blueprints** — one template controls pricing across all linked products
-* **Attribute-based pricing** — set price add-ons per attribute value (Size, Color, Material, or any WooCommerce global attribute)
-* **Centralized updates** — change a rule once, every linked product updates instantly
-* **Live price calculator** — customers see the total update in real time as they select options, no page reload required
-* **Full cart and checkout integration** — attribute selections and price breakdown displayed at every step
-* **Complete order records** — selections visible in WC Admin, customer emails, Thank You page, and My Account
-* **Zero variation bloat** — no per-combination records in the database
-* **HPOS compatible** — works with WooCommerce High-Performance Order Storage
+* **Reusable blueprints**: one blueprint can cover your entire catalog if the pricing logic is the same
+* **Attribute-based rules**: works with any WooCommerce global attribute: size, color, material, finish, whatever you use
+* **Live price updates**: the price recalculates on the product page as customers make their selections
+* **Cart and checkout**: selections and the final price carry through correctly at every step
+* **Order records**: attribute choices show up in WC Admin, order emails, the Thank You page, and My Account
+* **No variation records**: nothing gets written to the database per combination, so your store stays clean
+* **HPOS compatible**: works with WooCommerce High-Performance Order Storage
 * Schema.org structured data for configurable products
 * RTL support and translations: English, German, French, Spanish, Ukrainian, Polish
 
-**Requirements:** WooCommerce 6.0 or higher.
+Requires WooCommerce 6.0 or higher.
 
-= Who is PriceBlueprint for? =
+= Who uses it? =
 
-* **Clothing and apparel stores** — handle size, color, and material pricing without managing hundreds of variations
-* **Custom and made-to-order shops** — flexible pricing for products built to specification
-* **Stores with shared pricing logic** — if multiple products use the same size pricing, one blueprint covers all of them
-* Any WooCommerce merchant who wants simpler product setup and centralized price management
+Mostly store owners who got tired of managing hundreds of variations. Clothing shops with size and color pricing, custom product builders, print-on-demand stores — anyone who has the same pricing logic repeated across a lot of products.
 
 == Installation ==
 
 1. Upload the `priceblueprint-for-woocommerce` folder to `/wp-content/plugins/`
-2. Activate the plugin through the **Plugins** menu in WordPress
-3. Make sure WooCommerce is installed and active
-4. Go to **Products → Price Blueprints → Add New**
-5. Add your pricing rules — for example: Size XL → +$10, Color Gold → +$5
-6. Create a product, select **Configurable Product** as the type, assign your blueprint on the PriceBlueprint tab — done.
+2. Activate it through the Plugins menu
+3. Go to **Products → Price Blueprints → Add New**
+4. Add your rules (Size XL → +$10, Material Oak → +$25, etc.)
+5. Create a product, set the type to **Configurable Product**, and assign your blueprint on the PriceBlueprint tab
 
 == Frequently Asked Questions ==
 
 = How is this different from WooCommerce variations? =
 
-WooCommerce variations require a separate record for every combination of attributes. Five sizes × four colors means twenty variations to create and maintain. PriceBlueprint uses rules instead — you define a price add-on per attribute value and the final price is calculated automatically. No combinations, no variation records, no exponential overhead.
+With variations, every combination of attributes needs its own record. Four sizes × three colors = 12 variations to create and maintain. PriceBlueprint skips all that. You write one rule per attribute value and the price is calculated from those rules at runtime. No combinations, no bloat.
 
-= Can I assign the same blueprint to multiple products? =
+= Can I use the same blueprint on multiple products? =
 
-Yes — that is the core feature. Create a blueprint once and assign it to as many products as you need. When you update a rule, every linked product reflects the change immediately without touching individual products.
+Yes, that is the whole point. One blueprint, as many products as you want. Update a rule and all of them update with it.
 
-= What happens if I edit a blueprint while customers are shopping? =
+= What if I change a blueprint while someone is shopping? =
 
-Updated rules apply immediately to new sessions. Items already in the cart are also recalculated on the next page load, so customers always see the current price.
+New sessions get the updated price right away. Anything already in the cart recalculates on the next page load.
 
-= Does the live price calculator work with caching plugins? =
+= Does it work with caching plugins? =
 
-Yes. The price display updates via AJAX on the product page and works correctly regardless of full-page caching.
+Yes. Price updates happen via AJAX on the product page, so full-page caching does not interfere.
 
-= Can an attribute value add zero to the price? =
+= Can I set a rule that adds nothing to the price? =
 
-Yes. Set the add-on to `0.00` and that option will not change the base price — useful for a default or standard option that carries no surcharge.
+Yes, just set the add-on to `0.00`. Handy for your base option that should not change the price.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fix: attribute configurator not rendering on product page after saving blueprint rules.
+* Fix: configured price not applied correctly in cart and checkout in certain setups.
+* Fix: order-received page displaying internal blueprint meta to customers.
+* Fix: compatibility header corrected for WordPress 6.x.
 
 = 1.0.0 =
 * Initial release

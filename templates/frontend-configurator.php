@@ -37,7 +37,7 @@ foreach ( $grouped_rules as $prbp_attr_rules ) {
 				$prbp_price = (float) $prbp_rule['price'];
 				if ( $prbp_min_price === null || $prbp_price < $prbp_min_price ) {
 					$prbp_min_price     = $prbp_price;
-					$prbp_cheapest_slug = $prbp_rule['value_slug'];
+					$prbp_cheapest_slug = (string) ( $prbp_rule['value_slugs'][0] ?? '' );
 				}
 			}
 			?>
@@ -52,11 +52,18 @@ foreach ( $grouped_rules as $prbp_attr_rules ) {
 			        data-attribute="<?php echo esc_attr( $prbp_attribute ); ?>"
 			        required>
 				<?php foreach ( $prbp_rules as $prbp_rule ) : ?>
-				<option value="<?php echo esc_attr( $prbp_rule['value_slug'] ); ?>"
-				        data-price="<?php echo esc_attr( $prbp_rule['price'] ); ?>"
-				        <?php selected( $prbp_rule['value_slug'] === $prbp_cheapest_slug ); ?>>
-					<?php echo esc_html( $prbp_rule['value_label'] ); ?>
-				</option>
+					<?php
+					$prbp_slugs  = (array) ( $prbp_rule['value_slugs']  ?? [] );
+					$prbp_labels = (array) ( $prbp_rule['value_labels'] ?? [] );
+					foreach ( $prbp_slugs as $prbp_vi => $prbp_slug ) :
+						$prbp_label = $prbp_labels[ $prbp_vi ] ?? $prbp_slug;
+					?>
+					<option value="<?php echo esc_attr( $prbp_slug ); ?>"
+					        data-price="<?php echo esc_attr( $prbp_rule['price'] ); ?>"
+					        <?php selected( $prbp_slug === $prbp_cheapest_slug ); ?>>
+						<?php echo esc_html( $prbp_label ); ?>
+					</option>
+					<?php endforeach; ?>
 				<?php endforeach; ?>
 			</select>
 			<span class="prbp-field-error" aria-live="polite"></span>

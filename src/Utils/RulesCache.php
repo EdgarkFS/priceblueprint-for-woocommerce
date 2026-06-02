@@ -38,7 +38,7 @@ class RulesCache {
 
 			self::$cache[ $template_id . '_all' ]    = $all;
 			self::$cache[ $template_id . '_active' ] = array_values(
-				array_filter( $all, fn( array $r ): bool => ( $r['status'] ?? '' ) === 'active' )
+				array_filter( $all, fn( array $r ): bool => ( $r['status'] ?? 'active' ) === 'active' )
 			);
 		}
 

@@ -7,8 +7,6 @@
  * @package PriceBlueprint
  */
 
-/* global prbpAdminProduct */
-
 'use strict';
 
 class PrbpAdminProduct {
@@ -32,12 +30,8 @@ class PrbpAdminProduct {
 		const type = $( '#product-type' ).val();
 
 		if ( type !== 'prbp_configurable_product' ) {
-			// WooCommerce's own handler already ran and restored the correct state.
-			// Only clean up our own UI artifacts.
-			$( '#_regular_price' ).removeClass( 'prbp-field--error' );
-			$( '#prbp-price-error' ).remove();
-			$( '#prbp_template_id' ).removeClass( 'prbp-field--error' );
-			$( '#prbp-template-error' ).remove();
+			$( '#_regular_price' ).prop( 'required', false );
+			$( '#prbp_template_id' ).prop( 'required', false );
 			return;
 		}
 
@@ -45,6 +39,9 @@ class PrbpAdminProduct {
 		// WooCommerce hid these because it ran show_and_hide_panels() before
 		// our content was visible. Show the tab <li> elements after showing
 		// their content so WooCommerce's tab-click handler can reach the panels.
+
+		$( '#_regular_price' ).prop( 'required', true );
+		$( '#prbp_template_id' ).prop( 'required', true );
 
 		// General tab.
 		$( '.general_tab' ).show();
@@ -74,10 +71,22 @@ class PrbpAdminProduct {
 	static init() {
 		jQuery( function ( $ ) {
 
-			/* ----------------------------------------------------------------
-			 * Run once after WooCommerce's own DOM-ready handler has fired,
-			 * then again on every product-type change.
-			 * ---------------------------------------------------------------- */
+			// Switch to the tab containing the first invalid required field before
+			// the browser runs constraint validation, so its popup lands on a visible element.
+			$( document ).on( 'click.prbp-tab', '#publish, #save-post', function () {
+				if ( $( '#product-type' ).val() !== 'prbp_configurable_product' ) {
+					return;
+				}
+
+				const priceEl    = document.getElementById( '_regular_price' );
+				const templateEl = document.getElementById( 'prbp_template_id' );
+
+				if ( priceEl && ! priceEl.checkValidity() ) {
+					$( '.general_tab a' ).trigger( 'click' );
+				} else if ( templateEl && ! templateEl.checkValidity() ) {
+					$( 'a[href="#priceblueprint_product_data"]' ).trigger( 'click' );
+				}
+			} );
 
 			// On page load, only force-apply for our custom type.
 			// For all other types the server-rendered state is already correct.
@@ -93,57 +102,8 @@ class PrbpAdminProduct {
 			$( '#product-type' ).on( 'change', function () {
 				setTimeout( function () {
 					PrbpAdminProduct.applyVisibility( $ );
+					$( '.general_tab a' ).trigger( 'click' );
 				}, 50 );
-			} );
-
-			/* ----------------------------------------------------------------
-			 * Regular price + template validation on submit
-			 * ---------------------------------------------------------------- */
-
-			$( '#post' ).on( 'submit', function () {
-				if ( $( '#product-type' ).val() !== 'prbp_configurable_product' ) {
-					return;
-				}
-
-				// Price indicator — visual only, PHP handles server-side validation.
-				if ( $( '#_regular_price' ).val() === '' ) {
-					$( '#_regular_price' ).addClass( 'prbp-field--error' );
-					if ( ! $( '#prbp-price-error' ).length ) {
-						$( '<span id="prbp-price-error" class="prbp-price-error">' + prbpAdminProduct.i18n.price_required + '</span>' )
-							.insertAfter( '#_regular_price' );
-					}
-				} else {
-					$( '#_regular_price' ).removeClass( 'prbp-field--error' );
-					$( '#prbp-price-error' ).remove();
-				}
-
-				// Template indicator — visual only, product saves fine without one.
-				if ( ! $( '#prbp_template_id' ).val() ) {
-					$( '#prbp_template_id' ).addClass( 'prbp-field--error' );
-					if ( ! $( '#prbp-template-error' ).length ) {
-						$( '<span id="prbp-template-error" class="prbp-price-error">' + prbpAdminProduct.i18n.template_required + '</span>' )
-							.insertAfter( '#prbp_template_id' );
-					}
-				} else {
-					$( '#prbp_template_id' ).removeClass( 'prbp-field--error' );
-					$( '#prbp-template-error' ).remove();
-				}
-			} );
-
-			// Clear price error as soon as the user types a value.
-			$( '#_regular_price' ).on( 'input', function () {
-				if ( $( this ).val() !== '' ) {
-					$( this ).removeClass( 'prbp-field--error' );
-					$( '#prbp-price-error' ).remove();
-				}
-			} );
-
-			// Clear template error as soon as the user picks a template.
-			$( '#prbp_template_id' ).on( 'change', function () {
-				if ( $( this ).val() ) {
-					$( this ).removeClass( 'prbp-field--error' );
-					$( '#prbp-template-error' ).remove();
-				}
 			} );
 		} );
 	}
