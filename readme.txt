@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,11 @@ Yes. Price updates happen via AJAX on the product page, so full-page caching doe
 Yes, just set the add-on to `0.00`. Handy for your base option that should not change the price.
 
 == Changelog ==
+
+= 1.1.0 =
+* New: Quick Setup wizard — get your first blueprint running in under a minute.
+* New: Freemius integration for license management and updates.
+* New: Attribute options can now be sorted alphabetically in the blueprint editor (default: original order).
 
 = 1.0.1 =
 * Fix: attribute configurator not rendering on product page after saving blueprint rules.

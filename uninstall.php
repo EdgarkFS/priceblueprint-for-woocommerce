@@ -33,3 +33,6 @@ global $wpdb;
 $wpdb->query(
 	"DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transientprbp_save_error_%' OR option_name LIKE '_transient_timeoutprbp_save_error_%'"
 );
+
+// Not like register_uninstall_hook(), you do NOT have to use a static function.
+pfwp_fs()->add_action('after_uninstall', 'pfwp_fs_uninstall_cleanup');

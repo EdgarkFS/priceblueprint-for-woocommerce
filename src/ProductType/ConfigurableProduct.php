@@ -70,7 +70,7 @@ class ConfigurableProduct extends \WC_Product {
 			'prbp-admin-product',
 			PRBP_PLUGIN_URL . 'assets/js/admin-product.js',
 			[ 'jquery' ],
-			PRBP_VERSION,
+			PRBP_VERSION . '.' . filemtime( PRBP_PLUGIN_DIR . 'assets/js/admin-product.js' ),
 			true
 		);
 

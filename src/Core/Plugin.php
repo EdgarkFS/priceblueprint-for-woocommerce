@@ -18,6 +18,7 @@ use PRBP\Frontend\ProductPage;
 use PRBP\Frontend\StructuredData;
 use PRBP\Ajax\GetTerms;
 use PRBP\Ajax\CalculatePrice;
+use PRBP\Ajax\QuickSetup;
 use PRBP\Cart\CartItemMeta;
 use PRBP\Cart\PriceRecalculator;
 use PRBP\Cart\OrderMetaDisplay;
@@ -52,6 +53,7 @@ class Plugin {
 		StructuredData::register();
 		GetTerms::register();
 		CalculatePrice::register();
+		QuickSetup::register();
 		CartItemMeta::register();
 		PriceRecalculator::register();
 		OrderMetaDisplay::register();

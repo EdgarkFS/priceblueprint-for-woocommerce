@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       PriceBlueprint - Configurable Product Pricing for WooCommerce
  * Description:       Reusable pricing blueprints for WooCommerce. Assign one blueprint to multiple products — define attribute-based pricing rules once, update everywhere instantly.
- * Version:           1.0.1
+ * Version:           1.1.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Edgar Khachaturov
@@ -21,6 +21,43 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+if ( ! function_exists( 'pfwp_fs' ) ) {
+    // Create a helper function for easy SDK access.
+    function pfwp_fs() {
+        global $pfwp_fs;
+
+        if ( ! isset( $pfwp_fs ) ) {
+            // Include Freemius SDK.
+            require_once dirname( __FILE__ ) . '/vendor/freemius/start.php';
+
+            $pfwp_fs = fs_dynamic_init( array(
+                'id'                  => '30245',
+                'slug'                => 'priceblueprint-for-woocommerce',
+                'premium_slug'        => 'priceblueprint-for-woocommerce-pro-premium',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_6b1d730a0e1d23cdfe8ba0b42d6ee',
+                'is_premium'          => false,
+                'has_addons'          => false,
+                'has_paid_plans'      => false,
+                'is_org_compliant'    => true,
+                'menu'                => array(
+                    'first-path'     => 'plugins.php',
+                    'account'        => false,
+                    'contact'        => false,
+                    'support'        => false,
+                ),
+            ) );
+        }
+
+        return $pfwp_fs;
+    }
+
+    // Init Freemius.
+    pfwp_fs();
+    // Signal that SDK was initiated.
+    do_action( 'pfwp_fs_loaded' );
 }
 
 // To regenerate the POT file run:

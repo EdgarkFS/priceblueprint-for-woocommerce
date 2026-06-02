@@ -27,7 +27,7 @@
  */
 function sprintf( str, ...args ) {
 	let i = 0;
-	return str.replace( /%(?:(\d+)\$)?s/g, ( _m, pos ) => {
+	return str.replace( /%(?:(\d+)\$)?[sd]/g, ( _m, pos ) => {
 		const idx = pos ? parseInt( pos, 10 ) - 1 : i++;
 		return args[ idx ] !== undefined ? String( args[ idx ] ) : '';
 	} );
@@ -47,6 +47,7 @@ export class DomController {
 		/** @type {Map<number, TomSelect>}  rule._uid → instance */
 		this._tomSelectMap = new Map();
 		this._uid          = 0;
+		this._productTs    = null;
 	}
 
 	// ── Rule factory ──────────────────────────────────────────────────────────
@@ -193,6 +194,39 @@ export class DomController {
 	}
 
 	/**
+	 * Create a single-select Tom Select for the Quick Setup product search.
+	 * Uses the load callback to hit prbp_search_products (min 2 chars).
+	 * Called from the Alpine component's initProductSelect(el) proxy.
+	 *
+	 * @param {HTMLSelectElement} el
+	 * @param {Object}            component  Alpine component instance (this).
+	 */
+	initProductSelect( el, component ) {
+		const requests = this._requests;
+		const ts = new TomSelect( el, {
+			valueField:    'id',
+			labelField:    'title',
+			searchField:   [ 'title' ],
+			maxItems:      1,
+			options:       [],
+			items:         [],
+			placeholder:   prbpAdmin.i18n.qs_search_prompt,
+			create:        false,
+			sortField:     { field: 'text', direction: 'asc' },
+			preload:       'focus',
+			dropdownParent: 'body',
+			load( query, callback ) {
+				requests.searchProducts( query ).then( callback );
+			},
+			onChange( value ) {
+				component.quickSetupProductId = value || null;
+				component.quickSetupError     = '';
+			},
+		} );
+		this._productTs = ts;
+	}
+
+	/**
 	 * Return the Tom Select instance for a rule, or null.
 	 *
 	 * @param  {number} uid  rule._uid
@@ -209,6 +243,21 @@ export class DomController {
 	destroyAll() {
 		this._tomSelectMap.forEach( ts => ts.destroy() );
 		this._tomSelectMap.clear();
+		if ( this._productTs ) {
+			this._productTs.destroy();
+			this._productTs = null;
+		}
+	}
+
+	/**
+	 * Delegates to RequestsController. Keeps Alpine component methods from
+	 * touching _requests directly (consistent with existing DomController API).
+	 *
+	 * @param  {number|string} productId
+	 * @return {Promise<Array|null>}
+	 */
+	loadProductAttributes( productId ) {
+		return this._requests.getProductAttributes( productId );
 	}
 
 	// ── Alpine component registration ─────────────────────────────────────────
@@ -224,8 +273,13 @@ export class DomController {
 
 			rules:    [],
 			query:    '',
+			sortDir:  null,   // null | 'asc' | 'desc'
 			errorMsg: '',
 			attrs:    attrsData || [],
+
+			quickSetupProductId: null,
+			quickSetupLoading:   false,
+			quickSetupError:     '',
 
 			// ── Lifecycle ─────────────────────────────────────────────────────
 
@@ -260,10 +314,26 @@ export class DomController {
 
 			// ── Computed ──────────────────────────────────────────────────────
 
+			get activeRulesCount() {
+				return this.rules.filter( r => r.status !== 'deleted' ).length;
+			},
+
 			get displayRules() {
-				const q   = this.query.toLowerCase();
-				let   pos = 0;
-				return this.rules.map( rule => {
+				const q      = this.query.toLowerCase();
+				let   pos    = 0;
+				let   source = this.rules.slice();
+
+				if ( this.sortDir ) {
+					source.sort( ( a, b ) => {
+						const la = ( a.attribute_label || a.attribute ).toLowerCase();
+						const lb = ( b.attribute_label || b.attribute ).toLowerCase();
+						return this.sortDir === 'asc'
+							? la.localeCompare( lb )
+							: lb.localeCompare( la );
+					} );
+				}
+
+				return source.map( rule => {
 					const isDeleted = rule.status === 'deleted';
 					const matches   = ! q || this._matchesQuery( rule, q );
 					const inDom     = ! isDeleted && matches;
@@ -277,6 +347,14 @@ export class DomController {
 					r => r.status !== 'deleted' && ( ! q || this._matchesQuery( r, q ) )
 				).length;
 				return sprintf( prbpAdmin.i18n.rules_count, n );
+			},
+
+			// ── Sorting ───────────────────────────────────────────────────────
+
+			toggleSort() {
+				if ( this.sortDir === null )  { this.sortDir = 'asc';  return; }
+				if ( this.sortDir === 'asc' ) { this.sortDir = 'desc'; return; }
+				this.sortDir = null;
 			},
 
 			// ── Rule CRUD ─────────────────────────────────────────────────────
@@ -333,6 +411,50 @@ export class DomController {
 
 			initValueSelect( el, rule ) {
 				ctrl.initValueSelect( el, rule );
+			},
+
+			initProductSelect( el ) {
+				ctrl.initProductSelect( el, this );
+			},
+
+			productEditUrl( id ) {
+				return prbpAdmin.product_edit_url + id + '&action=edit#product_attributes';
+			},
+
+			async importFromProduct() {
+				if ( ! this.quickSetupProductId || this.quickSetupLoading ) { return; }
+				this.quickSetupLoading = true;
+				this.quickSetupError   = '';
+
+				const attrs = await ctrl.loadProductAttributes( this.quickSetupProductId );
+
+				if ( attrs === null ) {
+					this.quickSetupError   = 'fetch_error';
+					this.quickSetupLoading = false;
+					return;
+				}
+				if ( attrs.length === 0 ) {
+					this.quickSetupError   = 'no_attrs';
+					this.quickSetupLoading = false;
+					return;
+				}
+
+				try {
+					attrs.forEach( attr => {
+						this.rules.push( ctrl.makeRule( {
+							attribute:       attr.slug,
+							attribute_label: attr.label,
+							value_ids:       attr.value_ids    || [],
+							value_slugs:     attr.value_slugs  || [],
+							value_labels:    attr.value_labels || [],
+							price:           '0',
+						} ) );
+					} );
+				} finally {
+					this.quickSetupLoading = false;
+				}
+				// activeRulesCount > 0 now — Quick Setup block hides reactively.
+				// Each new row's x-init fires initValueSelect which loads and pre-selects value_ids.
 			},
 
 			// ── Form serialisation ────────────────────────────────────────────
