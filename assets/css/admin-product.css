@@ -1,0 +1,18 @@
+/**
+ * PriceBlueprint Admin — Product edit screen styles
+ *
+ * @package PriceBlueprint
+ */
+
+.prbp-field--error {
+	border-color: #d63638 !important;
+	box-shadow: 0 0 0 1px #d63638 !important;
+}
+
+.prbp-price-error {
+	display: block;
+	color: #d63638;
+	font-size: 12px;
+	margin-top: 4px;
+	width: max-content;
+}

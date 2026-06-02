@@ -1,0 +1,152 @@
+<?php
+/**
+ * Renders the configurator on single product pages.
+ *
+ * @package PRBP\Frontend
+ */
+
+namespace PRBP\Frontend;
+
+use PRBP\Utils\RulesCache;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class ProductPage {
+
+	public static function register(): void {
+		add_action( 'woocommerce_single_product_summary',  [ self::class, 'render' ],        25 );
+		add_action( 'wp_enqueue_scripts',                  [ self::class, 'enqueueAssets' ], 10 );
+		add_filter( 'woocommerce_get_price_html',          [ self::class, 'filterPriceHtml' ], 10, 2 );
+	}
+
+	/**
+	 * Minimum displayable price: base price + cheapest option per attribute.
+	 * Used for shop listings, product page, and configurator initial display.
+	 *
+	 * @param int $product_id
+	 * @return float
+	 */
+	public static function getMinPrice( int $product_id ): float {
+		$base        = (float) get_post_meta( $product_id, '_price', true );
+		$template_id = (int)   get_post_meta( $product_id, 'prbp_template_id', true );
+
+		if ( ! $template_id ) {
+			return $base;
+		}
+
+		$rules = RulesCache::get( $template_id );
+
+		if ( empty( $rules ) ) {
+			return $base;
+		}
+
+		$min_per_attr = [];
+		foreach ( $rules as $rule ) {
+			$attr  = $rule['attribute'];
+			$price = (float) $rule['price'];
+			if ( ! isset( $min_per_attr[ $attr ] ) || $price < $min_per_attr[ $attr ] ) {
+				$min_per_attr[ $attr ] = $price;
+			}
+		}
+
+		return $base + array_sum( $min_per_attr );
+	}
+
+	/**
+	 * Replace the displayed price HTML for configurable products with the
+	 * minimum total price everywhere WooCommerce renders a price (shop, cart,
+	 * related products, etc.).
+	 *
+	 * @param string      $price_html
+	 * @param \WC_Product $product
+	 * @return string
+	 */
+	public static function filterPriceHtml( string $price_html, \WC_Product $product ): string {
+		if ( $product->get_type() !== 'prbp_configurable_product' ) {
+			return $price_html;
+		}
+		return sprintf(
+			/* translators: %s: Formatted minimum price, e.g. "$10.00" */
+			__( 'From %s', 'priceblueprint-for-woocommerce' ),
+			wc_price( self::getMinPrice( $product->get_id() ) )
+		);
+	}
+
+	public static function render(): void {
+		$product = wc_get_product();
+		if ( ! $product || $product->get_type() !== 'prbp_configurable_product' ) {
+			return;
+		}
+
+		$product_id  = $product->get_id();
+		$template_id = (int) get_post_meta( $product_id, 'prbp_template_id', true );
+
+		if ( ! $template_id ) {
+			return;
+		}
+
+		$rules = RulesCache::get( $template_id );
+
+		if ( empty( $rules ) ) {
+			echo '<p class="prbp-no-rules">'
+				. esc_html__( 'This product has no pricing options available.', 'priceblueprint-for-woocommerce' )
+				. '</p>';
+			return;
+		}
+
+		// Group rules by attribute.
+		$grouped_rules = [];
+		foreach ( $rules as $rule ) {
+			$grouped_rules[ $rule['attribute'] ][] = $rule;
+		}
+
+		require PRBP_PLUGIN_DIR . 'templates/frontend-configurator.php';
+	}
+
+	public static function enqueueAssets(): void {
+		if ( ! is_product() ) {
+			return;
+		}
+
+		$product = wc_get_product();
+		if ( ! $product || $product->get_type() !== 'prbp_configurable_product' ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'prbp-frontend',
+			PRBP_PLUGIN_URL . 'assets/css/frontend.css',
+			[],
+			PRBP_VERSION
+		);
+		wp_style_add_data( 'prbp-frontend', 'rtl', 'replace' );
+
+		wp_enqueue_script(
+			'prbp-frontend',
+			PRBP_PLUGIN_URL . 'assets/js/frontend.js',
+			[],
+			PRBP_VERSION,
+			true
+		);
+
+		wp_localize_script( 'prbp-frontend', 'prbpFrontend', [
+			'ajax_url'   => admin_url( 'admin-ajax.php' ),
+			'nonce'      => wp_create_nonce( 'prbp_frontend_nonce' ),
+			'product_id' => get_the_ID(),
+			'currency'   => get_woocommerce_currency_symbol(),
+			'i18n'       => [
+				/* translators: %s: Attribute label, e.g. "Color" */
+				'select_option' => __( '— Select %s —', 'priceblueprint-for-woocommerce' ),
+				'select_all'    => __( 'Please select all options before adding to cart.', 'priceblueprint-for-woocommerce' ),
+				'loading'       => __( 'Calculating…', 'priceblueprint-for-woocommerce' ),
+				'total_label'   => __( 'Total:', 'priceblueprint-for-woocommerce' ),
+				/* translators: %s: Formatted price, e.g. "$10.00" */
+				'price_from'    => __( 'From %s', 'priceblueprint-for-woocommerce' ),
+				'add_to_cart'   => __( 'Add to cart', 'priceblueprint-for-woocommerce' ),
+				'no_options'    => __( 'This product has no pricing options available.', 'priceblueprint-for-woocommerce' ),
+			],
+		] );
+	}
+}

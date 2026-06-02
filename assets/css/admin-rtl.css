@@ -1,0 +1,25 @@
+/**
+ * PriceBlueprint Admin Styles — RTL overrides
+ *
+ * Loaded automatically by WordPress when is_rtl() === true.
+ *
+ * @package PriceBlueprint
+ */
+
+.prbp-error-banner {
+	border-left: none;
+	border-right: 4px solid #d63638;
+}
+
+.prbp-filter-bar {
+	flex-direction: row-reverse;
+}
+
+.prbp-rules-table th,
+.prbp-rules-table td {
+	text-align: right;
+}
+
+.prbp-col-index {
+	text-align: center;
+}

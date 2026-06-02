@@ -1,0 +1,29 @@
+/**
+ * PriceBlueprint Frontend Styles — RTL overrides
+ *
+ * Loaded automatically by WordPress when is_rtl() === true.
+ *
+ * @package PriceBlueprint
+ */
+
+.prbp-form {
+	align-items: flex-end;
+}
+
+.prbp-attribute-group {
+	align-items: flex-end;
+	text-align: right;
+}
+
+.prbp-attribute-select {
+	text-align: right;
+}
+
+.prbp-price-display {
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+}
+
+.prbp-add-to-cart {
+	align-self: flex-end;
+}
