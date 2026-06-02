@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -27,8 +27,8 @@ You build a Price Blueprint, a set of pricing rules like "Size XL adds $10" or "
 * **Order records**: attribute choices show up in WC Admin, order emails, the Thank You page, and My Account
 * **No variation records**: nothing gets written to the database per combination, so your store stays clean
 * **HPOS compatible**: works with WooCommerce High-Performance Order Storage
-* Schema.org structured data for configurable products
-* RTL support and translations: English, German, French, Spanish, Ukrainian, Polish
+* **Schema.org** structured data for configurable products
+* **RTL support** and translations: English, German, French, Spanish, Ukrainian, Polish
 
 Requires WooCommerce 6.0 or higher.
 
@@ -66,7 +66,18 @@ Yes. Price updates happen via AJAX on the product page, so full-page caching doe
 
 Yes, just set the add-on to `0.00`. Handy for your base option that should not change the price.
 
+== Screenshots ==
+
+1. Quick Setup — generate pricing rules from an existing product in one click.
+2. Blueprint editor with configured attribute rules ready to use.
+3. Assigning a blueprint to a product in the product settings.
+4. Live price calculator on the product page as customers make selections.
+5. Attribute selections and final price visible in the order details.
+
 == Changelog ==
+
+= 1.1.1 =
+* Fix: WooCommerce HPOS Notification Compatibility Update
 
 = 1.1.0 =
 * New: Quick Setup wizard — get your first blueprint running in under a minute.

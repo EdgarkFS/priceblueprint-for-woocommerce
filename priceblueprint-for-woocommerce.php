@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       PriceBlueprint - Configurable Product Pricing for WooCommerce
  * Description:       Reusable pricing blueprints for WooCommerce. Assign one blueprint to multiple products — define attribute-based pricing rules once, update everywhere instantly.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Edgar Khachaturov
@@ -60,10 +60,16 @@ if ( ! function_exists( 'pfwp_fs' ) ) {
     do_action( 'pfwp_fs_loaded' );
 }
 
+add_action( 'before_woocommerce_init', function(): void {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
 // To regenerate the POT file run:
 // wp i18n make-pot . languages/priceblueprint.pot --domain=priceblueprint --exclude=vendor,node_modules
 
-define( 'PRBP_VERSION',    '1.0.0' );
+define( 'PRBP_VERSION',    '1.1.1' );
 define( 'PRBP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PRBP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
