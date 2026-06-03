@@ -16,9 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class ProductPage {
 
 	public static function register(): void {
-		add_action( 'woocommerce_single_product_summary',  [ self::class, 'render' ],        25 );
-		add_action( 'wp_enqueue_scripts',                  [ self::class, 'enqueueAssets' ], 10 );
-		add_filter( 'woocommerce_get_price_html',          [ self::class, 'filterPriceHtml' ], 10, 2 );
+		add_action( 'woocommerce_prbp_configurable_product_add_to_cart', [ self::class, 'renderAddToCart' ], 10 );
+		add_action( 'woocommerce_before_add_to_cart_button',              [ self::class, 'renderSelects' ],   10 );
+		add_action( 'wp_enqueue_scripts',                                 [ self::class, 'enqueueAssets' ],   10 );
+		add_filter( 'woocommerce_get_price_html',                         [ self::class, 'filterPriceHtml' ], 10, 2 );
 	}
 
 	/**
@@ -56,8 +57,7 @@ class ProductPage {
 
 	/**
 	 * Replace the displayed price HTML for configurable products with the
-	 * minimum total price everywhere WooCommerce renders a price (shop, cart,
-	 * related products, etc.).
+	 * minimum total price everywhere WooCommerce renders a price.
 	 *
 	 * @param string      $price_html
 	 * @param \WC_Product $product
@@ -74,7 +74,38 @@ class ProductPage {
 		);
 	}
 
-	public static function render(): void {
+	/**
+	 * Load the WC-standard add-to-cart form shell for configurable products.
+	 * Fires on woocommerce_prbp_configurable_product_add_to_cart.
+	 */
+	public static function renderAddToCart(): void {
+		$product = wc_get_product();
+		if ( ! $product || $product->get_type() !== 'prbp_configurable_product' ) {
+			return;
+		}
+
+		$template_id = (int) get_post_meta( $product->get_id(), 'prbp_template_id', true );
+
+		if ( ! $template_id ) {
+			echo '<p class="prbp-no-rules">' . esc_html__( 'This product has no pricing options available.', 'priceblueprint-for-woocommerce' ) . '</p>';
+			return;
+		}
+
+		$rules = RulesCache::get( $template_id );
+
+		if ( empty( $rules ) ) {
+			echo '<p class="prbp-no-rules">' . esc_html__( 'This product has no pricing options available.', 'priceblueprint-for-woocommerce' ) . '</p>';
+			return;
+		}
+
+		require PRBP_PLUGIN_DIR . 'templates/add-to-cart.php';
+	}
+
+	/**
+	 * Render attribute selects + price display inside WC's form.
+	 * Fires on woocommerce_before_add_to_cart_button (guarded to our product type).
+	 */
+	public static function renderSelects(): void {
 		$product = wc_get_product();
 		if ( ! $product || $product->get_type() !== 'prbp_configurable_product' ) {
 			return;
@@ -90,19 +121,15 @@ class ProductPage {
 		$rules = RulesCache::get( $template_id );
 
 		if ( empty( $rules ) ) {
-			echo '<p class="prbp-no-rules">'
-				. esc_html__( 'This product has no pricing options available.', 'priceblueprint-for-woocommerce' )
-				. '</p>';
 			return;
 		}
 
-		// Group rules by attribute.
 		$grouped_rules = [];
 		foreach ( $rules as $rule ) {
 			$grouped_rules[ $rule['attribute'] ][] = $rule;
 		}
 
-		require PRBP_PLUGIN_DIR . 'templates/frontend-configurator.php';
+		require PRBP_PLUGIN_DIR . 'templates/configurator-selects.php';
 	}
 
 	public static function enqueueAssets(): void {

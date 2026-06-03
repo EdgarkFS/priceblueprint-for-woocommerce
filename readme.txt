@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -75,6 +75,11 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 5. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.1.2 =
+* Fix: "Add to cart" button now inherits theme styles correctly, including block theme support via wp-element-button.
+* Fix: Quantity field is now visible on the product page instead of being hidden.
+* Fix: Displayed price now updates when the quantity is changed.
 
 = 1.1.1 =
 * Fix: WooCommerce HPOS Notification Compatibility Update

@@ -53,26 +53,6 @@
 	min-height: 16px;
 }
 
-/* --------------------------------------------------------------------------
-   Price display
-   -------------------------------------------------------------------------- */
-.prbp-price-display {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-top: 4px;
-}
-
-.prbp-price-label {
-	font-weight: 600;
-	font-size: 15px;
-}
-
-.prbp-total-price {
-	font-size: 22px;
-	font-weight: 700;
-	color: #333;
-}
 
 /* --------------------------------------------------------------------------
    Price loader — 3 bouncing dots

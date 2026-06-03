@@ -60,10 +60,11 @@ class FpFrontend {
 		const priceEl   = configurator.querySelector( '.prbp-total-price' );
 		const minPrice  = parseFloat( priceEl ? priceEl.dataset.minPrice : 0 ) || 0;
 		const collected = FpFrontend.collectSelections( configurator );
+		const qtyEl     = configurator.querySelector( 'input.qty' );
+		const qty       = parseInt( qtyEl ? qtyEl.value : 1, 10 ) || 1;
 
 		if ( ! collected.allSelected ) {
-			// Show minimum total price while not all attributes are selected.
-			if ( priceEl ) priceEl.textContent = prbpFrontend.currency + minPrice.toFixed( 2 );
+			if ( priceEl ) priceEl.innerHTML = priceEl.dataset.minPriceHtml;
 			return;
 		}
 
@@ -78,6 +79,8 @@ class FpFrontend {
 		Object.keys( collected.selections ).forEach( function ( attr ) {
 			body.append( 'selections[' + attr + ']', collected.selections[ attr ] );
 		} );
+
+		body.append( 'quantity', qty );
 
 		fetch( prbpFrontend.ajax_url, {
 			method:  'POST',
@@ -104,6 +107,13 @@ class FpFrontend {
 				FpFrontend.updatePrice( configurator );
 			} );
 		} );
+
+		const qtyInput = configurator.querySelector( 'input.qty' );
+		if ( qtyInput ) {
+			qtyInput.addEventListener( 'change', function () {
+				FpFrontend.updatePrice( configurator );
+			} );
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -111,7 +121,7 @@ class FpFrontend {
 	// -------------------------------------------------------------------------
 
 	static bindFormSubmit( configurator ) {
-		const form = configurator.querySelector( '.prbp-form' );
+		const form = configurator.querySelector( 'form.cart' );
 		if ( ! form ) return;
 
 		form.addEventListener( 'submit', function ( event ) {

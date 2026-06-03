@@ -55,8 +55,10 @@ class CalculatePrice {
 			}
 		}
 
+		$quantity = max( 1, absint( $_POST['quantity'] ?? 1 ) );
+
 		wp_send_json_success( [
-			'formatted' => wp_strip_all_tags( wc_price( $total ) ),
+			'formatted' => wp_strip_all_tags( wc_price( $total * $quantity ) ),
 		] );
 	}
 }
