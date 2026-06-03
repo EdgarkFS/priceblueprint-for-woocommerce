@@ -1,4 +1,5 @@
 .git
+.gitignore
 .github
 assets-svn
 README.md
