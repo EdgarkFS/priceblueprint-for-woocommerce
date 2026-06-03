@@ -18,3 +18,4 @@ jobs:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: priceblueprint-for-woocommerce
           ASSETS_DIR: assets-svn
+          DRY_RUN: true
