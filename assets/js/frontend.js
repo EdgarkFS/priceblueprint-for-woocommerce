@@ -128,16 +128,18 @@ class FpFrontend {
 			let valid = true;
 
 			configurator.querySelectorAll( '.prbp-attribute-select' ).forEach( function ( sel ) {
-				const errorEl = sel.parentElement.querySelector( '.prbp-field-error' );
+				const wrapper = sel.closest( '.prbp-select-wrapper' );
+				const group   = sel.closest( '.prbp-attribute-group' );
+				const errorEl = group ? group.querySelector( '.prbp-field-error' ) : null;
 				if ( ! sel.value ) {
 					valid = false;
 					if ( errorEl ) {
 						errorEl.textContent = prbpFrontend.i18n.select_all;
 					}
-					sel.classList.add( 'prbp-select--error' );
+					if ( wrapper ) wrapper.classList.add( 'prbp-select--error' );
 				} else {
 					if ( errorEl ) errorEl.textContent = '';
-					sel.classList.remove( 'prbp-select--error' );
+					if ( wrapper ) wrapper.classList.remove( 'prbp-select--error' );
 				}
 			} );
 

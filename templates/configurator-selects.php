@@ -41,26 +41,28 @@ foreach ( $grouped_rules as $prbp_attr_rules ) {
 	       for="prbp_sel_<?php echo esc_attr( $prbp_attribute ); ?>">
 		<?php echo esc_html( $prbp_rules[0]['attribute_label'] ); ?>
 	</label>
-	<select name="prbp_selections[<?php echo esc_attr( $prbp_attribute ); ?>]"
-	        id="prbp_sel_<?php echo esc_attr( $prbp_attribute ); ?>"
-	        class="prbp-attribute-select"
-	        data-attribute="<?php echo esc_attr( $prbp_attribute ); ?>"
-	        required>
-		<?php foreach ( $prbp_rules as $prbp_rule ) : ?>
-			<?php
-			$prbp_slugs  = (array) ( $prbp_rule['value_slugs']  ?? [] );
-			$prbp_labels = (array) ( $prbp_rule['value_labels'] ?? [] );
-			foreach ( $prbp_slugs as $prbp_vi => $prbp_slug ) :
-				$prbp_label = $prbp_labels[ $prbp_vi ] ?? $prbp_slug;
-			?>
-			<option value="<?php echo esc_attr( $prbp_slug ); ?>"
-			        data-price="<?php echo esc_attr( $prbp_rule['price'] ); ?>"
-			        <?php selected( $prbp_slug === $prbp_cheapest_slug ); ?>>
-				<?php echo esc_html( $prbp_label ); ?>
-			</option>
+	<div class="prbp-select-wrapper">
+		<select name="prbp_selections[<?php echo esc_attr( $prbp_attribute ); ?>]"
+		        id="prbp_sel_<?php echo esc_attr( $prbp_attribute ); ?>"
+		        class="prbp-attribute-select"
+		        data-attribute="<?php echo esc_attr( $prbp_attribute ); ?>"
+		        required>
+			<?php foreach ( $prbp_rules as $prbp_rule ) : ?>
+				<?php
+				$prbp_slugs  = (array) ( $prbp_rule['value_slugs']  ?? [] );
+				$prbp_labels = (array) ( $prbp_rule['value_labels'] ?? [] );
+				foreach ( $prbp_slugs as $prbp_vi => $prbp_slug ) :
+					$prbp_label = $prbp_labels[ $prbp_vi ] ?? $prbp_slug;
+				?>
+				<option value="<?php echo esc_attr( $prbp_slug ); ?>"
+				        data-price="<?php echo esc_attr( $prbp_rule['price'] ); ?>"
+				        <?php selected( $prbp_slug === $prbp_cheapest_slug ); ?>>
+					<?php echo esc_html( $prbp_label ); ?>
+				</option>
+				<?php endforeach; ?>
 			<?php endforeach; ?>
-		<?php endforeach; ?>
-	</select>
+		</select>
+	</div>
 	<span class="prbp-field-error" aria-live="polite"></span>
 </div>
 <?php endforeach; ?>
