@@ -131,6 +131,7 @@ class RulesRepeater {
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
 			'nonce'            => wp_create_nonce( 'prbp_admin_nonce' ),
 			'product_edit_url' => admin_url( 'post.php?post=' ),
+			'wc_terms_url'     => admin_url( 'edit-tags.php?taxonomy=' ),
 			'i18n'             => [
 				'loading'             => __( 'Loading…', 'priceblueprint-for-woocommerce' ),
 				'load_error'          => __( 'Failed to load values.', 'priceblueprint-for-woocommerce' ),
@@ -153,6 +154,8 @@ class RulesRepeater {
 				'qs_fetch_error'      => __( 'Could not load attributes. Please try again.', 'priceblueprint-for-woocommerce' ),
 				'qs_search_prompt'    => __( 'Search for a product…', 'priceblueprint-for-woocommerce' ),
 				'qs_add_manually_btn' => __( '+ Add Attribute', 'priceblueprint-for-woocommerce' ),
+				'no_values_msg'       => __( 'No values for this attribute.', 'priceblueprint-for-woocommerce' ),
+				'no_values_link'      => __( 'Add terms →', 'priceblueprint-for-woocommerce' ),
 			],
 		] );
 	}

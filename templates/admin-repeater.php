@@ -14,6 +14,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( empty( $attribute_taxonomies ) ) : ?>
+<div class="prbp-admin-wrap">
+	<div class="prbp-quick-setup">
+		<div class="prbp-qs-panels">
+			<div class="prbp-qs-panel">
+				<h3 class="prbp-qs-panel-title">
+					<?php esc_html_e( 'No WooCommerce attributes found', 'priceblueprint-for-woocommerce' ); ?>
+				</h3>
+				<p class="prbp-qs-panel-desc">
+					<?php esc_html_e( 'Price Blueprints require WooCommerce global attributes. Create at least one attribute and its values before building rules.', 'priceblueprint-for-woocommerce' ); ?>
+				</p>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=product&page=product_attributes' ) ); ?>"
+				   class="prbp-qs-btn">
+					<?php esc_html_e( 'Create attributes in WooCommerce →', 'priceblueprint-for-woocommerce' ); ?>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<?php return; endif;
+
 wp_nonce_field( 'prbp_rules_nonce', 'prbp_rules_nonce_field' );
 ?>
 

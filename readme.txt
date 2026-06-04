@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -75,6 +75,10 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 5. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.2.2 =
+* Fix: Blueprint editor now shows a clear notice with a link when no WooCommerce global attributes exist, instead of silently displaying an empty attribute dropdown.
+* Fix: Selecting an attribute with no terms now shows an inline message with a direct link to add terms, instead of leaving an empty value field with no explanation.
 
 = 1.2.1 =
 * Fix: Welcome screen CSS and HTML extracted into separate files; all welcome screen strings added to translation files.

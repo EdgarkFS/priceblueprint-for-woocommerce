@@ -151,6 +151,11 @@ export class DomController {
 		if ( rule.attribute ) {
 			ts.disable();
 			this._requests.loadTerms( rule.attribute ).then( terms => {
+				if ( terms.length === 0 ) {
+					this._showNoValuesMsg( ts, rule.attribute );
+					return;
+				}
+
 				terms.forEach( t => {
 					ts.addOption( { id: String( t.id ), name: t.name, slug: t.slug } );
 				} );
@@ -161,9 +166,9 @@ export class DomController {
 				} );
 
 				// Sync Alpine state to what Tom Select actually accepted.
-				const validIds   = savedIds.filter( id => !! ts.options[ id ] );
-				rule.value_ids   = validIds;
-				rule.value_slugs = validIds.map( id => ts.options[ id ]?.slug ?? '' );
+				const validIds    = savedIds.filter( id => !! ts.options[ id ] );
+				rule.value_ids    = validIds;
+				rule.value_slugs  = validIds.map( id => ts.options[ id ]?.slug ?? '' );
 				rule.value_labels = validIds.map( id => ts.options[ id ]?.name ?? '' );
 
 				ts.enable();
@@ -182,15 +187,63 @@ export class DomController {
 	 * @param {string}    attribute
 	 */
 	loadTermsForSelect( ts, attribute ) {
+		this._clearNoValuesMsg( ts );
 		ts.disable();
 		this._requests.loadTerms( attribute ).then( terms => {
 			ts.clear( true );
 			ts.clearOptions();
+			if ( terms.length === 0 ) {
+				this._showNoValuesMsg( ts, attribute );
+				return;
+			}
 			terms.forEach( t => {
 				ts.addOption( { id: String( t.id ), name: t.name, slug: t.slug } );
 			} );
 			ts.enable();
 		} );
+	}
+
+	/**
+	 * Remove any existing no-values message and unhide the Tom Select wrapper.
+	 *
+	 * @param {TomSelect} ts
+	 */
+	_clearNoValuesMsg( ts ) {
+		ts.wrapper.style.display = '';
+		const next = ts.wrapper.nextElementSibling;
+		if ( next && next.classList.contains( 'prbp-no-values-msg' ) ) {
+			next.remove();
+		}
+	}
+
+	/**
+	 * Hide the Tom Select wrapper and insert a sibling no-values message with
+	 * a link to the WP term management page for the given attribute.
+	 *
+	 * @param {TomSelect} ts
+	 * @param {string}    attribute  Taxonomy slug, e.g. "pa_color".
+	 */
+	_showNoValuesMsg( ts, attribute ) {
+		ts.wrapper.style.display = 'none';
+		const span     = document.createElement( 'span' );
+		span.className = 'prbp-no-values-msg';
+		span.appendChild( document.createTextNode( prbpAdmin.i18n.no_values_msg + ' ' ) );
+		const link       = document.createElement( 'a' );
+		link.href        = prbpAdmin.wc_terms_url + attribute + '&post_type=product';
+		link.target      = '_blank';
+		link.rel         = 'noopener';
+		link.textContent = prbpAdmin.i18n.no_values_link;
+		span.appendChild( link );
+		ts.wrapper.insertAdjacentElement( 'afterend', span );
+	}
+
+	/**
+	 * Public proxy so the Alpine component can call this without touching private methods.
+	 *
+	 * @param {TomSelect} ts
+	 */
+	clearNoValuesMsg( ts ) {
+		this._clearNoValuesMsg( ts );
 	}
 
 	/**
@@ -379,6 +432,7 @@ export class DomController {
 
 				const ts = ctrl.getTomSelect( rule._uid );
 				if ( ts ) {
+					ctrl.clearNoValuesMsg( ts );
 					ts.clear( true );
 					ts.clearOptions();
 					ts.disable();
@@ -402,9 +456,12 @@ export class DomController {
 				ts.clear( true );
 				ts.clearOptions();
 
-				rule.attribute
-					? ctrl.loadTermsForSelect( ts, rule.attribute )
-					: ts.disable();
+				if ( rule.attribute ) {
+					ctrl.loadTermsForSelect( ts, rule.attribute );
+				} else {
+					ctrl.clearNoValuesMsg( ts );
+					ts.disable();
+				}
 			},
 
 			// ── Tom Select init  (called from x-init in the template) ─────────
