@@ -3,7 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PriceBlueprint for WooCommerce 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/priceblueprint-for-woocommerce\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/priceblueprint-"
+"for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +22,9 @@ msgstr ""
 
 #. Description of the plugin
 #: priceblueprint-for-woocommerce.php
-msgid "Configurable product pricing via reusable Price Blueprints. Assign one template to many products; prices are always calculated from live CPT rules."
+msgid ""
+"Configurable product pricing via reusable Price Blueprints. Assign one "
+"template to many products; prices are always calculated from live CPT rules."
 msgstr ""
 
 #. Author of the plugin
@@ -50,15 +53,23 @@ msgid "What is a Price Blueprint?"
 msgstr ""
 
 #: src/Admin/HelpTab.php:55
-msgid "A Price Blueprint is a set of rules that controls how the price of a product is built. Instead of setting a fixed price on each product, you define the rules once in a template and then attach that template to as many products as you like."
+msgid ""
+"A Price Blueprint is a set of rules that controls how the price of a product "
+"is built. Instead of setting a fixed price on each product, you define the "
+"rules once in a template and then attach that template to as many products "
+"as you like."
 msgstr ""
 
 #: src/Admin/HelpTab.php:56
-msgid "When you update a rule in the template, every product that uses it will immediately reflect the new price — no need to edit products one by one."
+msgid ""
+"When you update a rule in the template, every product that uses it will "
+"immediately reflect the new price — no need to edit products one by one."
 msgstr ""
 
 #: src/Admin/HelpTab.php:57
-msgid "Each product still has its own base price. The template only controls the add-ons that get added on top of that base."
+msgid ""
+"Each product still has its own base price. The template only controls the "
+"add-ons that get added on top of that base."
 msgstr ""
 
 #: src/Admin/HelpTab.php:61
@@ -66,24 +77,26 @@ msgid "What is a Rule?"
 msgstr ""
 
 #: src/Admin/HelpTab.php:62
-msgid "Each rule answers the question: \"If the customer picks this option, how much extra should be added to the price?\""
+msgid ""
+"Each rule answers the question: \"If the customer picks this option, how "
+"much extra should be added to the price?\""
 msgstr ""
 
 #: src/Admin/HelpTab.php:63
 msgid "A rule has three parts:"
 msgstr ""
 
-#: src/Admin/HelpTab.php:65
-#: templates/admin-repeater.php:36
+#: src/Admin/HelpTab.php:65 templates/admin-repeater.php:36
 msgid "Attribute"
 msgstr ""
 
 #: src/Admin/HelpTab.php:65
-msgid "The characteristic being chosen, for example Color or Size. These come from your WooCommerce global attributes."
+msgid ""
+"The characteristic being chosen, for example Color or Size. These come from "
+"your WooCommerce global attributes."
 msgstr ""
 
-#: src/Admin/HelpTab.php:66
-#: templates/admin-repeater.php:37
+#: src/Admin/HelpTab.php:66 templates/admin-repeater.php:37
 msgid "Value"
 msgstr ""
 
@@ -96,15 +109,21 @@ msgid "Price add-on"
 msgstr ""
 
 #: src/Admin/HelpTab.php:67
-msgid "The amount added to the base price when this option is selected. Set it to 0 if the option should cost nothing extra."
+msgid ""
+"The amount added to the base price when this option is selected. Set it to 0 "
+"if the option should cost nothing extra."
 msgstr ""
 
 #: src/Admin/HelpTab.php:69
-msgid "You can add as many rules as you need. Use the filter box to quickly find a rule when the list gets long."
+msgid ""
+"You can add as many rules as you need. Use the filter box to quickly find a "
+"rule when the list gets long."
 msgstr ""
 
 #: src/Admin/HelpTab.php:70
-msgid "To temporarily disable a rule without deleting it, use the toggle next to it. Disabled rules are saved but ignored when calculating prices."
+msgid ""
+"To temporarily disable a rule without deleting it, use the toggle next to "
+"it. Disabled rules are saved but ignored when calculating prices."
 msgstr ""
 
 #: src/Admin/HelpTab.php:74
@@ -120,19 +139,27 @@ msgid "Base price + add-ons for each selected option = Total"
 msgstr ""
 
 #: src/Admin/HelpTab.php:77
-msgid "Example: a product has a base price of $20. The customer picks Color → Red (+$5) and Size → Large (+$3). The total is $20 + $5 + $3 = $28."
+msgid ""
+"Example: a product has a base price of $20. The customer picks Color → Red (+"
+"$5) and Size → Large (+$3). The total is $20 + $5 + $3 = $28."
 msgstr ""
 
 #: src/Admin/HelpTab.php:78
-msgid "On the shop and product page, the displayed price shows the lowest possible total (\"From $X\"), calculated using the cheapest option for each attribute."
+msgid ""
+"On the shop and product page, the displayed price shows the lowest possible "
+"total (\"From $X\"), calculated using the cheapest option for each attribute."
 msgstr ""
 
 #: src/Admin/HelpTab.php:79
-msgid "The price shown to the customer updates instantly as they make selections — no page reload needed."
+msgid ""
+"The price shown to the customer updates instantly as they make selections — "
+"no page reload needed."
 msgstr ""
 
 #: src/Admin/HelpTab.php:80
-msgid "If you update a rule after a customer has already added the product to their cart, the new price will apply the next time they visit the cart."
+msgid ""
+"If you update a rule after a customer has already added the product to their "
+"cart, the new price will apply the next time they visit the cart."
 msgstr ""
 
 #: src/Admin/HelpTab.php:84
@@ -144,15 +171,20 @@ msgid "Save your Price Blueprint first."
 msgstr ""
 
 #: src/Admin/HelpTab.php:87
-msgid "Go to Products and open the product you want to configure (or create a new one)."
+msgid ""
+"Go to Products and open the product you want to configure (or create a new "
+"one)."
 msgstr ""
 
 #: src/Admin/HelpTab.php:88
-msgid "In the Product Data section, change the product type to Configurable Product."
+msgid ""
+"In the Product Data section, change the product type to Configurable Product."
 msgstr ""
 
 #: src/Admin/HelpTab.php:89
-msgid "Open the General tab and set a base price — this is the starting price before any options are added."
+msgid ""
+"Open the General tab and set a base price — this is the starting price "
+"before any options are added."
 msgstr ""
 
 #: src/Admin/HelpTab.php:90
@@ -164,7 +196,9 @@ msgid "Save the product."
 msgstr ""
 
 #: src/Admin/HelpTab.php:93
-msgid "The same template can be assigned to multiple products. Each product keeps its own base price."
+msgid ""
+"The same template can be assigned to multiple products. Each product keeps "
+"its own base price."
 msgstr ""
 
 #: src/Admin/HelpTab.php:97
@@ -191,14 +225,14 @@ msgstr ""
 msgid "PriceBlueprint"
 msgstr ""
 
-#: src/Admin/ProductMetaBox.php:69
-#: src/CPT/PricingTemplate.php:23
+#: src/Admin/ProductMetaBox.php:69 src/CPT/PricingTemplate.php:23
 #: src/CPT/PricingTemplate.php:25
 msgid "Price Blueprint"
 msgstr ""
 
 #: src/Admin/ProductMetaBox.php:70
-msgid "Select the template that defines how this product's price is calculated."
+msgid ""
+"Select the template that defines how this product's price is calculated."
 msgstr ""
 
 #: src/Admin/ProductMetaBox.php:80
@@ -209,8 +243,7 @@ msgstr ""
 msgid "— Select a Price Blueprint —"
 msgstr ""
 
-#: src/Admin/ProductMetaBox.php:109
-#: src/ProductType/ConfigurableProduct.php:109
+#: src/Admin/ProductMetaBox.php:109 src/ProductType/ConfigurableProduct.php:109
 msgid "Regular price is required for Configurable Products."
 msgstr ""
 
@@ -226,8 +259,7 @@ msgstr ""
 msgid "Failed to load values."
 msgstr ""
 
-#: src/Admin/RulesRepeater.php:82
-#: templates/admin-repeater.php:81
+#: src/Admin/RulesRepeater.php:82 templates/admin-repeater.php:81
 #: templates/admin-repeater.php:166
 msgid "Select value(s)"
 msgstr ""
@@ -238,25 +270,21 @@ msgstr ""
 msgid "Duplicate rule: %1$s → %2$s. Remove duplicates before saving."
 msgstr ""
 
-#: src/Admin/RulesRepeater.php:85
-#: templates/admin-repeater.php:191
+#: src/Admin/RulesRepeater.php:85 templates/admin-repeater.php:191
 msgid "+ Add Rule"
 msgstr ""
 
-#: src/Admin/RulesRepeater.php:86
-#: templates/admin-repeater.php:123
+#: src/Admin/RulesRepeater.php:86 templates/admin-repeater.php:123
 #: templates/admin-repeater.php:179
 msgid "Delete"
 msgstr ""
 
-#: src/Admin/RulesRepeater.php:87
-#: templates/admin-repeater.php:128
+#: src/Admin/RulesRepeater.php:87 templates/admin-repeater.php:128
 #: templates/admin-repeater.php:182
 msgid "Restore"
 msgstr ""
 
-#: src/Admin/RulesRepeater.php:88
-#: templates/admin-repeater.php:27
+#: src/Admin/RulesRepeater.php:88 templates/admin-repeater.php:27
 msgid "Filter by attribute or value…"
 msgstr ""
 
@@ -266,8 +294,7 @@ msgstr ""
 msgid "%d rule(s) shown"
 msgstr ""
 
-#: src/Admin/RulesRepeater.php:91
-#: src/Admin/SaveHandler.php:90
+#: src/Admin/RulesRepeater.php:91 src/Admin/SaveHandler.php:90
 msgid "Could not save. Please fix the following errors:"
 msgstr ""
 
@@ -289,8 +316,7 @@ msgstr ""
 msgid "Please select a value for: %s"
 msgstr ""
 
-#: src/CPT/PricingTemplate.php:22
-#: src/CPT/PricingTemplate.php:24
+#: src/CPT/PricingTemplate.php:22 src/CPT/PricingTemplate.php:24
 msgid "Price Blueprints"
 msgstr ""
 
@@ -324,14 +350,12 @@ msgstr ""
 
 #. translators: %s: Formatted minimum price, e.g. "$10.00"
 #. translators: %s: Formatted price, e.g. "$10.00"
-#: src/Frontend/ProductPage.php:72
-#: src/Frontend/ProductPage.php:146
+#: src/Frontend/ProductPage.php:72 src/Frontend/ProductPage.php:146
 #, php-format
 msgid "From %s"
 msgstr ""
 
-#: src/Frontend/ProductPage.php:94
-#: src/Frontend/ProductPage.php:148
+#: src/Frontend/ProductPage.php:94 src/Frontend/ProductPage.php:148
 msgid "This product has no pricing options available."
 msgstr ""
 
@@ -349,13 +373,11 @@ msgstr ""
 msgid "Calculating…"
 msgstr ""
 
-#: src/Frontend/ProductPage.php:144
-#: templates/frontend-configurator.php:68
+#: src/Frontend/ProductPage.php:144 templates/frontend-configurator.php:68
 msgid "Total:"
 msgstr ""
 
-#: src/Frontend/ProductPage.php:147
-#: templates/frontend-configurator.php:80
+#: src/Frontend/ProductPage.php:147 templates/frontend-configurator.php:80
 msgid "Add to cart"
 msgstr ""
 
@@ -399,11 +421,66 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: templates/admin-repeater.php:62
-#: templates/admin-repeater.php:149
+#: templates/admin-repeater.php:62 templates/admin-repeater.php:149
 msgid "— Select attribute —"
 msgstr ""
 
 #: src/ProductType/ConfigurableProduct.php
 msgid "Please select a Price Blueprint for this Configurable Product."
+msgstr ""
+
+#: templates/welcome-screen.php:16
+msgid "Getting started"
+msgstr ""
+
+#: templates/welcome-screen.php:17 src/Admin/WelcomeScreen.php:23
+msgid "Welcome to PriceBlueprint"
+msgstr ""
+
+#: templates/welcome-screen.php:18
+msgid ""
+"Set up pricing rules once. Apply them across your entire catalog — no "
+"variations needed."
+msgstr ""
+
+#: templates/welcome-screen.php:23
+msgid "Here's how it works"
+msgstr ""
+
+#: templates/welcome-screen.php:28
+msgid "Create a Blueprint"
+msgstr ""
+
+#: templates/welcome-screen.php:29
+msgid ""
+"Define your pricing rules in one place — one blueprint can cover your whole "
+"catalog."
+msgstr ""
+
+#: templates/welcome-screen.php:35
+msgid "Add rules"
+msgstr ""
+
+#: templates/welcome-screen.php:36
+msgid ""
+"Set what each attribute value adds to the base price. Size XL → +$10, "
+"Material Oak → +$25."
+msgstr ""
+
+#: templates/welcome-screen.php:42
+msgid "Assign to a product"
+msgstr ""
+
+#: templates/welcome-screen.php:43
+msgid ""
+"Link the blueprint to any configurable product. Update a rule once — every "
+"linked product updates instantly."
+msgstr ""
+
+#: templates/welcome-screen.php:52
+msgid "Create your first Blueprint"
+msgstr ""
+
+#: templates/welcome-screen.php:56
+msgid "Skip for now"
 msgstr ""

@@ -1,0 +1,411 @@
+# Copyright (C) 2026 Edgar Khachaturov
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: PriceBlueprint for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/priceblueprint-for-woocommerce\n"
+"POT-Creation-Date: 2026-05-19T18:52:41+00:00\n"
+"PO-Revision-Date: 2026-05-20 00:00+0000\n"
+"Last-Translator: Edgar Khachaturov <khachaturovedgar01@gmail.com>\n"
+"Language-Team: Italian <it@li.org>\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Claude\n"
+"X-Domain: priceblueprint-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: priceblueprint-for-woocommerce.php
+msgid "PriceBlueprint for WooCommerce"
+msgstr ""
+
+#. Description of the plugin
+#: priceblueprint-for-woocommerce.php
+msgid "Configurable product pricing via reusable Price Blueprints. Assign one template to many products; prices are always calculated from live CPT rules."
+msgstr "Prezzi di prodotti configurabili tramite modelli di prezzo riutilizzabili. Assegna un modello a molti prodotti; i prezzi vengono sempre calcolati dalle regole CPT live."
+
+#. Author of the plugin
+#: priceblueprint-for-woocommerce.php
+msgid "Edgar Khachaturov"
+msgstr ""
+
+#: src/Admin/HelpTab.php:28
+msgid "Overview"
+msgstr "Panoramica"
+
+#: src/Admin/HelpTab.php:34
+msgid "Adding Rules"
+msgstr "Aggiungere regole"
+
+#: src/Admin/HelpTab.php:40
+msgid "How the Price is Calculated"
+msgstr "Come viene calcolato il prezzo"
+
+#: src/Admin/HelpTab.php:46
+msgid "Assigning to a Product"
+msgstr "Assegnare a un prodotto"
+
+#: src/Admin/HelpTab.php:54
+msgid "What is a Price Blueprint?"
+msgstr "Cos'è un modello di prezzo?"
+
+#: src/Admin/HelpTab.php:55
+msgid "A Price Blueprint is a set of rules that controls how the price of a product is built. Instead of setting a fixed price on each product, you define the rules once in a template and then attach that template to as many products as you like."
+msgstr "Un modello di prezzo è un insieme di regole che controlla come viene costruito il prezzo di un prodotto. Invece di impostare un prezzo fisso per ogni prodotto, definisci le regole una volta in un modello e poi assegni quel modello a tutti i prodotti che desideri."
+
+#: src/Admin/HelpTab.php:56
+msgid "When you update a rule in the template, every product that uses it will immediately reflect the new price — no need to edit products one by one."
+msgstr "Quando aggiorni una regola nel modello, ogni prodotto che la utilizza rifletterà immediatamente il nuovo prezzo — non è necessario modificare i prodotti uno per uno."
+
+#: src/Admin/HelpTab.php:57
+msgid "Each product still has its own base price. The template only controls the add-ons that get added on top of that base."
+msgstr "Ogni prodotto mantiene il proprio prezzo base. Il modello controlla solo i supplementi che vengono aggiunti su quella base."
+
+#: src/Admin/HelpTab.php:61
+msgid "What is a Rule?"
+msgstr "Cos'è una regola?"
+
+#: src/Admin/HelpTab.php:62
+msgid "Each rule answers the question: \"If the customer picks this option, how much extra should be added to the price?\""
+msgstr "Ogni regola risponde alla domanda: \"Se il cliente sceglie questa opzione, quanto in più deve essere aggiunto al prezzo?\""
+
+#: src/Admin/HelpTab.php:63
+msgid "A rule has three parts:"
+msgstr "Una regola ha tre parti:"
+
+#: src/Admin/HelpTab.php:65
+#: templates/admin-repeater.php:36
+msgid "Attribute"
+msgstr "Attributo"
+
+#: src/Admin/HelpTab.php:65
+msgid "The characteristic being chosen, for example Color or Size. These come from your WooCommerce global attributes."
+msgstr "La caratteristica scelta, ad esempio Colore o Taglia. Provengono dai tuoi attributi globali WooCommerce."
+
+#: src/Admin/HelpTab.php:66
+#: templates/admin-repeater.php:37
+msgid "Value"
+msgstr "Valore"
+
+#: src/Admin/HelpTab.php:66
+msgid "The specific option the customer picks, for example Red or Large."
+msgstr "L'opzione specifica scelta dal cliente, ad esempio Rosso o Grande."
+
+#: src/Admin/HelpTab.php:67
+msgid "Price add-on"
+msgstr "Supplemento di prezzo"
+
+#: src/Admin/HelpTab.php:67
+msgid "The amount added to the base price when this option is selected. Set it to 0 if the option should cost nothing extra."
+msgstr "L'importo aggiunto al prezzo base quando questa opzione è selezionata. Impostalo a 0 se l'opzione non deve costare nulla in più."
+
+#: src/Admin/HelpTab.php:69
+msgid "You can add as many rules as you need. Use the filter box to quickly find a rule when the list gets long."
+msgstr "Puoi aggiungere tutte le regole di cui hai bisogno. Usa la casella di filtro per trovare rapidamente una regola quando l'elenco diventa lungo."
+
+#: src/Admin/HelpTab.php:70
+msgid "To temporarily disable a rule without deleting it, use the toggle next to it. Disabled rules are saved but ignored when calculating prices."
+msgstr "Per disabilitare temporaneamente una regola senza eliminarla, usa il pulsante di attivazione/disattivazione accanto ad essa. Le regole disabilitate vengono salvate ma ignorate nel calcolo dei prezzi."
+
+#: src/Admin/HelpTab.php:74
+msgid "How the Final Price is Calculated"
+msgstr "Come viene calcolato il prezzo finale"
+
+#: src/Admin/HelpTab.php:75
+msgid "The price the customer pays is always:"
+msgstr "Il prezzo pagato dal cliente è sempre:"
+
+#: src/Admin/HelpTab.php:76
+msgid "Base price + add-ons for each selected option = Total"
+msgstr "Prezzo base + supplementi per ogni opzione selezionata = Totale"
+
+#: src/Admin/HelpTab.php:77
+msgid "Example: a product has a base price of $20. The customer picks Color → Red (+$5) and Size → Large (+$3). The total is $20 + $5 + $3 = $28."
+msgstr "Esempio: un prodotto ha un prezzo base di $20. Il cliente sceglie Colore → Rosso (+$5) e Taglia → Grande (+$3). Il totale è $20 + $5 + $3 = $28."
+
+#: src/Admin/HelpTab.php:78
+msgid "On the shop and product page, the displayed price shows the lowest possible total (\"From $X\"), calculated using the cheapest option for each attribute."
+msgstr "Nella pagina del negozio e del prodotto, il prezzo visualizzato mostra il totale più basso possibile (\"A partire da $X\"), calcolato usando l'opzione più economica per ogni attributo."
+
+#: src/Admin/HelpTab.php:79
+msgid "The price shown to the customer updates instantly as they make selections — no page reload needed."
+msgstr "Il prezzo mostrato al cliente si aggiorna istantaneamente man mano che effettua le selezioni — nessun aggiornamento della pagina necessario."
+
+#: src/Admin/HelpTab.php:80
+msgid "If you update a rule after a customer has already added the product to their cart, the new price will apply the next time they visit the cart."
+msgstr "Se aggiorni una regola dopo che un cliente ha già aggiunto il prodotto al carrello, il nuovo prezzo si applicherà la prossima volta che visiterà il carrello."
+
+#: src/Admin/HelpTab.php:84
+msgid "Attaching a Template to a Product"
+msgstr "Associare un modello a un prodotto"
+
+#: src/Admin/HelpTab.php:86
+msgid "Save your Price Blueprint first."
+msgstr "Salva prima il tuo modello di prezzo."
+
+#: src/Admin/HelpTab.php:87
+msgid "Go to Products and open the product you want to configure (or create a new one)."
+msgstr "Vai su Prodotti e apri il prodotto che vuoi configurare (o creane uno nuovo)."
+
+#: src/Admin/HelpTab.php:88
+msgid "In the Product Data section, change the product type to Configurable Product."
+msgstr "Nella sezione Dati prodotto, cambia il tipo di prodotto in Prodotto configurabile."
+
+#: src/Admin/HelpTab.php:89
+msgid "Open the General tab and set a base price — this is the starting price before any options are added."
+msgstr "Apri la scheda Generale e imposta un prezzo base — questo è il prezzo iniziale prima che vengano aggiunte opzioni."
+
+#: src/Admin/HelpTab.php:90
+msgid "Open the PriceBlueprint tab and select the template from the dropdown."
+msgstr "Apri la scheda PriceBlueprint e seleziona il modello dal menu a discesa."
+
+#: src/Admin/HelpTab.php:91
+msgid "Save the product."
+msgstr "Salva il prodotto."
+
+#: src/Admin/HelpTab.php:93
+msgid "The same template can be assigned to multiple products. Each product keeps its own base price."
+msgstr "Lo stesso modello può essere assegnato a più prodotti. Ogni prodotto mantiene il proprio prezzo base."
+
+#: src/Admin/HelpTab.php:97
+msgid "Quick tips"
+msgstr "Consigli rapidi"
+
+#: src/Admin/HelpTab.php:99
+msgid "Set a price add-on of 0 to offer a free option."
+msgstr "Imposta un supplemento di prezzo di 0 per offrire un'opzione gratuita."
+
+#: src/Admin/HelpTab.php:100
+msgid "One template can be shared across many products."
+msgstr "Un modello può essere condiviso tra molti prodotti."
+
+#: src/Admin/HelpTab.php:101
+msgid "Updating a rule takes effect immediately — no need to re-save products."
+msgstr "L'aggiornamento di una regola ha effetto immediato — non è necessario risalvare i prodotti."
+
+#: src/Admin/HelpTab.php:102
+msgid "Disable a rule to hide it from customers without losing it."
+msgstr "Disabilita una regola per nasconderla ai clienti senza perderla."
+
+#: src/Admin/ProductMetaBox.php:35
+msgid "PriceBlueprint"
+msgstr "PriceBlueprint"
+
+#: src/Admin/ProductMetaBox.php:69
+#: src/CPT/PricingTemplate.php:23
+#: src/CPT/PricingTemplate.php:25
+msgid "Price Blueprint"
+msgstr "Modello di prezzo"
+
+#: src/Admin/ProductMetaBox.php:70
+msgid "Select the template that defines how this product's price is calculated."
+msgstr "Seleziona il modello che definisce come viene calcolato il prezzo di questo prodotto."
+
+#: src/Admin/ProductMetaBox.php:80
+msgid "+ Create your first Price Blueprint"
+msgstr "+ Crea il tuo primo modello di prezzo"
+
+#: src/Admin/ProductMetaBox.php:96
+msgid "— Select a Price Blueprint —"
+msgstr "— Seleziona un modello di prezzo —"
+
+#: src/Admin/ProductMetaBox.php:109
+#: src/ProductType/ConfigurableProduct.php:109
+msgid "Regular price is required for Configurable Products."
+msgstr "Il prezzo normale è obbligatorio per i prodotti configurabili."
+
+#: src/Admin/RulesRepeater.php:24
+msgid "Pricing Rules"
+msgstr "Regole di prezzo"
+
+#: src/Admin/RulesRepeater.php:80
+msgid "Loading…"
+msgstr "Caricamento…"
+
+#: src/Admin/RulesRepeater.php:81
+msgid "Failed to load values."
+msgstr "Caricamento dei valori non riuscito."
+
+#: src/Admin/RulesRepeater.php:82
+#: templates/admin-repeater.php:81
+#: templates/admin-repeater.php:166
+msgid "Select value(s)"
+msgstr "Seleziona valore/i"
+
+#. translators: 1: Attribute label, 2: Value label
+#: src/Admin/RulesRepeater.php:84
+#, php-format
+msgid "Duplicate rule: %1$s → %2$s. Remove duplicates before saving."
+msgstr "Regola duplicata: %1$s → %2$s. Rimuovi i duplicati prima di salvare."
+
+#: src/Admin/RulesRepeater.php:85
+#: templates/admin-repeater.php:191
+msgid "+ Add Rule"
+msgstr "+ Aggiungi regola"
+
+#: src/Admin/RulesRepeater.php:86
+#: templates/admin-repeater.php:123
+#: templates/admin-repeater.php:179
+msgid "Delete"
+msgstr "Elimina"
+
+#: src/Admin/RulesRepeater.php:87
+#: templates/admin-repeater.php:128
+#: templates/admin-repeater.php:182
+msgid "Restore"
+msgstr "Ripristina"
+
+#: src/Admin/RulesRepeater.php:88
+#: templates/admin-repeater.php:27
+msgid "Filter by attribute or value…"
+msgstr "Filtra per attributo o valore…"
+
+#. translators: %d: Number of visible rules
+#: src/Admin/RulesRepeater.php:90
+#, php-format
+msgid "%d rule(s) shown"
+msgstr "%d regola/e visualizzata/e"
+
+#: src/Admin/RulesRepeater.php:91
+#: src/Admin/SaveHandler.php:90
+msgid "Could not save. Please fix the following errors:"
+msgstr "Impossibile salvare. Correggi i seguenti errori:"
+
+#: src/Ajax/CalculatePrice.php:34
+msgid "Invalid product."
+msgstr "Prodotto non valido."
+
+#: src/Ajax/CalculatePrice.php:40
+msgid "No price blueprint assigned."
+msgstr "Nessun modello di prezzo assegnato."
+
+#: src/Ajax/GetTerms.php:29
+msgid "Invalid attribute."
+msgstr "Attributo non valido."
+
+#. translators: %s: Attribute name (e.g. "pa_color")
+#: src/Cart/CartItemMeta.php:53
+#, php-format
+msgid "Please select a value for: %s"
+msgstr "Seleziona un valore per: %s"
+
+#: src/CPT/PricingTemplate.php:22
+#: src/CPT/PricingTemplate.php:24
+msgid "Price Blueprints"
+msgstr "Modelli di prezzo"
+
+#: src/CPT/PricingTemplate.php:26
+msgid "Add Template"
+msgstr "Aggiungi modello"
+
+#: src/CPT/PricingTemplate.php:27
+msgid "Add New Price Blueprint"
+msgstr "Aggiungi nuovo modello di prezzo"
+
+#: src/CPT/PricingTemplate.php:28
+msgid "Edit Price Blueprint"
+msgstr "Modifica modello di prezzo"
+
+#: src/CPT/PricingTemplate.php:29
+msgid "View Price Blueprint"
+msgstr "Visualizza modello di prezzo"
+
+#: src/CPT/PricingTemplate.php:30
+msgid "Search Price Blueprints"
+msgstr "Cerca modelli di prezzo"
+
+#: src/CPT/PricingTemplate.php:31
+msgid "No price blueprints found"
+msgstr "Nessun modello di prezzo trovato"
+
+#: src/CPT/PricingTemplate.php:32
+msgid "No price blueprints found in Trash"
+msgstr "Nessun modello di prezzo trovato nel Cestino"
+
+#. translators: %s: Formatted minimum price, e.g. "$10.00"
+#. translators: %s: Formatted price, e.g. "$10.00"
+#: src/Frontend/ProductPage.php:72
+#: src/Frontend/ProductPage.php:146
+#, php-format
+msgid "From %s"
+msgstr "Da %s"
+
+#: src/Frontend/ProductPage.php:94
+#: src/Frontend/ProductPage.php:148
+msgid "This product has no pricing options available."
+msgstr "Questo prodotto non ha opzioni di prezzo disponibili."
+
+#. translators: %s: Attribute label, e.g. "Color"
+#: src/Frontend/ProductPage.php:141
+#, php-format
+msgid "— Select %s —"
+msgstr "— Seleziona %s —"
+
+#: src/Frontend/ProductPage.php:142
+msgid "Please select all options before adding to cart."
+msgstr "Seleziona tutte le opzioni prima di aggiungere al carrello."
+
+#: src/Frontend/ProductPage.php:143
+msgid "Calculating…"
+msgstr "Calcolo in corso…"
+
+#: src/Frontend/ProductPage.php:144
+#: templates/frontend-configurator.php:68
+msgid "Total:"
+msgstr "Totale:"
+
+#: src/Frontend/ProductPage.php:147
+#: templates/frontend-configurator.php:80
+msgid "Add to cart"
+msgstr "Aggiungi al carrello"
+
+#: src/Frontend/StructuredData.php:48
+msgid "Price from"
+msgstr "Prezzo da"
+
+#: src/ProductType/ConfigurableProduct.php:36
+msgid "Configurable Product"
+msgstr "Prodotto configurabile"
+
+#. translators: %d: Row number in the pricing rules table
+#: src/Utils/RuleValidator.php:29
+#, php-format
+msgid "Row %d: invalid or missing attribute."
+msgstr "Riga %d: attributo non valido o mancante."
+
+#. translators: %d: Row number in the pricing rules table
+#: src/Utils/RuleValidator.php:34
+#, php-format
+msgid "Row %d: value is required."
+msgstr "Riga %d: il valore è obbligatorio."
+
+#. translators: %d: Row number in the pricing rules table
+#: src/Utils/RuleValidator.php:39
+#, php-format
+msgid "Row %d: price must be a non-negative number."
+msgstr "Riga %d: il prezzo deve essere un numero non negativo."
+
+#. translators: 1: Row number in the pricing rules table, 2: Attribute slug, 3: Value slug
+#: src/Utils/RuleValidator.php:48
+#, php-format
+msgid "Row %1$d: duplicate rule (%2$s / %3$s)."
+msgstr "Riga %1$d: regola duplicata (%2$s / %3$s)."
+
+#: templates/admin-repeater.php:38
+msgid "Price"
+msgstr "Prezzo"
+
+#: templates/admin-repeater.php:39
+msgid "Actions"
+msgstr "Azioni"
+
+#: templates/admin-repeater.php:62
+#: templates/admin-repeater.php:149
+msgid "— Select attribute —"
+msgstr "— Seleziona attributo —"
+
+#: src/ProductType/ConfigurableProduct.php
+msgid "Please select a Price Blueprint for this Configurable Product."
+msgstr "Seleziona un modello di prezzo per questo prodotto configurabile."
