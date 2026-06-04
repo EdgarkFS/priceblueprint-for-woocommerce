@@ -14,6 +14,7 @@ use PRBP\Admin\HelpTab;
 use PRBP\Admin\ProductMetaBox;
 use PRBP\Admin\RulesRepeater;
 use PRBP\Admin\SaveHandler;
+use PRBP\Admin\WelcomeScreen;
 use PRBP\Frontend\ProductPage;
 use PRBP\Frontend\StructuredData;
 use PRBP\Ajax\GetTerms;
@@ -46,6 +47,7 @@ class Plugin {
 		ConfigurableProduct::register();
 		AttributeSync::register();
 		HelpTab::register();
+		WelcomeScreen::register();
 		ProductMetaBox::register();
 		RulesRepeater::register();
 		SaveHandler::register();
