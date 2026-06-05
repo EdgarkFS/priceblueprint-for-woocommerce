@@ -9,6 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install SVN
+        run: sudo apt-get install -y subversion
+
       - name: Sync readme and main plugin file to SVN trunk
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
