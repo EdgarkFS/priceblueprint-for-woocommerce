@@ -12,23 +12,39 @@ jobs:
       - name: Install SVN
         run: sudo apt-get install -y subversion
 
-      - name: Sync readme and main plugin file to SVN trunk
+      - name: Sync readme and main plugin file to SVN trunk and stable tag
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         run: |
-          SVN_URL="https://plugins.svn.wordpress.org/priceblueprint-for-woocommerce/trunk"
+          SVN_BASE="https://plugins.svn.wordpress.org/priceblueprint-for-woocommerce"
 
-          svn checkout --depth empty "$SVN_URL" svn-trunk
+          # Extract stable tag from readme.txt
+          STABLE_TAG=$(grep -i "^Stable tag:" "$GITHUB_WORKSPACE/readme.txt" | awk '{print $NF}' | tr -d '[:space:]')
+          echo "Stable tag: $STABLE_TAG"
+
+          # Update trunk
+          svn checkout --depth empty "$SVN_BASE/trunk" svn-trunk
           cd svn-trunk
           svn update readme.txt priceblueprint-for-woocommerce.php
-
           cp "$GITHUB_WORKSPACE/readme.txt" readme.txt
           cp "$GITHUB_WORKSPACE/priceblueprint-for-woocommerce.php" priceblueprint-for-woocommerce.php
-
           svn commit \
             --username "$SVN_USERNAME" \
             --password "$SVN_PASSWORD" \
             --no-auth-cache \
             --non-interactive \
-            -m "Update readme and main plugin file"
+            -m "Update readme and main plugin file in trunk"
+          cd "$GITHUB_WORKSPACE"
+
+          # Update stable tag folder (so the plugin page reflects changes)
+          svn checkout --depth empty "$SVN_BASE/tags/$STABLE_TAG" svn-tag
+          cd svn-tag
+          svn update readme.txt
+          cp "$GITHUB_WORKSPACE/readme.txt" readme.txt
+          svn commit \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --no-auth-cache \
+            --non-interactive \
+            -m "Update readme in tags/$STABLE_TAG"
