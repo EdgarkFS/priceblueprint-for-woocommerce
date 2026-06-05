@@ -1,0 +1,31 @@
+name: Update Trunk Files on WordPress.org
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync readme and main plugin file to SVN trunk
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          SVN_URL="https://plugins.svn.wordpress.org/priceblueprint-for-woocommerce/trunk"
+
+          svn checkout --depth empty "$SVN_URL" svn-trunk
+          cd svn-trunk
+          svn update readme.txt priceblueprint-for-woocommerce.php
+
+          cp "$GITHUB_WORKSPACE/readme.txt" readme.txt
+          cp "$GITHUB_WORKSPACE/priceblueprint-for-woocommerce.php" priceblueprint-for-woocommerce.php
+
+          svn commit \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --no-auth-cache \
+            --non-interactive \
+            -m "Update readme and main plugin file"

@@ -1,4 +1,4 @@
-=== PriceBlueprint - Configurable Product Pricing for WooCommerce ===
+=== PriceBlueprint — Attribute-Based Pricing for WooCommerce ===
 Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
@@ -8,15 +8,20 @@ Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Price WooCommerce products by attribute value. No variations needed. One blueprint handles pricing across every product linked to it.
+Replace WooCommerce variations with reusable pricing blueprints. One update — all products reflect it instantly.
 
 == Description ==
 
-If you sell products with multiple attributes, you know the problem. Four sizes, three materials, two colors — that's 24 variations to create, price, and keep up to date. Raise the price on one material and you're editing records for the next hour.
+If you sell products with multiple attributes in WooCommerce, you've likely run into the variation problem.
+Four sizes, three materials, two colors — and you already have 24 variations just to define pricing. Change the price of a single material and you end up editing multiple records across your catalog.
+WooCommerce variations were not designed for this.
 
-**PriceBlueprint takes a different approach.**
+**PriceBlueprint is a WooCommerce variations alternative that replaces combinations with pricing rules.**
 
-You build a Price Blueprint, a set of pricing rules like "Size XL adds $10" or "Material Leather adds $25." Attach that blueprint to as many products as you want. When something changes, you update the rule once and every linked product is done.
+Instead of generating every possible variation, you define simple rules:
+"Size XL adds $10" or "Material Leather adds $25".
+
+Attach one Price Blueprint to multiple products. Update one rule — every linked product reflects the change instantly.
 
 **What's included:**
 
