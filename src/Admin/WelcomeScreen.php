@@ -62,6 +62,30 @@ class WelcomeScreen {
 			PRBP_VERSION
 		);
 
+		wp_enqueue_script(
+			'prbp-welcome',
+			PRBP_PLUGIN_URL . 'assets/js/welcome-screen.js',
+			[],
+			PRBP_VERSION,
+			true
+		);
+
+		wp_localize_script(
+			'prbp-welcome',
+			'prbpWelcome',
+			[
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'prbp_admin_nonce' ),
+				'i18n'     => [
+					'demo_ready'     => __( 'Demo ready',                        'priceblueprint-for-woocommerce' ),
+					'edit_blueprint' => __( 'Edit Blueprint',                    'priceblueprint-for-woocommerce' ),
+					'edit_product'   => __( 'Edit Product',                      'priceblueprint-for-woocommerce' ),
+					'view_product'   => __( 'View Product',                      'priceblueprint-for-woocommerce' ),
+					'error'          => __( 'Import failed. Please try again.',  'priceblueprint-for-woocommerce' ),
+				],
+			]
+		);
+
 		require PRBP_PLUGIN_DIR . 'templates/welcome-screen.php';
 	}
 }

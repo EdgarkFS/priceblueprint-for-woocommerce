@@ -57,4 +57,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</a>
 	</div>
 
+	<div class="prbp-welcome-demo" id="prbp-demo-wrap">
+		<p class="prbp-welcome-steps-title"><?php esc_html_e( 'Try it first', 'priceblueprint-for-woocommerce' ); ?></p>
+		<div class="prbp-welcome-demo-row">
+			<p class="prbp-welcome-demo-desc"><?php esc_html_e( 'Import a sample blueprint and product to see how PriceBlueprint works before building your own.', 'priceblueprint-for-woocommerce' ); ?></p>
+			<button type="button" id="prbp-import-demo" class="prbp-welcome-demo-btn">
+				<?php esc_html_e( 'Import Demo Data', 'priceblueprint-for-woocommerce' ); ?>
+			</button>
+		</div>
+	</div>
+
 </div>

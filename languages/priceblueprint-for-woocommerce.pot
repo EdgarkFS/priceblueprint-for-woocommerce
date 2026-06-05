@@ -484,3 +484,67 @@ msgstr ""
 #: templates/welcome-screen.php:56
 msgid "Skip for now"
 msgstr ""
+
+#: templates/admin-repeater.php:23
+msgid "No WooCommerce attributes found"
+msgstr ""
+
+#: templates/admin-repeater.php:26
+msgid ""
+"Price Blueprints require WooCommerce global attributes. Create at least one "
+"attribute and its values before building rules."
+msgstr ""
+
+#: templates/admin-repeater.php:30
+msgid "Create attributes in WooCommerce →"
+msgstr ""
+
+#: src/Admin/RulesRepeater.php:157
+msgid "No values for this attribute."
+msgstr ""
+
+#: src/Admin/RulesRepeater.php:158
+msgid "Add terms →"
+msgstr ""
+
+#: templates/welcome-screen.php:61
+msgid "Try it first"
+msgstr ""
+
+#: templates/welcome-screen.php:63
+msgid ""
+"Import a sample blueprint and product to see how PriceBlueprint works "
+"before building your own."
+msgstr ""
+
+#: templates/welcome-screen.php:65
+msgid "Import Demo Data"
+msgstr ""
+
+#: src/Admin/WelcomeScreen.php:80
+msgid "Demo ready"
+msgstr ""
+
+#: src/Admin/WelcomeScreen.php:81
+msgid "Edit Blueprint"
+msgstr ""
+
+#: src/Admin/WelcomeScreen.php:82
+msgid "Edit Product"
+msgstr ""
+
+#: src/Admin/WelcomeScreen.php:83
+msgid "View Product"
+msgstr ""
+
+#: src/Admin/WelcomeScreen.php:84
+msgid "Import failed. Please try again."
+msgstr ""
+
+#: src/Ajax/ImportDemo.php:43
+msgid "Demo data file not found."
+msgstr ""
+
+#: src/Ajax/ImportDemo.php:50
+msgid "Demo data file is invalid."
+msgstr ""

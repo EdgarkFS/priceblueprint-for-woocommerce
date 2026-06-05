@@ -164,3 +164,105 @@ body.index_page_prbp-welcome #wpcontent {
 .prbp-welcome-skip:hover {
 	color: #1d2327 !important;
 }
+
+/* ── Demo Import ── */
+.prbp-welcome-demo {
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 12px;
+	padding: 28px 40px;
+	margin-top: 12px;
+}
+.prbp-welcome-demo .prbp-welcome-steps-title {
+	margin-bottom: 12px;
+}
+.prbp-welcome-demo-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+}
+.prbp-welcome-demo-desc {
+	font-size: 13px;
+	color: #646970;
+	margin: 0;
+	line-height: 1.5;
+}
+.prbp-welcome-demo-btn {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background: #fff;
+	color: #1d2327;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	padding: 9px 20px;
+	font-size: 13px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: border-color .15s, color .15s;
+	line-height: 1.4;
+	font-family: inherit;
+	white-space: nowrap;
+}
+.prbp-welcome-demo-btn:hover {
+	border-color: #0D9488;
+	color: #0D9488;
+}
+.prbp-welcome-demo-btn:disabled {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+@keyframes prbp-spin {
+	to { transform: rotate( 360deg ); }
+}
+.prbp-demo-spinner {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border: 2px solid #c3c4c7;
+	border-top-color: #0D9488;
+	border-radius: 50%;
+	animation: prbp-spin .7s linear infinite;
+}
+.prbp-demo-ready-label {
+	margin-bottom: 12px !important;
+}
+.prbp-demo-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+.prbp-demo-links a {
+	display: inline-flex;
+	align-items: center;
+	padding: 7px 16px;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: 500;
+	text-decoration: none !important;
+	transition: background .12s;
+}
+.prbp-demo-links a:first-child {
+	background: #0D9488;
+	color: #fff !important;
+}
+.prbp-demo-links a:first-child:hover {
+	background: #0a7a70;
+}
+.prbp-demo-links a:not(:first-child) {
+	background: rgba(13,148,136,.08);
+	color: #0D9488 !important;
+	border: 1px solid rgba(13,148,136,.2);
+}
+.prbp-demo-links a:not(:first-child):hover {
+	background: rgba(13,148,136,.14);
+}
+.prbp-demo-error {
+	display: block;
+	margin-top: 10px;
+	font-size: 12px;
+	color: #d63638;
+}

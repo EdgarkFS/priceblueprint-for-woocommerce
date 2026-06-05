@@ -3,7 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PriceBlueprint for WooCommerce 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/priceblueprint-for-woocommerce\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/priceblueprint-"
+"for-woocommerce\n"
 "POT-Creation-Date: 2026-05-19T18:52:41+00:00\n"
 "PO-Revision-Date: 2026-05-20 00:00+0000\n"
 "Last-Translator: Edgar Khachaturov <khachaturovedgar01@gmail.com>\n"
@@ -12,7 +13,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Claude\n"
 "X-Domain: priceblueprint-for-woocommerce\n"
 
@@ -23,8 +25,13 @@ msgstr ""
 
 #. Description of the plugin
 #: priceblueprint-for-woocommerce.php
-msgid "Configurable product pricing via reusable Price Blueprints. Assign one template to many products; prices are always calculated from live CPT rules."
-msgstr "Konfigurowalne ceny produktów za pomocą wielokrotnego użytku szablonów cenowych. Przypisz jeden szablon do wielu produktów; ceny są zawsze obliczane na podstawie aktualnych reguł CPT."
+msgid ""
+"Configurable product pricing via reusable Price Blueprints. Assign one "
+"template to many products; prices are always calculated from live CPT rules."
+msgstr ""
+"Konfigurowalne ceny produktów za pomocą wielokrotnego użytku szablonów "
+"cenowych. Przypisz jeden szablon do wielu produktów; ceny są zawsze "
+"obliczane na podstawie aktualnych reguł CPT."
 
 #. Author of the plugin
 #: priceblueprint-for-woocommerce.php
@@ -49,43 +56,66 @@ msgstr "Przypisywanie do produktu"
 
 #: src/Admin/HelpTab.php:54
 msgid "What is a Price Blueprint?"
-msgstr "Co to jest szablon cenowy?"
+msgstr "Co to jest PriceBlueprint?"
 
 #: src/Admin/HelpTab.php:55
-msgid "A Price Blueprint is a set of rules that controls how the price of a product is built. Instead of setting a fixed price on each product, you define the rules once in a template and then attach that template to as many products as you like."
-msgstr "Szablon cenowy to zestaw reguł kontrolujących sposób budowania ceny produktu. Zamiast ustalać stałą cenę dla każdego produktu, definiujesz reguły raz w szablonie, a następnie przypisujesz ten szablon do tylu produktów, ile chcesz."
+msgid ""
+"A Price Blueprint is a set of rules that controls how the price of a product "
+"is built. Instead of setting a fixed price on each product, you define the "
+"rules once in a template and then attach that template to as many products "
+"as you like."
+msgstr ""
+"PriceBlueprint to zestaw reguł kontrolujących sposób budowania ceny "
+"produktu. Zamiast ustalać stałą cenę dla każdego produktu, definiujesz "
+"reguły raz w szablonie, a następnie przypisujesz ten szablon do tylu "
+"produktów, ile chcesz."
 
 #: src/Admin/HelpTab.php:56
-msgid "When you update a rule in the template, every product that uses it will immediately reflect the new price — no need to edit products one by one."
-msgstr "Po aktualizacji reguły w szablonie każdy produkt, który jej używa, natychmiast odzwierciedli nową cenę — nie trzeba edytować produktów po jednym."
+msgid ""
+"When you update a rule in the template, every product that uses it will "
+"immediately reflect the new price — no need to edit products one by one."
+msgstr ""
+"Po aktualizacji reguły w szablonie każdy produkt, który jej używa, "
+"natychmiast odzwierciedli nową cenę — nie trzeba edytować produktów po "
+"jednym."
 
 #: src/Admin/HelpTab.php:57
-msgid "Each product still has its own base price. The template only controls the add-ons that get added on top of that base."
-msgstr "Każdy produkt nadal ma własną cenę bazową. Szablon kontroluje tylko dodatki doliczane do tej podstawy."
+msgid ""
+"Each product still has its own base price. The template only controls the "
+"add-ons that get added on top of that base."
+msgstr ""
+"Każdy produkt nadal ma własną cenę bazową. Szablon kontroluje tylko dodatki "
+"doliczane do tej podstawy."
 
 #: src/Admin/HelpTab.php:61
 msgid "What is a Rule?"
 msgstr "Co to jest reguła?"
 
 #: src/Admin/HelpTab.php:62
-msgid "Each rule answers the question: \"If the customer picks this option, how much extra should be added to the price?\""
-msgstr "Każda reguła odpowiada na pytanie: \"Jeśli klient wybierze tę opcję, ile dodatkowo należy doliczyć do ceny?\""
+msgid ""
+"Each rule answers the question: \"If the customer picks this option, how "
+"much extra should be added to the price?\""
+msgstr ""
+"Każda reguła odpowiada na pytanie: \"Jeśli klient wybierze tę opcję, ile "
+"dodatkowo należy doliczyć do ceny?\""
 
 #: src/Admin/HelpTab.php:63
 msgid "A rule has three parts:"
 msgstr "Reguła składa się z trzech części:"
 
-#: src/Admin/HelpTab.php:65
-#: templates/admin-repeater.php:36
+#: src/Admin/HelpTab.php:65 templates/admin-repeater.php:36
 msgid "Attribute"
 msgstr "Atrybut"
 
 #: src/Admin/HelpTab.php:65
-msgid "The characteristic being chosen, for example Color or Size. These come from your WooCommerce global attributes."
-msgstr "Wybierana cecha, np. Kolor lub Rozmiar. Pochodzą z globalnych atrybutów WooCommerce."
+msgid ""
+"The characteristic being chosen, for example Color or Size. These come from "
+"your WooCommerce global attributes."
+msgstr ""
+"Wybierana cecha, np. Kolor lub Rozmiar. Pochodzą z globalnych atrybutów "
+"WooCommerce."
 
-#: src/Admin/HelpTab.php:66
-#: templates/admin-repeater.php:37
+#: src/Admin/HelpTab.php:66 templates/admin-repeater.php:37
 msgid "Value"
 msgstr "Wartość"
 
@@ -98,16 +128,28 @@ msgid "Price add-on"
 msgstr "Dodatek cenowy"
 
 #: src/Admin/HelpTab.php:67
-msgid "The amount added to the base price when this option is selected. Set it to 0 if the option should cost nothing extra."
-msgstr "Kwota dodawana do ceny bazowej po wybraniu tej opcji. Ustaw na 0, jeśli opcja nie powinna nic kosztować dodatkowego."
+msgid ""
+"The amount added to the base price when this option is selected. Set it to 0 "
+"if the option should cost nothing extra."
+msgstr ""
+"Kwota dodawana do ceny bazowej po wybraniu tej opcji. Ustaw na 0, jeśli "
+"opcja nie powinna nic kosztować dodatkowego."
 
 #: src/Admin/HelpTab.php:69
-msgid "You can add as many rules as you need. Use the filter box to quickly find a rule when the list gets long."
-msgstr "Możesz dodać tyle reguł, ile potrzebujesz. Użyj pola filtrowania, aby szybko znaleźć regułę, gdy lista się wydłuży."
+msgid ""
+"You can add as many rules as you need. Use the filter box to quickly find a "
+"rule when the list gets long."
+msgstr ""
+"Możesz dodać tyle reguł, ile potrzebujesz. Użyj pola filtrowania, aby szybko "
+"znaleźć regułę, gdy lista się wydłuży."
 
 #: src/Admin/HelpTab.php:70
-msgid "To temporarily disable a rule without deleting it, use the toggle next to it. Disabled rules are saved but ignored when calculating prices."
-msgstr "Aby tymczasowo wyłączyć regułę bez jej usuwania, użyj przełącznika obok niej. Wyłączone reguły są zapisywane, ale ignorowane przy obliczaniu cen."
+msgid ""
+"To temporarily disable a rule without deleting it, use the toggle next to "
+"it. Disabled rules are saved but ignored when calculating prices."
+msgstr ""
+"Aby tymczasowo wyłączyć regułę bez jej usuwania, użyj przełącznika obok "
+"niej. Wyłączone reguły są zapisywane, ale ignorowane przy obliczaniu cen."
 
 #: src/Admin/HelpTab.php:74
 msgid "How the Final Price is Calculated"
@@ -122,20 +164,37 @@ msgid "Base price + add-ons for each selected option = Total"
 msgstr "Cena bazowa + dodatki za każdą wybraną opcję = Łącznie"
 
 #: src/Admin/HelpTab.php:77
-msgid "Example: a product has a base price of $20. The customer picks Color → Red (+$5) and Size → Large (+$3). The total is $20 + $5 + $3 = $28."
-msgstr "Przykład: produkt ma cenę bazową 20 $. Klient wybiera Kolor → Czerwony (+5 $) i Rozmiar → Duży (+3 $). Łącznie: 20 $ + 5 $ + 3 $ = 28 $."
+msgid ""
+"Example: a product has a base price of $20. The customer picks Color → Red (+"
+"$5) and Size → Large (+$3). The total is $20 + $5 + $3 = $28."
+msgstr ""
+"Przykład: produkt ma cenę bazową 20 $. Klient wybiera Kolor → Czerwony (+5 "
+"$) i Rozmiar → Duży (+3 $). Łącznie: 20 $ + 5 $ + 3 $ = 28 $."
 
 #: src/Admin/HelpTab.php:78
-msgid "On the shop and product page, the displayed price shows the lowest possible total (\"From $X\"), calculated using the cheapest option for each attribute."
-msgstr "Na stronie sklepu i produktu wyświetlana cena pokazuje najniższy możliwy łączny koszt (\"Od $X\"), obliczony przy użyciu najtańszej opcji dla każdego atrybutu."
+msgid ""
+"On the shop and product page, the displayed price shows the lowest possible "
+"total (\"From $X\"), calculated using the cheapest option for each attribute."
+msgstr ""
+"Na stronie sklepu i produktu wyświetlana cena pokazuje najniższy możliwy "
+"łączny koszt (\"Od $X\"), obliczony przy użyciu najtańszej opcji dla każdego "
+"atrybutu."
 
 #: src/Admin/HelpTab.php:79
-msgid "The price shown to the customer updates instantly as they make selections — no page reload needed."
-msgstr "Cena wyświetlana klientowi aktualizuje się natychmiast w miarę dokonywania wyborów — nie jest wymagane odświeżanie strony."
+msgid ""
+"The price shown to the customer updates instantly as they make selections — "
+"no page reload needed."
+msgstr ""
+"Cena wyświetlana klientowi aktualizuje się natychmiast w miarę dokonywania "
+"wyborów — nie jest wymagane odświeżanie strony."
 
 #: src/Admin/HelpTab.php:80
-msgid "If you update a rule after a customer has already added the product to their cart, the new price will apply the next time they visit the cart."
-msgstr "Jeśli zaktualizujesz regułę po tym, jak klient dodał już produkt do koszyka, nowa cena zostanie zastosowana przy następnej wizycie w koszyku."
+msgid ""
+"If you update a rule after a customer has already added the product to their "
+"cart, the new price will apply the next time they visit the cart."
+msgstr ""
+"Jeśli zaktualizujesz regułę po tym, jak klient dodał już produkt do koszyka, "
+"nowa cena zostanie zastosowana przy następnej wizycie w koszyku."
 
 #: src/Admin/HelpTab.php:84
 msgid "Attaching a Template to a Product"
@@ -143,19 +202,28 @@ msgstr "Przypisywanie szablonu do produktu"
 
 #: src/Admin/HelpTab.php:86
 msgid "Save your Price Blueprint first."
-msgstr "Najpierw zapisz swój szablon cenowy."
+msgstr "Najpierw zapisz swój PriceBlueprint."
 
 #: src/Admin/HelpTab.php:87
-msgid "Go to Products and open the product you want to configure (or create a new one)."
-msgstr "Przejdź do Produktów i otwórz produkt, który chcesz skonfigurować (lub utwórz nowy)."
+msgid ""
+"Go to Products and open the product you want to configure (or create a new "
+"one)."
+msgstr ""
+"Przejdź do Produktów i otwórz produkt, który chcesz skonfigurować (lub "
+"utwórz nowy)."
 
 #: src/Admin/HelpTab.php:88
-msgid "In the Product Data section, change the product type to Configurable Product."
+msgid ""
+"In the Product Data section, change the product type to Configurable Product."
 msgstr "W sekcji Dane produktu zmień typ produktu na Produkt konfigurowalny."
 
 #: src/Admin/HelpTab.php:89
-msgid "Open the General tab and set a base price — this is the starting price before any options are added."
-msgstr "Otwórz kartę Ogólne i ustaw cenę bazową — to cena wyjściowa przed dodaniem jakichkolwiek opcji."
+msgid ""
+"Open the General tab and set a base price — this is the starting price "
+"before any options are added."
+msgstr ""
+"Otwórz kartę Ogólne i ustaw cenę bazową — to cena wyjściowa przed dodaniem "
+"jakichkolwiek opcji."
 
 #: src/Admin/HelpTab.php:90
 msgid "Open the PriceBlueprint tab and select the template from the dropdown."
@@ -166,8 +234,12 @@ msgid "Save the product."
 msgstr "Zapisz produkt."
 
 #: src/Admin/HelpTab.php:93
-msgid "The same template can be assigned to multiple products. Each product keeps its own base price."
-msgstr "Ten sam szablon można przypisać do wielu produktów. Każdy produkt zachowuje własną cenę bazową."
+msgid ""
+"The same template can be assigned to multiple products. Each product keeps "
+"its own base price."
+msgstr ""
+"Ten sam szablon można przypisać do wielu produktów. Każdy produkt zachowuje "
+"własną cenę bazową."
 
 #: src/Admin/HelpTab.php:97
 msgid "Quick tips"
@@ -183,7 +255,9 @@ msgstr "Jeden szablon może być współdzielony przez wiele produktów."
 
 #: src/Admin/HelpTab.php:101
 msgid "Updating a rule takes effect immediately — no need to re-save products."
-msgstr "Aktualizacja reguły wchodzi w życie natychmiast — nie trzeba ponownie zapisywać produktów."
+msgstr ""
+"Aktualizacja reguły wchodzi w życie natychmiast — nie trzeba ponownie "
+"zapisywać produktów."
 
 #: src/Admin/HelpTab.php:102
 msgid "Disable a rule to hide it from customers without losing it."
@@ -193,26 +267,25 @@ msgstr "Wyłącz regułę, aby ukryć ją przed klientami bez jej utraty."
 msgid "PriceBlueprint"
 msgstr "PriceBlueprint"
 
-#: src/Admin/ProductMetaBox.php:69
-#: src/CPT/PricingTemplate.php:23
+#: src/Admin/ProductMetaBox.php:69 src/CPT/PricingTemplate.php:23
 #: src/CPT/PricingTemplate.php:25
 msgid "Price Blueprint"
-msgstr "Szablon cenowy"
+msgstr "PriceBlueprint"
 
 #: src/Admin/ProductMetaBox.php:70
-msgid "Select the template that defines how this product's price is calculated."
+msgid ""
+"Select the template that defines how this product's price is calculated."
 msgstr "Wybierz szablon definiujący sposób obliczania ceny tego produktu."
 
 #: src/Admin/ProductMetaBox.php:80
 msgid "+ Create your first Price Blueprint"
-msgstr "+ Utwórz swój pierwszy szablon cenowy"
+msgstr "+ Utwórz swój pierwszy PriceBlueprint"
 
 #: src/Admin/ProductMetaBox.php:96
 msgid "— Select a Price Blueprint —"
-msgstr "— Wybierz szablon cenowy —"
+msgstr "— Wybierz PriceBlueprint —"
 
-#: src/Admin/ProductMetaBox.php:109
-#: src/ProductType/ConfigurableProduct.php:109
+#: src/Admin/ProductMetaBox.php:109 src/ProductType/ConfigurableProduct.php:109
 msgid "Regular price is required for Configurable Products."
 msgstr "Cena regularna jest wymagana dla produktów konfigurowalnych."
 
@@ -228,8 +301,7 @@ msgstr "Ładowanie…"
 msgid "Failed to load values."
 msgstr "Nie udało się załadować wartości."
 
-#: src/Admin/RulesRepeater.php:82
-#: templates/admin-repeater.php:81
+#: src/Admin/RulesRepeater.php:82 templates/admin-repeater.php:81
 #: templates/admin-repeater.php:166
 msgid "Select value(s)"
 msgstr "Wybierz wartość/i"
@@ -240,25 +312,21 @@ msgstr "Wybierz wartość/i"
 msgid "Duplicate rule: %1$s → %2$s. Remove duplicates before saving."
 msgstr "Zduplikowana reguła: %1$s → %2$s. Usuń duplikaty przed zapisaniem."
 
-#: src/Admin/RulesRepeater.php:85
-#: templates/admin-repeater.php:191
+#: src/Admin/RulesRepeater.php:85 templates/admin-repeater.php:191
 msgid "+ Add Rule"
 msgstr "+ Dodaj regułę"
 
-#: src/Admin/RulesRepeater.php:86
-#: templates/admin-repeater.php:123
+#: src/Admin/RulesRepeater.php:86 templates/admin-repeater.php:123
 #: templates/admin-repeater.php:179
 msgid "Delete"
 msgstr "Usuń"
 
-#: src/Admin/RulesRepeater.php:87
-#: templates/admin-repeater.php:128
+#: src/Admin/RulesRepeater.php:87 templates/admin-repeater.php:128
 #: templates/admin-repeater.php:182
 msgid "Restore"
 msgstr "Przywróć"
 
-#: src/Admin/RulesRepeater.php:88
-#: templates/admin-repeater.php:27
+#: src/Admin/RulesRepeater.php:88 templates/admin-repeater.php:27
 msgid "Filter by attribute or value…"
 msgstr "Filtruj po atrybucie lub wartości…"
 
@@ -268,8 +336,7 @@ msgstr "Filtruj po atrybucie lub wartości…"
 msgid "%d rule(s) shown"
 msgstr "Wyświetlono %d reguł(y)"
 
-#: src/Admin/RulesRepeater.php:91
-#: src/Admin/SaveHandler.php:90
+#: src/Admin/RulesRepeater.php:91 src/Admin/SaveHandler.php:90
 msgid "Could not save. Please fix the following errors:"
 msgstr "Nie można zapisać. Napraw następujące błędy:"
 
@@ -291,10 +358,9 @@ msgstr "Nieprawidłowy atrybut."
 msgid "Please select a value for: %s"
 msgstr "Wybierz wartość dla: %s"
 
-#: src/CPT/PricingTemplate.php:22
-#: src/CPT/PricingTemplate.php:24
+#: src/CPT/PricingTemplate.php:22 src/CPT/PricingTemplate.php:24
 msgid "Price Blueprints"
-msgstr "Szablony cenowe"
+msgstr "PriceBlueprints"
 
 #: src/CPT/PricingTemplate.php:26
 msgid "Add Template"
@@ -302,15 +368,15 @@ msgstr "Dodaj szablon"
 
 #: src/CPT/PricingTemplate.php:27
 msgid "Add New Price Blueprint"
-msgstr "Dodaj nowy szablon cenowy"
+msgstr "Dodaj nowy PriceBlueprint"
 
 #: src/CPT/PricingTemplate.php:28
 msgid "Edit Price Blueprint"
-msgstr "Edytuj szablon cenowy"
+msgstr "Edytuj PriceBlueprint"
 
 #: src/CPT/PricingTemplate.php:29
 msgid "View Price Blueprint"
-msgstr "Wyświetl szablon cenowy"
+msgstr "Wyświetl PriceBlueprint"
 
 #: src/CPT/PricingTemplate.php:30
 msgid "Search Price Blueprints"
@@ -326,14 +392,12 @@ msgstr "Nie znaleziono szablonów cenowych w koszu"
 
 #. translators: %s: Formatted minimum price, e.g. "$10.00"
 #. translators: %s: Formatted price, e.g. "$10.00"
-#: src/Frontend/ProductPage.php:72
-#: src/Frontend/ProductPage.php:146
+#: src/Frontend/ProductPage.php:72 src/Frontend/ProductPage.php:146
 #, php-format
 msgid "From %s"
 msgstr "Od %s"
 
-#: src/Frontend/ProductPage.php:94
-#: src/Frontend/ProductPage.php:148
+#: src/Frontend/ProductPage.php:94 src/Frontend/ProductPage.php:148
 msgid "This product has no pricing options available."
 msgstr "Ten produkt nie ma dostępnych opcji cenowych."
 
@@ -351,13 +415,11 @@ msgstr "Wybierz wszystkie opcje przed dodaniem do koszyka."
 msgid "Calculating…"
 msgstr "Obliczanie…"
 
-#: src/Frontend/ProductPage.php:144
-#: templates/frontend-configurator.php:68
+#: src/Frontend/ProductPage.php:144 templates/frontend-configurator.php:68
 msgid "Total:"
 msgstr "Łącznie:"
 
-#: src/Frontend/ProductPage.php:147
-#: templates/frontend-configurator.php:80
+#: src/Frontend/ProductPage.php:147 templates/frontend-configurator.php:80
 msgid "Add to cart"
 msgstr "Dodaj do koszyka"
 
@@ -401,11 +463,66 @@ msgstr "Cena"
 msgid "Actions"
 msgstr "Akcje"
 
-#: templates/admin-repeater.php:62
-#: templates/admin-repeater.php:149
+#: templates/admin-repeater.php:62 templates/admin-repeater.php:149
 msgid "— Select attribute —"
 msgstr "— Wybierz atrybut —"
 
 #: src/ProductType/ConfigurableProduct.php
 msgid "Please select a Price Blueprint for this Configurable Product."
-msgstr "Wybierz szablon cenowy dla tego produktu konfigurowalnego."
+msgstr "Wybierz PriceBlueprint dla tego produktu konfigurowalnego."
+
+#: templates/welcome-screen.php:16
+msgid "Getting started"
+msgstr "Pierwsze kroki"
+
+#: templates/welcome-screen.php:17 src/Admin/WelcomeScreen.php:23
+msgid "Welcome to PriceBlueprint"
+msgstr "Witamy w PriceBlueprint"
+
+#: templates/welcome-screen.php:18
+msgid ""
+"Set up pricing rules once. Apply them across your entire catalog — no "
+"variations needed."
+msgstr "Skonfiguruj reguły cenowe raz. Zastosuj je do całego katalogu — bez żadnych wariantów."
+
+#: templates/welcome-screen.php:23
+msgid "Here's how it works"
+msgstr "Jak to działa"
+
+#: templates/welcome-screen.php:28
+msgid "Create a Blueprint"
+msgstr "Utwórz Blueprint"
+
+#: templates/welcome-screen.php:29
+msgid ""
+"Define your pricing rules in one place — one blueprint can cover your whole "
+"catalog."
+msgstr "Zdefiniuj reguły cenowe w jednym miejscu — jeden blueprint może obejmować cały katalog."
+
+#: templates/welcome-screen.php:35
+msgid "Add rules"
+msgstr "Dodaj reguły"
+
+#: templates/welcome-screen.php:36
+msgid ""
+"Set what each attribute value adds to the base price. Size XL → +$10, "
+"Material Oak → +$25."
+msgstr "Określ, ile każda wartość atrybutu dodaje do ceny podstawowej. Rozmiar XL → +10 $, Materiał Dąb → +25 $."
+
+#: templates/welcome-screen.php:42
+msgid "Assign to a product"
+msgstr "Przypisz do produktu"
+
+#: templates/welcome-screen.php:43
+msgid ""
+"Link the blueprint to any configurable product. Update a rule once — every "
+"linked product updates instantly."
+msgstr "Połącz blueprint z dowolnym konfigurowalnym produktem. Zaktualizuj regułę raz — każdy powiązany produkt zaktualizuje się natychmiast."
+
+#: templates/welcome-screen.php:52
+msgid "Create your first Blueprint"
+msgstr "Utwórz swój pierwszy Blueprint"
+
+#: templates/welcome-screen.php:56
+msgid "Skip for now"
+msgstr "Pomiń na razie"

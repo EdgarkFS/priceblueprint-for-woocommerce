@@ -1,0 +1,36 @@
+{
+  "title": "Wood Chair Pricing",
+  "attributes": [
+    {
+      "name": "Material",
+      "values": [
+        { "label": "Fabric",    "price": 0.00 },
+        { "label": "Leather",   "price": 300.00  },
+        { "label": "Velvet", "price": 150.00 }
+      ]
+    },
+    {
+      "name": "Color",
+      "values": [
+        { "label": "Beige",   "price": 0.00  },
+        { "label": "Charcoal",   "price": 0.00 },
+        { "label": "Emerald", "price": 49.00 }
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        { "label": "2 Seater", "price": 0.00  },
+        { "label": "3 Seater", "price": 120.00 },
+        { "label": "L Shape", "price": 120.00 }
+      ]
+    },
+    {
+      "name": "Legs",
+      "values": [
+        { "label": "Metal", "price": 35.00  },
+        { "label": "Wood", "price": 0.00 }
+      ]
+    }
+  ]
+}

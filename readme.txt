@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -68,13 +68,21 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 
 == Screenshots ==
 
-1. Quick Setup — generate pricing rules from an existing product in one click.
-2. Blueprint editor with configured attribute rules ready to use.
-3. Assigning a blueprint to a product in the product settings.
-4. Live price calculator on the product page as customers make selections.
-5. Attribute selections and final price visible in the order details.
+1. Welcome screen with setup steps and one-click demo import.
+2. Quick Setup — generate pricing rules from an existing product in one click.
+3. Blueprint editor with configured attribute rules ready to use.
+4. Assigning a blueprint to a product in the product settings.
+5. Live price calculator on the product page as customers make selections.
+6. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.2.3 =
+* New: Import Demo Data button on the Welcome screen — one click imports a sample blueprint and a linked configurable product so you can see the plugin in action right away.
+* Fix: Dutch (nl_NL) translation used "Regelmatige prijs" for "Regular price"; replaced with the correct WooCommerce NL term "Normale prijs".
+* Fix: Spanish (es_ES) translation had an incorrect capital letter in "¿Qué es una Regla?"; corrected to "¿Qué es una regla?".
+* Fix: Dutch (nl_NL) translation was inconsistent — formal "u" used throughout but two strings used informal "je"; standardised to formal "u".
+* Fix: Missing blank-line separator between two PO entries in all 10 translation files; this caused some gettext tools to misparse the file.
 
 = 1.2.2 =
 * Fix: Blueprint editor now shows a clear notice with a link when no WooCommerce global attributes exist, instead of silently displaying an empty attribute dropdown.

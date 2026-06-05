@@ -483,7 +483,9 @@ msgstr "Witamy w PriceBlueprint"
 msgid ""
 "Set up pricing rules once. Apply them across your entire catalog — no "
 "variations needed."
-msgstr "Skonfiguruj reguły cenowe raz. Zastosuj je do całego katalogu — bez żadnych wariantów."
+msgstr ""
+"Skonfiguruj reguły cenowe raz. Zastosuj je do całego katalogu — bez żadnych "
+"wariantów."
 
 #: templates/welcome-screen.php:23
 msgid "Here's how it works"
@@ -497,7 +499,9 @@ msgstr "Utwórz Blueprint"
 msgid ""
 "Define your pricing rules in one place — one blueprint can cover your whole "
 "catalog."
-msgstr "Zdefiniuj reguły cenowe w jednym miejscu — jeden blueprint może obejmować cały katalog."
+msgstr ""
+"Zdefiniuj reguły cenowe w jednym miejscu — jeden blueprint może obejmować "
+"cały katalog."
 
 #: templates/welcome-screen.php:35
 msgid "Add rules"
@@ -507,7 +511,9 @@ msgstr "Dodaj reguły"
 msgid ""
 "Set what each attribute value adds to the base price. Size XL → +$10, "
 "Material Oak → +$25."
-msgstr "Określ, ile każda wartość atrybutu dodaje do ceny podstawowej. Rozmiar XL → +10 $, Materiał Dąb → +25 $."
+msgstr ""
+"Określ, ile każda wartość atrybutu dodaje do ceny podstawowej. Rozmiar XL → "
+"+10 $, Materiał Dąb → +25 $."
 
 #: templates/welcome-screen.php:42
 msgid "Assign to a product"
@@ -517,7 +523,9 @@ msgstr "Przypisz do produktu"
 msgid ""
 "Link the blueprint to any configurable product. Update a rule once — every "
 "linked product updates instantly."
-msgstr "Połącz blueprint z dowolnym konfigurowalnym produktem. Zaktualizuj regułę raz — każdy powiązany produkt zaktualizuje się natychmiast."
+msgstr ""
+"Połącz blueprint z dowolnym konfigurowalnym produktem. Zaktualizuj regułę "
+"raz — każdy powiązany produkt zaktualizuje się natychmiast."
 
 #: templates/welcome-screen.php:52
 msgid "Create your first Blueprint"
@@ -526,3 +534,67 @@ msgstr "Utwórz swój pierwszy Blueprint"
 #: templates/welcome-screen.php:56
 msgid "Skip for now"
 msgstr "Pomiń na razie"
+
+#: templates/admin-repeater.php:23
+msgid "No WooCommerce attributes found"
+msgstr "Nie znaleziono atrybutów WooCommerce"
+
+#: templates/admin-repeater.php:26
+msgid ""
+"Price Blueprints require WooCommerce global attributes. Create at least one "
+"attribute and its values before building rules."
+msgstr "Szablony cenowe wymagają globalnych atrybutów WooCommerce. Utwórz co najmniej jeden atrybut z wartościami przed tworzeniem reguł."
+
+#: templates/admin-repeater.php:30
+msgid "Create attributes in WooCommerce →"
+msgstr "Utwórz atrybuty w WooCommerce →"
+
+#: src/Admin/RulesRepeater.php:157
+msgid "No values for this attribute."
+msgstr "Brak wartości dla tego atrybutu."
+
+#: src/Admin/RulesRepeater.php:158
+msgid "Add terms →"
+msgstr "Dodaj terminy →"
+
+#: templates/welcome-screen.php:61
+msgid "Try it first"
+msgstr "Wypróbuj najpierw"
+
+#: templates/welcome-screen.php:63
+msgid ""
+"Import a sample blueprint and product to see how PriceBlueprint works "
+"before building your own."
+msgstr "Zaimportuj przykładowy blueprint i produkt, aby zobaczyć, jak działa PriceBlueprint, zanim stworzysz własny."
+
+#: templates/welcome-screen.php:65
+msgid "Import Demo Data"
+msgstr "Importuj dane demo"
+
+#: src/Admin/WelcomeScreen.php:80
+msgid "Demo ready"
+msgstr "Demo gotowe"
+
+#: src/Admin/WelcomeScreen.php:81
+msgid "Edit Blueprint"
+msgstr "Edytuj Blueprint"
+
+#: src/Admin/WelcomeScreen.php:82
+msgid "Edit Product"
+msgstr "Edytuj produkt"
+
+#: src/Admin/WelcomeScreen.php:83
+msgid "View Product"
+msgstr "Zobacz produkt"
+
+#: src/Admin/WelcomeScreen.php:84
+msgid "Import failed. Please try again."
+msgstr "Import nie powiódł się. Spróbuj ponownie."
+
+#: src/Ajax/ImportDemo.php:43
+msgid "Demo data file not found."
+msgstr "Plik danych demo nie został znaleziony."
+
+#: src/Ajax/ImportDemo.php:50
+msgid "Demo data file is invalid."
+msgstr "Plik danych demo jest nieprawidłowy."

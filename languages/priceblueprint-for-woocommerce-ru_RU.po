@@ -29,9 +29,9 @@ msgid ""
 "Configurable product pricing via reusable Price Blueprints. Assign one "
 "template to many products; prices are always calculated from live CPT rules."
 msgstr ""
-"Настраиваемое ценообразование товаров с помощью многоразовых PriceBlueprints. "
-"Назначайте один шаблон многим товарам; цены всегда рассчитываются по "
-"актуальным правилам CPT."
+"Настраиваемое ценообразование товаров с помощью многоразовых "
+"PriceBlueprints. Назначайте один шаблон многим товарам; цены всегда "
+"рассчитываются по актуальным правилам CPT."
 
 #. Author of the plugin
 #: priceblueprint-for-woocommerce.php
@@ -65,10 +65,10 @@ msgid ""
 "rules once in a template and then attach that template to as many products "
 "as you like."
 msgstr ""
-"PriceBlueprint — это набор правил, определяющих, как формируется цена товара. "
-"Вместо того чтобы устанавливать фиксированную цену для каждого товара, вы "
-"задаёте правила один раз в шаблоне, а затем применяете его к любому "
-"количеству товаров."
+"PriceBlueprint — это набор правил, определяющих, как формируется цена "
+"товара. Вместо того чтобы устанавливать фиксированную цену для каждого "
+"товара, вы задаёте правила один раз в шаблоне, а затем применяете его к "
+"любому количеству товаров."
 
 #: src/Admin/HelpTab.php:56
 msgid ""
@@ -485,7 +485,9 @@ msgstr "Добро пожаловать в PriceBlueprint"
 msgid ""
 "Set up pricing rules once. Apply them across your entire catalog — no "
 "variations needed."
-msgstr "Настройте правила ценообразования один раз. Применяйте их ко всему каталогу — без вариантов."
+msgstr ""
+"Настройте правила ценообразования один раз. Применяйте их ко всему каталогу "
+"— без вариантов."
 
 #: templates/welcome-screen.php:23
 msgid "Here's how it works"
@@ -499,7 +501,9 @@ msgstr "Создать Blueprint"
 msgid ""
 "Define your pricing rules in one place — one blueprint can cover your whole "
 "catalog."
-msgstr "Определите правила ценообразования в одном месте — один Blueprint может охватить весь каталог."
+msgstr ""
+"Определите правила ценообразования в одном месте — один Blueprint может "
+"охватить весь каталог."
 
 #: templates/welcome-screen.php:35
 msgid "Add rules"
@@ -509,7 +513,9 @@ msgstr "Добавить правила"
 msgid ""
 "Set what each attribute value adds to the base price. Size XL → +$10, "
 "Material Oak → +$25."
-msgstr "Укажите, сколько каждое значение атрибута добавляет к базовой цене. Размер XL → +$10, Материал Дуб → +$25."
+msgstr ""
+"Укажите, сколько каждое значение атрибута добавляет к базовой цене. Размер "
+"XL → +$10, Материал Дуб → +$25."
 
 #: templates/welcome-screen.php:42
 msgid "Assign to a product"
@@ -519,7 +525,9 @@ msgstr "Привязать к товару"
 msgid ""
 "Link the blueprint to any configurable product. Update a rule once — every "
 "linked product updates instantly."
-msgstr "Привяжите Blueprint к любому настраиваемому товару. Обновите правило один раз — все связанные товары обновятся мгновенно."
+msgstr ""
+"Привяжите Blueprint к любому настраиваемому товару. Обновите правило один "
+"раз — все связанные товары обновятся мгновенно."
 
 #: templates/welcome-screen.php:52
 msgid "Create your first Blueprint"
@@ -528,3 +536,67 @@ msgstr "Создать первый Blueprint"
 #: templates/welcome-screen.php:56
 msgid "Skip for now"
 msgstr "Пропустить"
+
+#: templates/admin-repeater.php:23
+msgid "No WooCommerce attributes found"
+msgstr "Атрибуты WooCommerce не найдены"
+
+#: templates/admin-repeater.php:26
+msgid ""
+"Price Blueprints require WooCommerce global attributes. Create at least one "
+"attribute and its values before building rules."
+msgstr "Для работы Price Blueprints необходимы глобальные атрибуты WooCommerce. Создайте хотя бы один атрибут со значениями, прежде чем создавать правила."
+
+#: templates/admin-repeater.php:30
+msgid "Create attributes in WooCommerce →"
+msgstr "Создать атрибуты в WooCommerce →"
+
+#: src/Admin/RulesRepeater.php:157
+msgid "No values for this attribute."
+msgstr "Нет значений для этого атрибута."
+
+#: src/Admin/RulesRepeater.php:158
+msgid "Add terms →"
+msgstr "Добавить термины →"
+
+#: templates/welcome-screen.php:61
+msgid "Try it first"
+msgstr "Попробуйте сначала"
+
+#: templates/welcome-screen.php:63
+msgid ""
+"Import a sample blueprint and product to see how PriceBlueprint works "
+"before building your own."
+msgstr "Импортируйте пример Blueprint и товар, чтобы увидеть, как работает PriceBlueprint, прежде чем создавать свой."
+
+#: templates/welcome-screen.php:65
+msgid "Import Demo Data"
+msgstr "Импортировать демо-данные"
+
+#: src/Admin/WelcomeScreen.php:80
+msgid "Demo ready"
+msgstr "Демо готово"
+
+#: src/Admin/WelcomeScreen.php:81
+msgid "Edit Blueprint"
+msgstr "Редактировать Blueprint"
+
+#: src/Admin/WelcomeScreen.php:82
+msgid "Edit Product"
+msgstr "Редактировать товар"
+
+#: src/Admin/WelcomeScreen.php:83
+msgid "View Product"
+msgstr "Просмотреть товар"
+
+#: src/Admin/WelcomeScreen.php:84
+msgid "Import failed. Please try again."
+msgstr "Импорт не удался. Повторите попытку."
+
+#: src/Ajax/ImportDemo.php:43
+msgid "Demo data file not found."
+msgstr "Файл демо-данных не найден."
+
+#: src/Ajax/ImportDemo.php:50
+msgid "Demo data file is invalid."
+msgstr "Файл демо-данных недействителен."

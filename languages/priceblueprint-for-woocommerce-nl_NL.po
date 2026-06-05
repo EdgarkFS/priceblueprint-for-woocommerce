@@ -64,10 +64,10 @@ msgid ""
 "rules once in a template and then attach that template to as many products "
 "as you like."
 msgstr ""
-"Een PriceBlueprint is een set regels die bepaalt hoe de prijs van een product "
-"wordt samengesteld. In plaats van voor elk product een vaste prijs in te "
-"stellen, definieert u de regels eenmalig in een sjabloon en koppelt u dat "
-"sjabloon aan zoveel producten als u wilt."
+"Een PriceBlueprint is een set regels die bepaalt hoe de prijs van een "
+"product wordt samengesteld. In plaats van voor elk product een vaste prijs "
+"in te stellen, definieert u de regels eenmalig in een sjabloon en koppelt u "
+"dat sjabloon aan zoveel producten als u wilt."
 
 #: src/Admin/HelpTab.php:56
 msgid ""
@@ -296,7 +296,7 @@ msgstr "— Selecteer een PriceBlueprint —"
 
 #: src/Admin/ProductMetaBox.php:109 src/ProductType/ConfigurableProduct.php:109
 msgid "Regular price is required for Configurable Products."
-msgstr "Regelmatige prijs is vereist voor configureerbare producten."
+msgstr "Normale prijs is verplicht voor configureerbare producten."
 
 #: src/Admin/RulesRepeater.php:24
 msgid "Pricing Rules"
@@ -492,7 +492,9 @@ msgstr "Welkom bij PriceBlueprint"
 msgid ""
 "Set up pricing rules once. Apply them across your entire catalog — no "
 "variations needed."
-msgstr "Stel prijsregels eenmalig in. Pas ze toe op uw hele catalogus — geen variaties nodig."
+msgstr ""
+"Stel prijsregels eenmalig in. Pas ze toe op uw hele catalogus — geen "
+"variaties nodig."
 
 #: templates/welcome-screen.php:23
 msgid "Here's how it works"
@@ -506,7 +508,9 @@ msgstr "Maak een Blueprint"
 msgid ""
 "Define your pricing rules in one place — one blueprint can cover your whole "
 "catalog."
-msgstr "Definieer uw prijsregels op één plek — één blueprint kan uw hele catalogus dekken."
+msgstr ""
+"Definieer uw prijsregels op één plek — één blueprint kan uw hele catalogus "
+"dekken."
 
 #: templates/welcome-screen.php:35
 msgid "Add rules"
@@ -516,7 +520,9 @@ msgstr "Regels toevoegen"
 msgid ""
 "Set what each attribute value adds to the base price. Size XL → +$10, "
 "Material Oak → +$25."
-msgstr "Stel in wat elke attribuutwaarde toevoegt aan de basisprijs. Maat XL → +10 $, Materiaal Eiken → +25 $."
+msgstr ""
+"Stel in wat elke attribuutwaarde toevoegt aan de basisprijs. Maat XL → "
+"+10 $, Materiaal Eiken → +25 $."
 
 #: templates/welcome-screen.php:42
 msgid "Assign to a product"
@@ -526,7 +532,9 @@ msgstr "Toewijzen aan een product"
 msgid ""
 "Link the blueprint to any configurable product. Update a rule once — every "
 "linked product updates instantly."
-msgstr "Koppel het blueprint aan een configureerbaar product. Werk een regel eenmalig bij — elk gekoppeld product wordt direct bijgewerkt."
+msgstr ""
+"Koppel het blueprint aan een configureerbaar product. Werk een regel "
+"eenmalig bij — elk gekoppeld product wordt direct bijgewerkt."
 
 #: templates/welcome-screen.php:52
 msgid "Create your first Blueprint"
@@ -535,3 +543,67 @@ msgstr "Maak uw eerste Blueprint"
 #: templates/welcome-screen.php:56
 msgid "Skip for now"
 msgstr "Nu overslaan"
+
+#: templates/admin-repeater.php:23
+msgid "No WooCommerce attributes found"
+msgstr "Geen WooCommerce-attributen gevonden"
+
+#: templates/admin-repeater.php:26
+msgid ""
+"Price Blueprints require WooCommerce global attributes. Create at least one "
+"attribute and its values before building rules."
+msgstr "Price Blueprints vereisen globale WooCommerce-attributen. Maak minimaal één attribuut met waarden aan voordat u regels maakt."
+
+#: templates/admin-repeater.php:30
+msgid "Create attributes in WooCommerce →"
+msgstr "Attributen aanmaken in WooCommerce →"
+
+#: src/Admin/RulesRepeater.php:157
+msgid "No values for this attribute."
+msgstr "Geen waarden voor dit attribuut."
+
+#: src/Admin/RulesRepeater.php:158
+msgid "Add terms →"
+msgstr "Termen toevoegen →"
+
+#: templates/welcome-screen.php:61
+msgid "Try it first"
+msgstr "Probeer het eerst"
+
+#: templates/welcome-screen.php:63
+msgid ""
+"Import a sample blueprint and product to see how PriceBlueprint works "
+"before building your own."
+msgstr "Importeer een voorbeeldblueprint en -product om te zien hoe PriceBlueprint werkt voordat u uw eigen maakt."
+
+#: templates/welcome-screen.php:65
+msgid "Import Demo Data"
+msgstr "Demogegevens importeren"
+
+#: src/Admin/WelcomeScreen.php:80
+msgid "Demo ready"
+msgstr "Demo klaar"
+
+#: src/Admin/WelcomeScreen.php:81
+msgid "Edit Blueprint"
+msgstr "Blueprint bewerken"
+
+#: src/Admin/WelcomeScreen.php:82
+msgid "Edit Product"
+msgstr "Product bewerken"
+
+#: src/Admin/WelcomeScreen.php:83
+msgid "View Product"
+msgstr "Product bekijken"
+
+#: src/Admin/WelcomeScreen.php:84
+msgid "Import failed. Please try again."
+msgstr "Importeren mislukt. Probeer het opnieuw."
+
+#: src/Ajax/ImportDemo.php:43
+msgid "Demo data file not found."
+msgstr "Demogegevensbestand niet gevonden."
+
+#: src/Ajax/ImportDemo.php:50
+msgid "Demo data file is invalid."
+msgstr "Demogegevensbestand is ongeldig."
