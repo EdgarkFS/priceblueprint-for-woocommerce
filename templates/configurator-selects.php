@@ -5,9 +5,11 @@
  * Rendered inside WooCommerce's form.cart via the woocommerce_before_add_to_cart_button hook.
  *
  * Variables available from Frontend\ProductPage::renderSelects():
- *   $product        WC_Product  Current configurable product.
- *   $product_id     int         Product post ID.
- *   $grouped_rules  array       Rules grouped by attribute slug.
+ *   $product            WC_Product      Current configurable product.
+ *   $product_id         int             Product post ID.
+ *   $grouped_rules      array           Rules grouped by attribute slug.
+ *   $preselected        array           Attribute slug → value slug from valid GET params.
+ *   $precomputed_price  float|null      Total price when all attrs are preselected, else null.
  *
  * @package PriceBlueprintWC
  */
@@ -17,15 +19,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Minimum total: base price + cheapest option per attribute.
+// Always computed — used as fallback when not all attrs are preselected,
+// and stored in data attributes so JS can revert to it when selections are cleared.
 $prbp_min_total = (float) $product->get_price();
 foreach ( $grouped_rules as $prbp_attr_rules ) {
-	$prbp_prices      = array_column( $prbp_attr_rules, 'price' );
-	$prbp_min_total  += (float) min( $prbp_prices );
+	$prbp_prices     = array_column( $prbp_attr_rules, 'price' );
+	$prbp_min_total += (float) min( $prbp_prices );
 }
+
+// Price to display on initial render.
+$prbp_initial_price = $precomputed_price ?? $prbp_min_total;
 ?>
 <?php foreach ( $grouped_rules as $prbp_attribute => $prbp_rules ) : ?>
 	<?php
-	// Pre-select the cheapest option for this attribute.
+	// Cheapest option slug — used as fallback when no valid GET param exists.
 	$prbp_cheapest_slug = '';
 	$prbp_min_price     = null;
 	foreach ( $prbp_rules as $prbp_rule ) {
@@ -35,6 +42,9 @@ foreach ( $grouped_rules as $prbp_attr_rules ) {
 			$prbp_cheapest_slug = (string) ( $prbp_rule['value_slugs'][0] ?? '' );
 		}
 	}
+
+	// GET param takes priority; fall back to cheapest.
+	$prbp_selected_slug = $preselected[ $prbp_attribute ] ?? $prbp_cheapest_slug;
 	?>
 <div class="prbp-attribute-group" data-attribute="<?php echo esc_attr( $prbp_attribute ); ?>">
 	<label class="prbp-attribute-label"
@@ -56,7 +66,7 @@ foreach ( $grouped_rules as $prbp_attr_rules ) {
 				?>
 				<option value="<?php echo esc_attr( $prbp_slug ); ?>"
 				        data-price="<?php echo esc_attr( $prbp_rule['price'] ); ?>"
-				        <?php selected( $prbp_slug === $prbp_cheapest_slug ); ?>>
+				        <?php selected( $prbp_slug === $prbp_selected_slug ); ?>>
 					<?php echo esc_html( $prbp_label ); ?>
 				</option>
 				<?php endforeach; ?>
@@ -70,5 +80,5 @@ foreach ( $grouped_rules as $prbp_attr_rules ) {
 <p class="price prbp-total-price"
    data-min-price="<?php echo esc_attr( $prbp_min_total ); ?>"
    data-min-price-html="<?php echo esc_attr( wc_price( $prbp_min_total ) ); ?>">
-	<?php echo wp_kses_post( wc_price( $prbp_min_total ) ); ?>
+	<?php echo wp_kses_post( wc_price( $prbp_initial_price ) ); ?>
 </p>

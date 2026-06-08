@@ -1,9 +1,9 @@
-=== PriceBlueprint — Attribute-Based Pricing for WooCommerce ===
+=== PriceBlueprint — Configurable Product Pricing for WooCommerce ===
 Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,9 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 6. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.3.0 =
+* New: Automatically update URL query parameters when attribute selections change.
 
 = 1.2.3 =
 * New: Import Demo Data button on the Welcome screen — one click imports a sample blueprint and a linked configurable product so you can see the plugin in action right away.
