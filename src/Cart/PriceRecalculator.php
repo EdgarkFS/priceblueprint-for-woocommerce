@@ -59,6 +59,14 @@ class PriceRecalculator {
 			}
 
 			$product->set_price( $base + $additions );
+
+			// For Block cart (StoreAPI): set regular_price and sale_price so the
+			// prices object includes the correct configured totals for strikethrough.
+			if ( $product->is_on_sale() ) {
+				$regular_base = (float) get_post_meta( $product->get_id(), '_regular_price', true );
+				$product->set_regular_price( $regular_base + $additions );
+				$product->set_sale_price( $base + $additions );
+			}
 		}
 	}
 }
