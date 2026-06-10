@@ -10,6 +10,8 @@
  *   $grouped_rules      array           Rules grouped by attribute slug.
  *   $preselected        array           Attribute slug → value slug from valid GET params.
  *   $precomputed_price  float|null      Total price when all attrs are preselected, else null.
+ *   $is_on_sale         bool            Whether the product currently has an active sale price.
+ *   $regular_min_total  float           Minimum total using _regular_price as base (for strikethrough).
  *
  * @package PriceBlueprintWC
  */
@@ -77,8 +79,17 @@ $prbp_initial_price = $precomputed_price ?? $prbp_min_total;
 </div>
 <?php endforeach; ?>
 
+<?php
+$prbp_min_price_html = $is_on_sale
+	? wc_format_sale_price( $regular_min_total, $prbp_min_total )
+	: wc_price( $prbp_min_total );
+
+$prbp_initial_html = $is_on_sale
+	? wc_format_sale_price( $regular_min_total, $prbp_initial_price )
+	: wc_price( $prbp_initial_price );
+?>
 <p class="price prbp-total-price"
    data-min-price="<?php echo esc_attr( $prbp_min_total ); ?>"
-   data-min-price-html="<?php echo esc_attr( wc_price( $prbp_min_total ) ); ?>">
-	<?php echo wp_kses_post( wc_price( $prbp_initial_price ) ); ?>
+   data-min-price-html="<?php echo esc_attr( $prbp_min_price_html ); ?>">
+	<?php echo wp_kses_post( $prbp_initial_html ); ?>
 </p>

@@ -148,6 +148,8 @@ class ProductPage {
 
 		$preselected       = [];
 		$precomputed_price = null;
+		$is_on_sale        = $product->is_on_sale();
+		$regular_min_total = self::getMinPrice( $product_id, '_regular_price' );
 
 		require PRBP_PLUGIN_DIR . 'templates/configurator-selects.php';
 	}
