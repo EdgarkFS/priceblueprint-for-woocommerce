@@ -73,10 +73,21 @@ class ProductPage {
 		if ( $product->get_type() !== 'prbp_configurable_product' ) {
 			return $price_html;
 		}
+
+		$product_id = $product->get_id();
+		$active_min = self::getMinPrice( $product_id );
+
+		$price = $product->is_on_sale()
+			? wc_format_sale_price(
+				self::getMinPrice( $product_id, '_regular_price' ),
+				$active_min
+			)
+			: wc_price( $active_min );
+
 		return sprintf(
-			/* translators: %s: Formatted minimum price, e.g. "$10.00" */
+			/* translators: %s: Formatted price or sale price comparison, e.g. "$10.00" or "<del>$15.00</del> <ins>$10.00</ins>" */
 			__( 'From %s', 'priceblueprint-for-woocommerce' ),
-			wc_price( self::getMinPrice( $product->get_id() ) )
+			$price
 		);
 	}
 
