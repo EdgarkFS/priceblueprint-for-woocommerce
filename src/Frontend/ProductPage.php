@@ -129,38 +129,8 @@ class ProductPage {
 			$grouped_rules[ $rule['attribute'] ][] = $rule;
 		}
 
-		// Read GET params, strip pa_ prefix to match URL param names, validate values.
-		$preselected = [];
-		foreach ( $grouped_rules as $attribute_slug => $attribute_rules ) {
-			$param_name = preg_replace( '/^pa_/', '', $attribute_slug );
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			if ( ! isset( $_GET[ $param_name ] ) ) {
-				continue;
-			}
-			$value_slug = sanitize_key( wp_unslash( $_GET[ $param_name ] ) );
-
-			foreach ( $attribute_rules as $rule ) {
-				if ( in_array( $value_slug, $rule['value_slugs'] ?? [], true ) ) {
-					$preselected[ $attribute_slug ] = $value_slug;
-					break;
-				}
-			}
-		}
-
-		// Compute total price only when every attribute has a valid preselected value.
+		$preselected       = [];
 		$precomputed_price = null;
-		if ( count( $preselected ) === count( $grouped_rules ) ) {
-			$precomputed_price = (float) $product->get_price();
-			foreach ( $grouped_rules as $attribute_slug => $attribute_rules ) {
-				$selected_slug = $preselected[ $attribute_slug ];
-				foreach ( $attribute_rules as $rule ) {
-					if ( in_array( $selected_slug, $rule['value_slugs'] ?? [], true ) ) {
-						$precomputed_price += (float) $rule['price'];
-						break;
-					}
-				}
-			}
-		}
 
 		require PRBP_PLUGIN_DIR . 'templates/configurator-selects.php';
 	}

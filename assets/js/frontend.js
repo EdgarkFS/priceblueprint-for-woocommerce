@@ -12,18 +12,14 @@
 
 /* global prbpFrontend */
 
-import { collectSelections }  from './single-product/collect-selections.js';
 import { updatePrice }        from './single-product/update-price.js';
-import { syncToUrl }          from './single-product/url-sync.js';
 import { bindFormValidation } from './single-product/validate-form.js';
 
 document.querySelectorAll( '.prbp-configurator' ).forEach( function ( configurator ) {
 
 	configurator.querySelectorAll( '.prbp-attribute-select' ).forEach( function ( select ) {
 		select.addEventListener( 'change', function () {
-			const { selections } = collectSelections( configurator );
 			updatePrice( configurator );
-			syncToUrl( selections );
 		} );
 	} );
 
