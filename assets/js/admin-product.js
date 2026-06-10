@@ -47,8 +47,6 @@ class PrbpAdminProduct {
 		$( '.general_tab' ).show();
 		$( '#general_product_data .options_group.pricing' ).show();
 		$( '#general_product_data ._regular_price_field' ).show();
-		$( '#general_product_data ._sale_price_field' ).hide();
-		$( '.sale_price_dates_fields' ).hide();
 		$( '#general_product_data ._tax_status_field,' +
 		   '#general_product_data ._tax_class_field' ).show();
 
