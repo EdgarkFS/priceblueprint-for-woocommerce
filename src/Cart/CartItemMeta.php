@@ -101,9 +101,17 @@ class CartItemMeta {
 			];
 		}
 
+		// Determine the base price: use blueprint override if enabled, else product price.
+		$bp_enabled = get_post_meta( $template_id, 'prbp_base_price_enabled', true );
+		if ( 'true' === $bp_enabled ) {
+			$base_price = (float) get_post_meta( $template_id, 'prbp_base_price', true );
+		} else {
+			$base_price = (float) $product->get_price();
+		}
+
 		$cart_item_data['prbp_selections']  = $matched;
 		$cart_item_data['prbp_template_id'] = $template_id;
-		$cart_item_data['prbp_base_price']  = (float) $product->get_price();
+		$cart_item_data['prbp_base_price']  = $base_price;
 
 		return $cart_item_data;
 	}

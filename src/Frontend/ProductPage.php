@@ -29,8 +29,8 @@ class ProductPage {
 	 * @param int $product_id
 	 * @return float
 	 */
-	public static function getMinPrice( int $product_id ): float {
-		$base        = (float) get_post_meta( $product_id, '_price', true );
+	public static function getMinPrice( int $product_id, string $base_meta_key = '_price' ): float {
+		$base        = (float) get_post_meta( $product_id, $base_meta_key, true );
 		$template_id = (int)   get_post_meta( $product_id, 'prbp_template_id', true );
 
 		if ( ! $template_id ) {
@@ -38,6 +38,12 @@ class ProductPage {
 		}
 
 		$rules = RulesCache::get( $template_id );
+
+		// If the blueprint has a base price override, use it instead of the product price.
+		$bp_enabled = get_post_meta( $template_id, 'prbp_base_price_enabled', true );
+		if ( 'true' === $bp_enabled ) {
+			$base = (float) get_post_meta( $template_id, 'prbp_base_price', true );
+		}
 
 		if ( empty( $rules ) ) {
 			return $base;
