@@ -39,10 +39,13 @@ class ProductPage {
 
 		$rules = RulesCache::get( $template_id );
 
-		// If the blueprint has a base price override, use it instead of the product price.
-		$bp_enabled = get_post_meta( $template_id, 'prbp_base_price_enabled', true );
-		if ( 'true' === $bp_enabled ) {
-			$base = (float) get_post_meta( $template_id, 'prbp_base_price', true );
+		// Blueprint base-price override applies to the active price only.
+		// Regular-price lookups (_regular_price) always use WC meta for correct strikethrough.
+		if ( '_price' === $base_meta_key ) {
+			$bp_enabled = get_post_meta( $template_id, 'prbp_base_price_enabled', true );
+			if ( 'true' === $bp_enabled ) {
+				$base = (float) get_post_meta( $template_id, 'prbp_base_price', true );
+			}
 		}
 
 		if ( empty( $rules ) ) {
