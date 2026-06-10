@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,9 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 6. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.4.0 =
+* New: Sale price support for configurable products — set a sale price and schedule dates the same way as a WooCommerce simple product. Shop listings show the strikethrough pair ("From ~~regular~~ sale"), the product page configurator updates live with sale-aware totals, and the Block cart displays the correct strikethrough on both the base and attribute additions.
 
 = 1.3.1 =
 * Fix: Removed URL query parameter sync on attribute selection change — selections no longer pollute the browser URL.
