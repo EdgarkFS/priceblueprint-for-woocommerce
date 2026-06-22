@@ -40,15 +40,15 @@ class SaveHandler {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$raw_json = isset( $_POST['prbp_rules_json'] ) ? wp_unslash( $_POST['prbp_rules_json'] ) : '';
 
-		$rules = [];
+		$sections = [];
 		if ( ! empty( $raw_json ) ) {
 			$decoded = json_decode( $raw_json, true );
 			if ( is_array( $decoded ) ) {
-				$rules = $decoded;
+				$sections = $decoded;
 			}
 		}
 
-		$result = RuleValidator::validate( $rules );
+		$result = RuleValidator::validate( $sections );
 
 		if ( ! $result['valid'] ) {
 			$user_id = get_current_user_id();
@@ -62,28 +62,34 @@ class SaveHandler {
 			exit;
 		}
 
-		update_post_meta( $post_id, 'prbp_template_rules', wp_json_encode( self::sanitizeRules( $rules ) ) );
+		update_post_meta( $post_id, 'prbp_template_rules', wp_json_encode( self::sanitizeSections( $sections ) ) );
 		RulesCache::flush( $post_id );
 	}
 
 	/**
-	 * Whitelist and sanitize each rule field before storage.
+	 * Whitelist and sanitize each section and its rows before storage.
 	 *
-	 * @param  array<int, array<string, mixed>> $rules
+	 * @param  array<int, array<string, mixed>> $sections
 	 * @return array<int, array<string, mixed>>
 	 */
-	private static function sanitizeRules( array $rules ): array {
+	private static function sanitizeSections( array $sections ): array {
 		$clean = [];
 
-		foreach ( $rules as $rule ) {
+		foreach ( $sections as $section ) {
+			$rows = [];
+			foreach ( (array) ( $section['rows'] ?? [] ) as $row ) {
+				$rows[] = [
+					'value_ids'    => array_map( 'absint',              (array) ( $row['value_ids']    ?? [] ) ),
+					'value_slugs'  => array_map( 'sanitize_key',        (array) ( $row['value_slugs']  ?? [] ) ),
+					'value_labels' => array_map( 'sanitize_text_field', (array) ( $row['value_labels'] ?? [] ) ),
+					'price'        => (string) max( 0.0, (float) ( $row['price'] ?? 0 ) ),
+				];
+			}
+
 			$clean[] = [
-				'attribute'       => sanitize_key( $rule['attribute'] ?? '' ),
-				'attribute_label' => sanitize_text_field( $rule['attribute_label'] ?? '' ),
-				'value_ids'       => array_map( 'absint',              (array) ( $rule['value_ids']    ?? [] ) ),
-				'value_slugs'     => array_map( 'sanitize_key',        (array) ( $rule['value_slugs']  ?? [] ) ),
-				'value_labels'    => array_map( 'sanitize_text_field', (array) ( $rule['value_labels'] ?? [] ) ),
-				'price'           => (string) max( 0.0, (float) ( $rule['price'] ?? 0 ) ),
-				'operator'        => '+',
+				'attribute'       => sanitize_key( $section['attribute'] ?? '' ),
+				'attribute_label' => sanitize_text_field( $section['attribute_label'] ?? '' ),
+				'rows'            => $rows,
 			];
 		}
 

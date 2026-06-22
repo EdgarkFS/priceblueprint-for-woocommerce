@@ -29,12 +29,15 @@ class RulesCache {
 		$key = $template_id . '_' . ( $active_only ? 'active' : 'all' );
 
 		if ( ! isset( self::$cache[ $key ] ) ) {
-			$raw = get_post_meta( $template_id, 'prbp_template_rules', true );
-			$all = $raw ? json_decode( $raw, true ) : [];
+			$raw     = get_post_meta( $template_id, 'prbp_template_rules', true );
+			$decoded = $raw ? json_decode( $raw, true ) : [];
 
-			if ( ! is_array( $all ) ) {
-				$all = [];
+			if ( ! is_array( $decoded ) ) {
+				$decoded = [];
 			}
+
+			$sections = RulesFormat::normalize( $decoded );
+			$all      = RulesFormat::flatten( $sections );
 
 			self::$cache[ $template_id . '_all' ]    = $all;
 			self::$cache[ $template_id . '_active' ] = array_values(

@@ -7,6 +7,7 @@
 
 namespace PRBP\Admin;
 
+use PRBP\Utils\RulesFormat;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -37,7 +38,7 @@ class RulesRepeater {
 		if ( $raw ) {
 			$decoded = json_decode( $raw, true );
 			if ( is_array( $decoded ) ) {
-				$rules = $decoded;
+				$rules = RulesFormat::normalize( $decoded );
 			}
 		}
 
@@ -139,13 +140,13 @@ class RulesRepeater {
 				'all_values_selected' => __( 'All values selected', 'priceblueprint-for-woocommerce' ),
 				'no_results'          => __( 'No results found', 'priceblueprint-for-woocommerce' ),
 				/* translators: 1: Attribute label, 2: Value label */
-				'duplicate_msg'       => __( 'Duplicate rule: %1$s → %2$s. Remove duplicates before saving.', 'priceblueprint-for-woocommerce' ),
+				'duplicate_msg'       => __( 'Duplicate value for %1$s: %2$s. Remove duplicates before saving.', 'priceblueprint-for-woocommerce' ),
 				'add_rule'           => __( '+ Add Rule', 'priceblueprint-for-woocommerce' ),
 				'delete'             => __( 'Delete', 'priceblueprint-for-woocommerce' ),
-				'restore'            => __( 'Restore', 'priceblueprint-for-woocommerce' ),
+				'reset'              => __( 'Reset', 'priceblueprint-for-woocommerce' ),
 				'filter_placeholder' => __( 'Filter by attribute or value…', 'priceblueprint-for-woocommerce' ),
-				/* translators: %d: Number of visible rules */
-				'rules_count'        => __( '%d rule(s) shown', 'priceblueprint-for-woocommerce' ),
+				/* translators: %d: Number of visible attribute sections */
+				'rules_count'        => __( '%d section(s) shown', 'priceblueprint-for-woocommerce' ),
 				'save_error_title'   => __( 'Could not save. Please fix the following errors:', 'priceblueprint-for-woocommerce' ),
 				'qs_generate_btn'     => __( 'Generate', 'priceblueprint-for-woocommerce' ),
 				'qs_loading'          => __( 'Loading…', 'priceblueprint-for-woocommerce' ),

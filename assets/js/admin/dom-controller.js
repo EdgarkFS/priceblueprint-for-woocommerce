@@ -1,10 +1,10 @@
 /**
- * DomController — all DOM / UI concerns for the pricing-rules repeater.
+ * DomController — DOM / UI concerns for the pricing-rules repeater.
  *
  * Responsibilities:
- *   - Rule object factory (makeRule).
+ *   - Section and row object factories.
  *   - Tom Select instance lifecycle: create, populate, destroy.
- *   - Alpine component registration (register).
+ *   - Alpine component registration.
  *
  * Depends on RequestsController for term fetching; never calls fetch() itself.
  *
@@ -44,40 +44,74 @@ export class DomController {
 	 */
 	constructor( requests ) {
 		this._requests     = requests;
-		/** @type {Map<number, TomSelect>}  rule._uid → instance */
+		/** @type {Map<number, TomSelect>} row._uid → instance */
 		this._tomSelectMap = new Map();
 		this._uid          = 0;
 		this._productTs    = null;
 	}
 
-	// ── Rule factory ──────────────────────────────────────────────────────────
+	// ── Object factories ──────────────────────────────────────────────────────
 
 	/**
-	 * Create a plain rule object merged with sane defaults.
+	 * Create a row object merged with sane defaults.
 	 *
 	 * _uid is a stable internal key used by x-for (:key) and _tomSelectMap.
 	 * It is never serialised to the JSON payload sent to PHP.
 	 *
+	 * @param  {Object} section
 	 * @param  {Object} [data]
 	 * @return {Object}
 	 */
-	makeRule( data = {} ) {
+	makeRow( section, data = {} ) {
 		return Object.assign(
+			{
+				_uid:            ++this._uid,
+				attribute:       section.attribute || '',
+				attribute_label: section.attribute_label || '',
+				value_ids:       [],
+				value_slugs:     [],
+				value_labels:    [],
+				price:           '0',
+			},
+			data,
+			{
+				attribute:       section.attribute || '',
+				attribute_label: section.attribute_label || '',
+			}
+		);
+	}
+
+	/**
+	 * Create an attribute section with at least one row.
+	 *
+	 * @param  {Object} [data]
+	 * @return {Object}
+	 */
+	makeSection( data = {} ) {
+		const section = Object.assign(
 			{
 				_uid:            ++this._uid,
 				attribute:       '',
 				attribute_label: '',
-				// Parallel arrays kept in sync by Tom Select onChange.
-				value_ids:   [],
-				value_slugs: [],
-				value_labels: [],
-				price:    '0',
-				operator: '+',
-				status:   'active',
-				v:        1,
+				rows:            [],
 			},
 			data
 		);
+
+		section.rows = Array.isArray( section.rows )
+			? section.rows.map( row => this.makeRow( section, {
+				value_ids:    Array.isArray( row.value_ids )    ? row.value_ids.map( String )    : [],
+				value_slugs:  Array.isArray( row.value_slugs )  ? row.value_slugs.map( String )  : [],
+				value_labels: Array.isArray( row.value_labels ) ? row.value_labels.map( String ) : [],
+				price:        row.price || '0',
+			} ) )
+			: [];
+
+		if ( section.rows.length === 0 ) {
+			section.rows.push( this.makeRow( section ) );
+		}
+
+		return section;
 	}
 
 	// ── Tom Select lifecycle ──────────────────────────────────────────────────
@@ -86,15 +120,11 @@ export class DomController {
 	 * Create a Tom Select instance on a <select multiple> element.
 	 * Called once per row from x-init in the Alpine template.
 	 *
-	 * Loads terms via AJAX if the rule already has an attribute, then
-	 * silently pre-selects the previously saved values.
-	 *
-	 * @param {HTMLSelectElement} el    The target <select> element.
-	 * @param {Object}            rule  Alpine-reactive rule object.
+	 * @param {HTMLSelectElement} el  The target <select> element.
+	 * @param {Object}            row Alpine-reactive row object.
 	 */
-	initValueSelect( el, rule ) {
-		// Snapshot saved IDs before onChange could overwrite them.
-		const savedIds = rule.value_ids.slice();
+	initValueSelect( el, row ) {
+		const savedIds = row.value_ids.slice();
 
 		let ts;
 		ts = new TomSelect( el, {
@@ -140,19 +170,19 @@ export class DomController {
 				if ( ! Array.isArray( values ) ) {
 					values = values ? [ values ] : [];
 				}
-				rule.value_ids   = values.slice();
-				rule.value_slugs = values.map( id => ts.options[ id ]?.slug ?? '' );
-				rule.value_labels = values.map( id => ts.options[ id ]?.name ?? '' );
+				row.value_ids    = values.slice();
+				row.value_slugs  = values.map( id => ts.options[ id ]?.slug ?? '' );
+				row.value_labels = values.map( id => ts.options[ id ]?.name ?? '' );
 			},
 		} );
 
-		this._tomSelectMap.set( rule._uid, ts );
+		this._tomSelectMap.set( row._uid, ts );
 
-		if ( rule.attribute ) {
+		if ( row.attribute ) {
 			ts.disable();
-			this._requests.loadTerms( rule.attribute ).then( terms => {
+			this._requests.loadTerms( row.attribute ).then( terms => {
 				if ( terms.length === 0 ) {
-					this._showNoValuesMsg( ts, rule.attribute );
+					this._showNoValuesMsg( ts, row.attribute );
 					return;
 				}
 
@@ -160,47 +190,20 @@ export class DomController {
 					ts.addOption( { id: String( t.id ), name: t.name, slug: t.slug } );
 				} );
 
-				// Pre-select saved values silently (no onChange side-effects).
 				savedIds.forEach( id => {
 					if ( ts.options[ id ] ) { ts.addItem( id, true ); }
 				} );
 
-				// Sync Alpine state to what Tom Select actually accepted.
 				const validIds    = savedIds.filter( id => !! ts.options[ id ] );
-				rule.value_ids    = validIds;
-				rule.value_slugs  = validIds.map( id => ts.options[ id ]?.slug ?? '' );
-				rule.value_labels = validIds.map( id => ts.options[ id ]?.name ?? '' );
+				row.value_ids     = validIds;
+				row.value_slugs   = validIds.map( id => ts.options[ id ]?.slug ?? '' );
+				row.value_labels  = validIds.map( id => ts.options[ id ]?.name ?? '' );
 
 				ts.enable();
 			} );
 		} else {
 			ts.disable();
 		}
-	}
-
-	/**
-	 * Re-populate an existing Tom Select for a newly chosen attribute.
-	 * Clears the previous selection — the user changed the attribute
-	 * intentionally so no prior value should carry over.
-	 *
-	 * @param {TomSelect} ts
-	 * @param {string}    attribute
-	 */
-	loadTermsForSelect( ts, attribute ) {
-		this._clearNoValuesMsg( ts );
-		ts.disable();
-		this._requests.loadTerms( attribute ).then( terms => {
-			ts.clear( true );
-			ts.clearOptions();
-			if ( terms.length === 0 ) {
-				this._showNoValuesMsg( ts, attribute );
-				return;
-			}
-			terms.forEach( t => {
-				ts.addOption( { id: String( t.id ), name: t.name, slug: t.slug } );
-			} );
-			ts.enable();
-		} );
 	}
 
 	/**
@@ -217,11 +220,10 @@ export class DomController {
 	}
 
 	/**
-	 * Hide the Tom Select wrapper and insert a sibling no-values message with
-	 * a link to the WP term management page for the given attribute.
+	 * Hide the Tom Select wrapper and insert a sibling no-values message.
 	 *
 	 * @param {TomSelect} ts
-	 * @param {string}    attribute  Taxonomy slug, e.g. "pa_color".
+	 * @param {string}    attribute Taxonomy slug, e.g. "pa_color".
 	 */
 	_showNoValuesMsg( ts, attribute ) {
 		ts.wrapper.style.display = 'none';
@@ -238,35 +240,24 @@ export class DomController {
 	}
 
 	/**
-	 * Public proxy so the Alpine component can call this without touching private methods.
-	 *
-	 * @param {TomSelect} ts
-	 */
-	clearNoValuesMsg( ts ) {
-		this._clearNoValuesMsg( ts );
-	}
-
-	/**
 	 * Create a single-select Tom Select for the Quick Setup product search.
-	 * Uses the load callback to hit prbp_search_products (min 2 chars).
-	 * Called from the Alpine component's initProductSelect(el) proxy.
 	 *
 	 * @param {HTMLSelectElement} el
-	 * @param {Object}            component  Alpine component instance (this).
+	 * @param {Object}            component Alpine component instance.
 	 */
 	initProductSelect( el, component ) {
 		const requests = this._requests;
 		const ts = new TomSelect( el, {
-			valueField:    'id',
-			labelField:    'title',
-			searchField:   [ 'title' ],
-			maxItems:      1,
-			options:       [],
-			items:         [],
-			placeholder:   prbpAdmin.i18n.qs_search_prompt,
-			create:        false,
-			sortField:     { field: 'text', direction: 'asc' },
-			preload:       'focus',
+			valueField:     'id',
+			labelField:     'title',
+			searchField:    [ 'title' ],
+			maxItems:       1,
+			options:        [],
+			items:          [],
+			placeholder:    prbpAdmin.i18n.qs_search_prompt,
+			create:         false,
+			sortField:      { field: 'text', direction: 'asc' },
+			preload:        'focus',
 			dropdownParent: 'body',
 			load( query, callback ) {
 				requests.searchProducts( query ).then( callback );
@@ -280,9 +271,9 @@ export class DomController {
 	}
 
 	/**
-	 * Return the Tom Select instance for a rule, or null.
+	 * Return the Tom Select instance for a row, or null.
 	 *
-	 * @param  {number} uid  rule._uid
+	 * @param  {number} uid row._uid
 	 * @return {TomSelect|null}
 	 */
 	getTomSelect( uid ) {
@@ -290,8 +281,33 @@ export class DomController {
 	}
 
 	/**
+	 * Clear the visual Tom Select selection for a row without removing options.
+	 *
+	 * @param {Object} row
+	 */
+	resetRowSelect( row ) {
+		const ts = this.getTomSelect( row._uid );
+		if ( ! ts ) { return; }
+
+		this._clearNoValuesMsg( ts );
+		ts.clear( true );
+	}
+
+	/**
+	 * Destroy a single Tom Select instance before removing its row from Alpine state.
+	 *
+	 * @param {Object} row
+	 */
+	destroyRowSelect( row ) {
+		const ts = this.getTomSelect( row._uid );
+		if ( ! ts ) { return; }
+
+		ts.destroy();
+		this._tomSelectMap.delete( row._uid );
+	}
+
+	/**
 	 * Destroy every Tom Select instance.
-	 * Called from the Alpine component's destroy() hook.
 	 */
 	destroyAll() {
 		this._tomSelectMap.forEach( ts => ts.destroy() );
@@ -303,8 +319,7 @@ export class DomController {
 	}
 
 	/**
-	 * Delegates to RequestsController. Keeps Alpine component methods from
-	 * touching _requests directly (consistent with existing DomController API).
+	 * Delegates to RequestsController.
 	 *
 	 * @param  {number|string} productId
 	 * @return {Promise<Array|null>}
@@ -317,14 +332,13 @@ export class DomController {
 
 	/**
 	 * Register the rulesRepeater Alpine component.
-	 * Must be called inside an alpine:init event listener.
 	 */
 	register() {
 		const ctrl = this;
 
 		Alpine.data( 'rulesRepeater', ( rulesData, attrsData ) => ( {
 
-			rules:    [],
+			sections: [],
 			query:    '',
 			sortDir:  null,   // null | 'asc' | 'desc'
 			errorMsg: '',
@@ -337,21 +351,14 @@ export class DomController {
 			// ── Lifecycle ─────────────────────────────────────────────────────
 
 			init() {
-				( rulesData || [] ).forEach( r => {
-					this.rules.push( ctrl.makeRule( {
-						attribute:       r.attribute       || '',
-						attribute_label: r.attribute_label || '',
-						value_ids:    Array.isArray( r.value_ids )    ? r.value_ids.map( String ) : [],
-						value_slugs:  Array.isArray( r.value_slugs )  ? r.value_slugs.map( String )  : [],
-						value_labels: Array.isArray( r.value_labels ) ? r.value_labels.map( String ) : [],
-						price:    r.price    || '0',
-						operator: r.operator || '+',
-						status:   'active',
+				( rulesData || [] ).forEach( section => {
+					this.sections.push( ctrl.makeSection( {
+						attribute:       section.attribute || '',
+						attribute_label: section.attribute_label || '',
+						rows:            Array.isArray( section.rows ) ? section.rows : [],
 					} ) );
 				} );
 
-				// Hook WP's post form — it wraps the entire page, so
-				// @submit on our meta-box div alone is not enough.
 				const form = this.$el.closest( 'form' );
 				if ( form ) {
 					this._submitHandler = e => this.onSubmit( e );
@@ -367,14 +374,18 @@ export class DomController {
 
 			// ── Computed ──────────────────────────────────────────────────────
 
-			get activeRulesCount() {
-				return this.rules.filter( r => r.status !== 'deleted' ).length;
+			get activeSectionsCount() {
+				return this.sections.length;
 			},
 
-			get displayRules() {
+			get availableAttributes() {
+				const used = new Set( this.sections.map( section => section.attribute ) );
+				return this.attrs.filter( attr => ! used.has( attr.slug ) );
+			},
+
+			get displaySections() {
 				const q      = this.query.toLowerCase();
-				let   pos    = 0;
-				let   source = this.rules.slice();
+				let   source = this.sections.slice();
 
 				if ( this.sortDir ) {
 					source.sort( ( a, b ) => {
@@ -386,20 +397,29 @@ export class DomController {
 					} );
 				}
 
-				return source.map( rule => {
-					const isDeleted = rule.status === 'deleted';
-					const matches   = ! q || this._matchesQuery( rule, q );
-					const inDom     = ! isDeleted && matches;
-					return { rule, inDom, pos: inDom ? ++pos : null };
+				return source.map( section => {
+					const attributeMatches = this._attributeMatchesQuery( section, q );
+					let pos = 0;
+
+					const rows = section.rows.map( row => {
+						const inDom = ! q || attributeMatches || this._rowMatchesQuery( row, q );
+						return { row, inDom, pos: inDom ? ++pos : null };
+					} );
+
+					const hasVisibleRows = rows.some( rowEntry => rowEntry.inDom );
+					const sectionInDom = ! q || attributeMatches || hasVisibleRows;
+
+					return { section, rows, sectionInDom };
 				} );
 			},
 
 			get countLabel() {
-				const q = this.query.toLowerCase();
-				const n = this.rules.filter(
-					r => r.status !== 'deleted' && ( ! q || this._matchesQuery( r, q ) )
-				).length;
+				const n = this.displaySections.filter( entry => entry.sectionInDom ).length;
 				return sprintf( prbpAdmin.i18n.rules_count, n );
+			},
+
+			get hasFilterResults() {
+				return this.displaySections.some( entry => entry.sectionInDom );
 			},
 
 			// ── Sorting ───────────────────────────────────────────────────────
@@ -410,64 +430,62 @@ export class DomController {
 				this.sortDir = null;
 			},
 
-			// ── Rule CRUD ─────────────────────────────────────────────────────
+			// ── Section / row CRUD ────────────────────────────────────────────
 
-			addRule() {
-				// Tom Select is wired up by x-init on the new row's <select>.
-				this.rules.push( ctrl.makeRule( {} ) );
+			addSection( event ) {
+				const select = event.target;
+				const slug   = select.value;
+				if ( ! slug ) { return; }
+
+				const attr = this.attrs.find( item => item.slug === slug );
+				if ( ! attr ) { return; }
+
+				this.sections.push( ctrl.makeSection( {
+					attribute:       attr.slug,
+					attribute_label: attr.label,
+					rows:            [ {} ],
+				} ) );
+
+				select.value = '';
 			},
 
-			deleteRule( rule ) {
-				rule.status = 'deleted';
-			},
-
-			restoreRule( rule ) {
-				rule.attribute       = '';
-				rule.attribute_label = '';
-				rule.value_ids       = [];
-				rule.value_slugs     = [];
-				rule.value_labels    = [];
-				rule.price           = '0';
-				rule.status          = 'active';
-
-				const ts = ctrl.getTomSelect( rule._uid );
-				if ( ts ) {
-					ctrl.clearNoValuesMsg( ts );
-					ts.clear( true );
-					ts.clearOptions();
-					ts.disable();
+			deleteSection( section ) {
+				const label = section.attribute_label || section.attribute;
+				if ( ! window.confirm( sprintf( prbpAdmin.i18n.confirm_delete_section, label ) ) ) {
+					return;
 				}
+				section.rows.forEach( row => ctrl.destroyRowSelect( row ) );
+				this.sections = this.sections.filter( item => item !== section );
 			},
 
-			// ── Attribute select ──────────────────────────────────────────────
+			addRow( section ) {
+				section.rows.push( ctrl.makeRow( section ) );
+			},
 
-			onAttributeChange( rule, event ) {
-				const sel            = event.target;
-				const opt            = sel.options[ sel.selectedIndex ];
-				rule.attribute       = sel.value;
-				rule.attribute_label = opt ? opt.text.trim() : '';
-				rule.value_ids       = [];
-				rule.value_slugs     = [];
-				rule.value_labels    = [];
+			deleteRow( section, row ) {
+				ctrl.destroyRowSelect( row );
+				section.rows = section.rows.filter( item => item !== row );
+			},
 
-				const ts = ctrl.getTomSelect( rule._uid );
-				if ( ! ts ) { return; }
+			resetRow( row ) {
+				row.value_ids = [];
+				row.value_slugs = [];
+				row.value_labels = [];
+				row.price = '0';
+				ctrl.resetRowSelect( row );
+			},
 
-				ts.clear( true );
-				ts.clearOptions();
-
-				if ( rule.attribute ) {
-					ctrl.loadTermsForSelect( ts, rule.attribute );
-				} else {
-					ctrl.clearNoValuesMsg( ts );
-					ts.disable();
-				}
+			resetSection( section ) {
+				const firstRow = section.rows[0] || ctrl.makeRow( section );
+				section.rows.slice( 1 ).forEach( row => ctrl.destroyRowSelect( row ) );
+				section.rows = [ firstRow ];
+				this.resetRow( firstRow );
 			},
 
 			// ── Tom Select init  (called from x-init in the template) ─────────
 
-			initValueSelect( el, rule ) {
-				ctrl.initValueSelect( el, rule );
+			initValueSelect( el, row ) {
+				ctrl.initValueSelect( el, row );
 			},
 
 			initProductSelect( el ) {
@@ -498,20 +516,24 @@ export class DomController {
 
 				try {
 					attrs.forEach( attr => {
-						this.rules.push( ctrl.makeRule( {
+						if ( this.sections.some( section => section.attribute === attr.slug ) ) {
+							return;
+						}
+
+						this.sections.push( ctrl.makeSection( {
 							attribute:       attr.slug,
 							attribute_label: attr.label,
-							value_ids:       attr.value_ids    || [],
-							value_slugs:     attr.value_slugs  || [],
-							value_labels:    attr.value_labels || [],
-							price:           '0',
+							rows:            [ {
+								value_ids:    attr.value_ids || [],
+								value_slugs:  attr.value_slugs || [],
+								value_labels: attr.value_labels || [],
+								price:        '0',
+							} ],
 						} ) );
 					} );
 				} finally {
 					this.quickSetupLoading = false;
 				}
-				// activeRulesCount > 0 now — Quick Setup block hides reactively.
-				// Each new row's x-init fires initValueSelect which loads and pre-selects value_ids.
 			},
 
 			// ── Form serialisation ────────────────────────────────────────────
@@ -519,48 +541,52 @@ export class DomController {
 			onSubmit( event ) {
 				const payload = [];
 
-				this.rules.forEach( rule => {
-					if ( rule.status === 'deleted' ) { return; }
+				this.sections.forEach( section => {
+					const rows = [];
 
-					const ts          = ctrl.getTomSelect( rule._uid );
-					let   selectedIds = ts ? ts.getValue() : rule.value_ids;
-					if ( ! Array.isArray( selectedIds ) ) {
-						selectedIds = selectedIds ? [ selectedIds ] : [];
-					}
+					section.rows.forEach( row => {
+						const ts          = ctrl.getTomSelect( row._uid );
+						let   selectedIds = ts ? ts.getValue() : row.value_ids;
+						if ( ! Array.isArray( selectedIds ) ) {
+							selectedIds = selectedIds ? [ selectedIds ] : [];
+						}
+
+						rows.push( {
+							value_ids:    selectedIds,
+							value_slugs:  selectedIds.map( id => ts?.options[ id ]?.slug ?? '' ),
+							value_labels: selectedIds.map( id => ts?.options[ id ]?.name ?? '' ),
+							price:        row.price,
+						} );
+					} );
 
 					payload.push( {
-						attribute:       rule.attribute,
-						attribute_label: rule.attribute_label,
-						value_ids:       selectedIds,
-						value_slugs:     selectedIds.map( id => ts?.options[ id ]?.slug  ?? '' ),
-						value_labels:    selectedIds.map( id => ts?.options[ id ]?.name  ?? '' ),
-						price:           rule.price,
-						operator:        rule.operator,
+						attribute:       section.attribute,
+						attribute_label: section.attribute_label,
+						rows,
 					} );
 				} );
 
-				// Duplicate check — same (attribute, value_slug) pair across all rules.
-				const seen = Object.create( null );
-				for ( const r of payload ) {
-					if ( ! r.attribute ) { continue; }
-					for ( let i = 0; i < r.value_slugs.length; i++ ) {
-						const slug = r.value_slugs[ i ];
-						if ( ! slug ) { continue; }
-						const key = `${ r.attribute }|${ slug }`;
-						if ( seen[ key ] ) {
-							event.preventDefault();
-							this.errorMsg = sprintf(
-								prbpAdmin.i18n.duplicate_msg,
-								r.attribute_label || r.attribute,
-								r.value_labels[ i ] || slug
-							);
-							setTimeout( () => {
-								this.$el?.querySelector( '.prbp-error-banner' )
-									?.scrollIntoView( { behavior: 'smooth', block: 'center' } );
-							}, 0 );
-							return;
+				for ( const section of payload ) {
+					const seen = Object.create( null );
+					for ( const row of section.rows ) {
+						for ( let i = 0; i < row.value_slugs.length; i++ ) {
+							const slug = row.value_slugs[ i ];
+							if ( ! slug ) { continue; }
+							if ( seen[ slug ] ) {
+								event.preventDefault();
+								this.errorMsg = sprintf(
+									prbpAdmin.i18n.duplicate_msg,
+									section.attribute_label || section.attribute,
+									row.value_labels[ i ] || slug
+								);
+								setTimeout( () => {
+									this.$el?.querySelector( '.prbp-error-banner' )
+										?.scrollIntoView( { behavior: 'smooth', block: 'center' } );
+								}, 0 );
+								return;
+							}
+							seen[ slug ] = true;
 						}
-						seen[ key ] = true;
 					}
 				}
 
@@ -573,10 +599,21 @@ export class DomController {
 
 			// ── Filter ────────────────────────────────────────────────────────
 
-			_matchesQuery( rule, q ) {
-				const a = ( rule.attribute_label || rule.attribute || '' ).toLowerCase();
-				const v = rule.value_labels.join( ' ' ).toLowerCase();
-				return a.includes( q ) || v.includes( q );
+			_attributeMatchesQuery( section, q ) {
+				if ( ! q ) { return true; }
+				const label = ( section.attribute_label || section.attribute || '' ).toLowerCase();
+				return label.includes( q );
+			},
+
+			_rowMatchesQuery( row, q ) {
+				if ( ! q ) { return true; }
+				const values = row.value_labels.join( ' ' ).toLowerCase();
+				return values.includes( q );
+			},
+
+			_sectionMatchesQuery( section, q ) {
+				return this._attributeMatchesQuery( section, q )
+					|| section.rows.some( row => row.status !== 'deleted' && this._rowMatchesQuery( row, q ) );
 			},
 
 		} ) );

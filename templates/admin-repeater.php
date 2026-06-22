@@ -60,14 +60,14 @@ var prbpAttrsData = <?php echo wp_json_encode(
      x-data="rulesRepeater(prbpRulesData, prbpAttrsData)"
      x-cloak>
 
-	<!-- ── Quick Setup (visible only when no active rules) ──────────────── -->
+	<!-- ── Quick Setup (visible only when no sections exist) ────────────── -->
 	<div class="prbp-quick-setup"
-	     x-show="activeRulesCount === 0"
+	     x-show="sections.length === 0"
 	     style="display:none;">
 
 		<div class="prbp-qs-panels">
 
-			<!-- Left: Generate from a product -->
+			<!-- Generate from a product -->
 			<div class="prbp-qs-panel">
 				<div class="prbp-qs-chip">&#9889; <?php esc_html_e( 'Quick Setup', 'priceblueprint-for-woocommerce' ); ?></div>
 				<h3 class="prbp-qs-panel-title">
@@ -109,26 +109,6 @@ var prbpAttrsData = <?php echo wp_json_encode(
 				</p>
 			</div>
 
-			<!-- Vertical "or" divider -->
-			<div class="prbp-qs-divider" aria-hidden="true">
-				<span><?php esc_html_e( 'or', 'priceblueprint-for-woocommerce' ); ?></span>
-			</div>
-
-			<!-- Right: Add manually -->
-			<div class="prbp-qs-panel">
-				<h3 class="prbp-qs-panel-title">
-					<?php esc_html_e( 'Start from scratch', 'priceblueprint-for-woocommerce' ); ?>
-				</h3>
-				<p class="prbp-qs-panel-desc">
-					<?php esc_html_e( 'Add attribute rows manually and fill in prices yourself.', 'priceblueprint-for-woocommerce' ); ?>
-				</p>
-				<button type="button"
-				        class="prbp-qs-btn-ghost"
-				        @click="addRule()">
-					<?php esc_html_e( '+ Add rules manually', 'priceblueprint-for-woocommerce' ); ?>
-				</button>
-			</div>
-
 		</div><!-- /.prbp-qs-panels -->
 
 	</div><!-- /.prbp-quick-setup -->
@@ -141,118 +121,141 @@ var prbpAttrsData = <?php echo wp_json_encode(
 
 	<!-- ── Filter bar ────────────────────────────────────────────────────── -->
 	<div class="prbp-filter-bar"
-	     x-show="activeRulesCount > 0"
+	     x-show="activeSectionsCount > 0"
 	     style="display:none;">
 		<input type="text"
 		       x-model.debounce.200ms="query"
 		       placeholder="<?php esc_attr_e( 'Filter by attribute or value…', 'priceblueprint-for-woocommerce' ); ?>"
 		       autocomplete="off">
+		<button type="button" class="prbp-col-sortable prbp-sort-toggle" @click="toggleSort()">
+			<?php esc_html_e( 'Sort by attribute', 'priceblueprint-for-woocommerce' ); ?>
+			<span class="prbp-sort-icon"
+			      :class="{ 'prbp-sort-icon--asc': sortDir === 'asc', 'prbp-sort-icon--desc': sortDir === 'desc' }"></span>
+		</button>
 		<span class="prbp-rules-count" x-text="countLabel"></span>
 	</div>
 
-	<!-- ── Rules table ───────────────────────────────────────────────────── -->
-	<table class="prbp-rules-table widefat"
-	       x-show="activeRulesCount > 0"
-	       style="display:none;">
-		<thead>
-			<tr>
-				<th class="prbp-col-index">#</th>
-				<th class="prbp-col-attribute prbp-col-sortable" @click="toggleSort()">
-					<?php esc_html_e( 'Attribute', 'priceblueprint-for-woocommerce' ); ?>
-					<span class="prbp-sort-icon"
-					      :class="{ 'prbp-sort-icon--asc': sortDir === 'asc', 'prbp-sort-icon--desc': sortDir === 'desc' }"></span>
-				</th>
-				<th class="prbp-col-value"><?php esc_html_e( 'Value', 'priceblueprint-for-woocommerce' ); ?></th>
-				<th class="prbp-col-price"><?php esc_html_e( 'Price', 'priceblueprint-for-woocommerce' ); ?></th>
-				<th class="prbp-col-actions"><?php esc_html_e( 'Actions', 'priceblueprint-for-woocommerce' ); ?></th>
-			</tr>
-		</thead>
-		<tbody>
+	<!-- ── Sections ──────────────────────────────────────────────────────── -->
+	<div class="prbp-sections" x-show="sections.length > 0" style="display:none;">
 
-			<template x-for="entry in displayRules" :key="entry.rule._uid">
-				<tr x-show="entry.inDom"
-				    :class="{'prbp-row--deleted': entry.rule.status === 'deleted'}">
+		<template x-for="entry in displaySections" :key="entry.section._uid">
+			<div class="prbp-section" x-show="entry.sectionInDom">
 
-					<!-- # -->
-					<td class="prbp-col-index">
-						<span x-text="entry.pos || ''"></span>
-					</td>
+				<div class="prbp-section-header">
+					<div class="prbp-section-heading">
+						<h4 class="prbp-section-title" x-text="entry.section.attribute_label || entry.section.attribute"></h4>
+						<span class="prbp-section-slug" x-text="entry.section.attribute"></span>
+					</div>
 
-					<!-- Attribute ──────────────────────────────────────── -->
-					<td class="prbp-col-attribute">
-						<select @change="onAttributeChange(entry.rule, $event)">
-							<option value=""><?php esc_html_e( '— Select attribute —', 'priceblueprint-for-woocommerce' ); ?></option>
-							<?php foreach ( $attribute_taxonomies as $prbp_tax ) : ?>
-								<?php $prbp_slug = wc_attribute_taxonomy_name( $prbp_tax->attribute_name ); ?>
-								<option value="<?php echo esc_attr( $prbp_slug ); ?>"
-								        :selected="entry.rule.attribute === '<?php echo esc_js( $prbp_slug ); ?>'">
-									<?php echo esc_html( $prbp_tax->attribute_label ); ?>
-								</option>
-							<?php endforeach; ?>
-						</select>
-					</td>
+					<div class="prbp-section-actions">
+						<button type="button"
+						        class="prbp-reset-btn button button-small"
+						        title="<?php esc_attr_e( 'Reset', 'priceblueprint-for-woocommerce' ); ?>"
+						        @click="resetSection(entry.section)">
+							<span class="dashicons dashicons-update"></span>
+						</button>
 
-					<!-- Value (Tom Select) ──────────────────────────────── -->
-					<td class="prbp-col-value">
-						<!--
-						  x-init fires once when Alpine creates this element.
-						  initValueSelect wires up Tom Select, loads terms via AJAX,
-						  and pre-selects any saved values.
-						-->
-						<select multiple
-						        class="prbp-value-select"
-						        x-init="initValueSelect($el, entry.rule)">
-						</select>
-					</td>
-
-					<!-- Price ──────────────────────────────────────────── -->
-					<td class="prbp-col-price">
-						<span class="prbp-price-wrap">
-							<input type="number"
-							       class="prbp-price-input"
-							       x-model="entry.rule.price"
-							       step="0.01"
-							       min="0"
-							       placeholder="0.00">
-							<span class="prbp-price-currency" aria-hidden="true"><?php echo esc_html( get_woocommerce_currency_symbol() ); ?></span>
-						</span>
-					</td>
-
-					<!-- Actions ────────────────────────────────────────── -->
-					<td class="prbp-col-actions">
-
-						<!-- Delete (shown for active rows) -->
 						<button type="button"
 						        class="prbp-delete-btn button button-small"
 						        title="<?php esc_attr_e( 'Delete', 'priceblueprint-for-woocommerce' ); ?>"
-						        x-show="entry.rule.status !== 'deleted'"
-						        @click="deleteRule(entry.rule)">
+						        @click="deleteSection(entry.section)">
 							<span class="dashicons dashicons-trash"></span>
 						</button>
+					</div>
+				</div>
 
-						<!-- Restore (shown for deleted rows) -->
-						<button type="button"
-						        class="prbp-restore-btn button button-small"
-						        title="<?php esc_attr_e( 'Restore', 'priceblueprint-for-woocommerce' ); ?>"
-						        x-show="entry.rule.status === 'deleted'"
-						        style="display:none;"
-						        @click="restoreRule(entry.rule)">
-							<span class="dashicons dashicons-undo"></span>
-						</button>
+				<table class="prbp-rules-table prbp-section-table widefat"
+				       x-show="entry.section.status !== 'deleted'">
+					<thead>
+						<tr>
+							<th class="prbp-col-index">#</th>
+							<th class="prbp-col-value"><?php esc_html_e( 'Value', 'priceblueprint-for-woocommerce' ); ?></th>
+							<th class="prbp-col-price"><?php esc_html_e( 'Price', 'priceblueprint-for-woocommerce' ); ?></th>
+							<th class="prbp-col-actions"><?php esc_html_e( 'Actions', 'priceblueprint-for-woocommerce' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
 
-					</td>
+						<template x-for="rowEntry in entry.rows" :key="rowEntry.row._uid">
+							<tr x-show="rowEntry.inDom"
+							    :class="{'prbp-row--deleted': rowEntry.row.status === 'deleted'}">
 
-				</tr>
+								<td class="prbp-col-index">
+									<span x-text="rowEntry.pos || ''"></span>
+								</td>
+
+								<td class="prbp-col-value">
+									<select multiple
+									        class="prbp-value-select"
+									        x-init="initValueSelect($el, rowEntry.row)">
+									</select>
+								</td>
+
+								<td class="prbp-col-price">
+									<span class="prbp-price-wrap">
+										<input type="number"
+										       class="prbp-price-input"
+										       x-model="rowEntry.row.price"
+										       step="0.01"
+										       min="0"
+										       placeholder="0.00">
+										<span class="prbp-price-currency" aria-hidden="true"><?php echo esc_html( get_woocommerce_currency_symbol() ); ?></span>
+									</span>
+								</td>
+
+								<td class="prbp-col-actions">
+									<div class="prbp-row-actions">
+										<button type="button"
+										        class="prbp-reset-btn button button-small"
+										        title="<?php esc_attr_e( 'Reset', 'priceblueprint-for-woocommerce' ); ?>"
+										        @click="resetRow(rowEntry.row)">
+											<span class="dashicons dashicons-update"></span>
+										</button>
+
+										<button type="button"
+										        class="prbp-delete-btn button button-small"
+										        title="<?php esc_attr_e( 'Delete', 'priceblueprint-for-woocommerce' ); ?>"
+										        @click="deleteRow(entry.section, rowEntry.row)">
+											<span class="dashicons dashicons-trash"></span>
+										</button>
+									</div>
+								</td>
+
+							</tr>
+						</template>
+
+						<tr class="prbp-empty-row"
+						    x-show="entry.section.status !== 'deleted' && !entry.rows.some((rowEntry) => rowEntry.inDom)">
+							<td colspan="4">
+								<?php esc_html_e( 'No active values in this section.', 'priceblueprint-for-woocommerce' ); ?>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+				<p class="prbp-add-row" x-show="entry.section.status !== 'deleted'">
+					<button type="button" class="button button-secondary button-small" @click="addRow(entry.section)">
+						<?php esc_html_e( '+ Add value', 'priceblueprint-for-woocommerce' ); ?>
+					</button>
+				</p>
+
+			</div>
+		</template>
+
+	</div><!-- /.prbp-sections -->
+
+	<!-- ── Add section ───────────────────────────────────────────────────── -->
+	<p class="prbp-add-section" x-show="availableAttributes.length > 0">
+		<label for="prbp-add-section-select" class="screen-reader-text">
+			<?php esc_html_e( 'Add attribute section', 'priceblueprint-for-woocommerce' ); ?>
+		</label>
+		<select id="prbp-add-section-select" @change="addSection($event)">
+			<option value=""><?php esc_html_e( '+ Add attribute section', 'priceblueprint-for-woocommerce' ); ?></option>
+			<template x-for="attr in availableAttributes" :key="attr.slug">
+				<option :value="attr.slug" x-text="attr.label"></option>
 			</template>
-
-		</tbody>
-	</table>
-
-	<!-- ── Add rule ──────────────────────────────────────────────────────── -->
-	<p x-show="activeRulesCount > 0" style="display:none;">
-		<button type="button" class="button button-secondary" @click="addRule()">
-			<?php esc_html_e( '+ Add Rule', 'priceblueprint-for-woocommerce' ); ?>
-		</button>
+		</select>
 	</p>
 
 	<!-- JSON payload — written by onSubmit immediately before the form POSTs -->
