@@ -64,6 +64,35 @@ class PrbpAdminProduct {
 	}
 
 	// -------------------------------------------------------------------------
+	// Price Blueprint edit link
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Keep the "Edit Price Blueprint" link in sync with the dropdown.
+	 *
+	 * The link's initial state is server-rendered correctly by
+	 * ProductMetaBox::renderPanel() (correct href and visibility on page
+	 * load, no JS dependency for first paint) — this only re-applies that
+	 * same logic when the user changes the dropdown before saving.
+	 *
+	 * @param {jQuery} $
+	 * @param {string} templateId Selected option value ('' when none selected).
+	 */
+	static updateTemplateEditLink( $, templateId ) {
+		const $link = $( '#prbp-template-edit-link' );
+
+		if ( ! templateId ) {
+			$link.closest( '.form-field' ).hide();
+			return;
+		}
+
+		$link
+			.attr( 'href', 'post.php?post=' + encodeURIComponent( templateId ) + '&action=edit' )
+			.closest( '.form-field' )
+			.show();
+	}
+
+	// -------------------------------------------------------------------------
 	// Init
 	// -------------------------------------------------------------------------
 
@@ -103,6 +132,10 @@ class PrbpAdminProduct {
 					PrbpAdminProduct.applyVisibility( $ );
 					$( '.general_tab a' ).trigger( 'click' );
 				}, 50 );
+			} );
+
+			$( '#prbp_template_id' ).on( 'change', function () {
+				PrbpAdminProduct.updateTemplateEditLink( $, $( this ).val() );
 			} );
 		} );
 	}
