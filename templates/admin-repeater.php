@@ -136,10 +136,11 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 
 		<template x-for="entry in displaySections" :key="entry.section._uid">
 			<div class="prbp-section"
-			     :class="sectionDragClass(entry.section)"
+			     :class="{ 'prbp-section--dragging': isDraggedSection(entry.section) }"
 			     x-show="entry.sectionInDom"
-			     @dragover.prevent="onSectionDragOver($event, entry.section)"
-			     @drop.prevent="onSectionDrop($event, entry.section)">
+			     @dragover.prevent
+			     @dragenter.prevent="onSectionDragEnter($event, entry.section)"
+			     @drop.prevent="onSectionDragEnd()">
 
 				<div class="prbp-section-header">
 					<button type="button"
