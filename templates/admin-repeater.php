@@ -143,14 +143,32 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 			     @drop.prevent="onSectionDragEnd()">
 
 				<div class="prbp-section-header">
-					<button type="button"
-					        class="prbp-section-drag-handle"
-					        draggable="true"
-					        aria-label="<?php esc_attr_e( 'Drag to reorder', 'priceblueprint-for-woocommerce' ); ?>"
-					        @dragstart="onSectionDragStart($event, entry.section)"
-					        @dragend="onSectionDragEnd()">
-						<span class="dashicons dashicons-move" aria-hidden="true"></span>
-					</button>
+					<div class="prbp-section-order-controls">
+						<button type="button"
+						        class="prbp-section-drag-handle"
+						        draggable="true"
+						        aria-label="<?php esc_attr_e( 'Drag to reorder', 'priceblueprint-for-woocommerce' ); ?>"
+						        @dragstart="onSectionDragStart($event, entry.section)"
+						        @dragend="onSectionDragEnd()">
+							<span class="dashicons dashicons-move" aria-hidden="true"></span>
+						</button>
+
+						<button type="button"
+						        class="prbp-section-move-btn"
+						        aria-label="<?php esc_attr_e( 'Move section up', 'priceblueprint-for-woocommerce' ); ?>"
+						        :disabled="isFirstSection(entry.section)"
+						        @click="moveSectionUp(entry.section)">
+							<span class="dashicons dashicons-arrow-up-alt2" aria-hidden="true"></span>
+						</button>
+
+						<button type="button"
+						        class="prbp-section-move-btn"
+						        aria-label="<?php esc_attr_e( 'Move section down', 'priceblueprint-for-woocommerce' ); ?>"
+						        :disabled="isLastSection(entry.section)"
+						        @click="moveSectionDown(entry.section)">
+							<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
+						</button>
+					</div>
 
 					<button type="button"
 					        class="prbp-section-toggle"
