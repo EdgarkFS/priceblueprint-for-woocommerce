@@ -368,6 +368,9 @@ export class DomController {
 			errorMsg: '',
 			attrs:    attrsData || [],
 
+			draggedSectionUid: null,
+			dragOverInfo:      { uid: null, position: null },   // position: 'before' | 'after'
+
 			quickSetupProductId: null,
 			quickSetupLoading:   false,
 			quickSetupError:     '',
@@ -443,6 +446,62 @@ export class DomController {
 
 			toggleSection( section ) {
 				section.expanded = ! section.expanded;
+			},
+
+			// ── Section drag & drop ──────────────────────────────────────────
+
+			onSectionDragStart( event, section ) {
+				this.draggedSectionUid = section._uid;
+				event.dataTransfer.effectAllowed = 'move';
+				event.dataTransfer.setData( 'text/plain', String( section._uid ) );
+
+				const sectionEl = event.target.closest( '.prbp-section' );
+				if ( sectionEl ) {
+					event.dataTransfer.setDragImage( sectionEl, 10, 10 );
+				}
+			},
+
+			onSectionDragOver( event, section ) {
+				if ( this.draggedSectionUid === null || this.draggedSectionUid === section._uid ) {
+					this.dragOverInfo = { uid: null, position: null };
+					return;
+				}
+
+				const rect     = event.currentTarget.getBoundingClientRect();
+				const position = ( event.clientY - rect.top ) < rect.height / 2 ? 'before' : 'after';
+				this.dragOverInfo = { uid: section._uid, position };
+			},
+
+			onSectionDrop( event, section ) {
+				const draggedUid = this.draggedSectionUid;
+				const rect       = event.currentTarget.getBoundingClientRect();
+				const dropAfter  = ( event.clientY - rect.top ) >= rect.height / 2;
+
+				this.dragOverInfo      = { uid: null, position: null };
+				this.draggedSectionUid = null;
+
+				if ( draggedUid === null || draggedUid === section._uid ) { return; }
+
+				const fromIndex = this.sections.findIndex( item => item._uid === draggedUid );
+				if ( fromIndex === -1 ) { return; }
+
+				const [ moved ] = this.sections.splice( fromIndex, 1 );
+				let   toIndex   = this.sections.findIndex( item => item._uid === section._uid );
+				if ( dropAfter ) { toIndex += 1; }
+
+				this.sections.splice( toIndex, 0, moved );
+			},
+
+			onSectionDragEnd() {
+				this.draggedSectionUid = null;
+				this.dragOverInfo      = { uid: null, position: null };
+			},
+
+			sectionDragClass( section ) {
+				if ( this.dragOverInfo.uid !== section._uid ) { return ''; }
+				return this.dragOverInfo.position === 'before'
+					? 'prbp-section--drag-over-before'
+					: 'prbp-section--drag-over-after';
 			},
 
 			// ── Section / row CRUD ────────────────────────────────────────────
