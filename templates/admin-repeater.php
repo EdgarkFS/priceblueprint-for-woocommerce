@@ -128,11 +128,6 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 		       x-model.debounce.200ms="query"
 		       placeholder="<?php esc_attr_e( 'Filter by attribute or value…', 'priceblueprint-for-woocommerce' ); ?>"
 		       autocomplete="off">
-		<button type="button" class="prbp-col-sortable prbp-sort-toggle" @click="toggleSort()">
-			<?php esc_html_e( 'Sort by attribute', 'priceblueprint-for-woocommerce' ); ?>
-			<span class="prbp-sort-icon"
-			      :class="{ 'prbp-sort-icon--asc': sortDir === 'asc', 'prbp-sort-icon--desc': sortDir === 'desc' }"></span>
-		</button>
 		<span class="prbp-rules-count" x-text="countLabel"></span>
 	</div>
 
