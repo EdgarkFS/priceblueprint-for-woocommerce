@@ -157,7 +157,7 @@ export class DomController {
 			searchField:    [ 'name' ],
 			options:        [],
 			items:          [],
-			placeholder:    prbpAdmin.i18n.select_value,
+			placeholder:    prbpAdmin.i18n.select_term,
 			create:         false,
 			dropdownParent: 'body',
 
@@ -171,7 +171,7 @@ export class DomController {
 				no_results: () => {
 					const total = Object.keys( ts.options ).length;
 					if ( total > 0 && ts.items.length >= total ) {
-						return `<div class="no-results">${ prbpAdmin.i18n.all_values_selected }</div>`;
+						return `<div class="no-results">${ prbpAdmin.i18n.all_terms_selected }</div>`;
 					}
 					return `<div class="no-results">${ prbpAdmin.i18n.no_results }</div>`;
 				},
@@ -184,8 +184,8 @@ export class DomController {
 
 			onItemRemove: () => {
 				if ( ts.items.length === 0 ) {
-					ts.settings.placeholder      = prbpAdmin.i18n.select_value;
-					ts.control_input.placeholder = prbpAdmin.i18n.select_value;
+					ts.settings.placeholder      = prbpAdmin.i18n.select_term;
+					ts.control_input.placeholder = prbpAdmin.i18n.select_term;
 				}
 			},
 
@@ -252,12 +252,12 @@ export class DomController {
 		ts.wrapper.style.display = 'none';
 		const span     = document.createElement( 'span' );
 		span.className = 'prbp-no-values-msg';
-		span.appendChild( document.createTextNode( prbpAdmin.i18n.no_values_msg + ' ' ) );
+		span.appendChild( document.createTextNode( prbpAdmin.i18n.no_terms_msg + ' ' ) );
 		const link       = document.createElement( 'a' );
 		link.href        = prbpAdmin.wc_terms_url + attribute + '&post_type=product';
 		link.target      = '_blank';
 		link.rel         = 'noopener';
-		link.textContent = prbpAdmin.i18n.no_values_link;
+		link.textContent = prbpAdmin.i18n.no_terms_link;
 		span.appendChild( link );
 		ts.wrapper.insertAdjacentElement( 'afterend', span );
 	}
@@ -447,7 +447,7 @@ export class DomController {
 			},
 
 			sectionSummary( section ) {
-				return formatSectionSummary( section, prbpCurrencySymbol, prbpAdmin.i18n.section_value_count );
+				return formatSectionSummary( section, prbpCurrencySymbol, prbpAdmin.i18n.section_term_count );
 			},
 
 			// ── Sorting ───────────────────────────────────────────────────────

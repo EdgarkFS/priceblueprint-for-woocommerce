@@ -231,7 +231,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 						<tr class="prbp-empty-row"
 						    x-show="!entry.rows.some((rowEntry) => rowEntry.inDom)">
 							<td colspan="4">
-								<?php esc_html_e( 'No active values in this section.', 'priceblueprint-for-woocommerce' ); ?>
+								<?php esc_html_e( 'No active terms in this section.', 'priceblueprint-for-woocommerce' ); ?>
 							</td>
 						</tr>
 
@@ -240,7 +240,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 
 				<p class="prbp-add-row" x-show="entry.expanded">
 					<button type="button" class="button button-secondary button-small" @click="addRow(entry.section)">
-						<?php esc_html_e( '+ Add value', 'priceblueprint-for-woocommerce' ); ?>
+						<?php esc_html_e( '+ Add term', 'priceblueprint-for-woocommerce' ); ?>
 					</button>
 				</p>
 

@@ -135,20 +135,20 @@ class RulesRepeater {
 			'wc_terms_url'     => admin_url( 'edit-tags.php?taxonomy=' ),
 			'i18n'             => [
 				'loading'             => __( 'Loading…', 'priceblueprint-for-woocommerce' ),
-				'load_error'          => __( 'Failed to load values.', 'priceblueprint-for-woocommerce' ),
-				'select_value'        => __( 'Select value(s)', 'priceblueprint-for-woocommerce' ),
-				'all_values_selected' => __( 'All values selected', 'priceblueprint-for-woocommerce' ),
+				'load_error'          => __( 'Failed to load terms.', 'priceblueprint-for-woocommerce' ),
+				'select_term'         => __( 'Select term(s)', 'priceblueprint-for-woocommerce' ),
+				'all_terms_selected'  => __( 'All terms selected', 'priceblueprint-for-woocommerce' ),
 				'no_results'          => __( 'No results found', 'priceblueprint-for-woocommerce' ),
-				/* translators: 1: Attribute label, 2: Value label */
-				'duplicate_msg'       => __( 'Duplicate value for %1$s: %2$s. Remove duplicates before saving.', 'priceblueprint-for-woocommerce' ),
+				/* translators: 1: Attribute label, 2: Term label */
+				'duplicate_msg'       => __( 'Duplicate term for %1$s: %2$s. Remove duplicates before saving.', 'priceblueprint-for-woocommerce' ),
 				'add_rule'           => __( '+ Add Rule', 'priceblueprint-for-woocommerce' ),
 				'delete'             => __( 'Delete', 'priceblueprint-for-woocommerce' ),
 				'reset'              => __( 'Reset', 'priceblueprint-for-woocommerce' ),
 				/* translators: %s: Attribute label */
-				'confirm_delete_section' => __( 'Delete the "%s" section and all its values? This cannot be undone.', 'priceblueprint-for-woocommerce' ),
-				/* translators: %d: Number of values in an attribute section */
-				'section_value_count' => __( '%d value(s)', 'priceblueprint-for-woocommerce' ),
-				'filter_placeholder' => __( 'Filter by attribute or value…', 'priceblueprint-for-woocommerce' ),
+				'confirm_delete_section' => __( 'Delete the "%s" section and all its terms? This cannot be undone.', 'priceblueprint-for-woocommerce' ),
+				/* translators: %d: Number of terms in an attribute section */
+				'section_term_count' => __( '%d term(s)', 'priceblueprint-for-woocommerce' ),
+				'filter_placeholder' => __( 'Filter by attribute or term…', 'priceblueprint-for-woocommerce' ),
 				/* translators: %d: Number of visible attribute sections */
 				'rules_count'        => __( '%d section(s) shown', 'priceblueprint-for-woocommerce' ),
 				'save_error_title'   => __( 'Could not save. Please fix the following errors:', 'priceblueprint-for-woocommerce' ),
@@ -159,8 +159,8 @@ class RulesRepeater {
 				'qs_fetch_error'      => __( 'Could not load attributes. Please try again.', 'priceblueprint-for-woocommerce' ),
 				'qs_search_prompt'    => __( 'Search for a product…', 'priceblueprint-for-woocommerce' ),
 				'qs_add_manually_btn' => __( '+ Add Attribute', 'priceblueprint-for-woocommerce' ),
-				'no_values_msg'       => __( 'No values for this attribute.', 'priceblueprint-for-woocommerce' ),
-				'no_values_link'      => __( 'Add terms →', 'priceblueprint-for-woocommerce' ),
+				'no_terms_msg'        => __( 'No terms for this attribute.', 'priceblueprint-for-woocommerce' ),
+				'no_terms_link'       => __( 'Add terms →', 'priceblueprint-for-woocommerce' ),
 			],
 		] );
 	}
