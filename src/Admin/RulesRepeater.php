@@ -144,6 +144,10 @@ class RulesRepeater {
 				'add_rule'           => __( '+ Add Rule', 'priceblueprint-for-woocommerce' ),
 				'delete'             => __( 'Delete', 'priceblueprint-for-woocommerce' ),
 				'reset'              => __( 'Reset', 'priceblueprint-for-woocommerce' ),
+				/* translators: %s: Attribute label */
+				'confirm_delete_section' => __( 'Delete the "%s" section and all its values? This cannot be undone.', 'priceblueprint-for-woocommerce' ),
+				/* translators: %d: Number of values in an attribute section */
+				'section_value_count' => __( '%d value(s)', 'priceblueprint-for-woocommerce' ),
 				'filter_placeholder' => __( 'Filter by attribute or value…', 'priceblueprint-for-woocommerce' ),
 				/* translators: %d: Number of visible attribute sections */
 				'rules_count'        => __( '%d section(s) shown', 'priceblueprint-for-woocommerce' ),

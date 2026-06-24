@@ -113,33 +113,58 @@
 
 .prbp-section-header {
 	display: flex;
-	align-items: center;
+	align-items: stretch;
 	justify-content: space-between;
 	gap: 12px;
-	min-height: 44px;
-	padding: 10px 12px;
-	background: linear-gradient(180deg, #fbfdfc 0%, #f6f7f7 100%);
+	min-height: 40px;
+	padding: 0 12px 0 9px;
+	background: linear-gradient(180deg, #f4f6f7 0%, #eceff1 100%);
 	border-bottom: 1px solid #dcdcde;
+	border-left: 3px solid #0D9488;
 }
 
-.prbp-section-heading {
+.prbp-section-toggle {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	gap: 8px;
 	min-width: 0;
+	flex: 1;
+	background: none;
+	border: none;
+	padding: 10px 0;
+	margin: 0;
+	cursor: pointer;
+	text-align: left;
+	font: inherit;
+}
+
+.prbp-section-chevron {
+	flex-shrink: 0;
+	display: inline-block;
+	color: #50575e;
+	font-size: 22px;
+	line-height: 1;
+	transition: transform .15s;
+}
+
+.prbp-section-chevron::after {
+	content: '▾';
+}
+
+.prbp-section-chevron--open {
+	transform: rotate(180deg);
 }
 
 .prbp-section-title {
 	margin: 0;
 	color: #1d2327;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	line-height: 1.35;
 }
 
-.prbp-section-slug {
+.prbp-section-summary {
 	overflow: hidden;
-	max-width: 220px;
 	color: #646970;
 	font-size: 11px;
 	line-height: 1.4;
@@ -171,6 +196,17 @@
 	font-size: 12px;
 	text-align: center;
 	background: #fbfbfb;
+}
+
+.prbp-no-results {
+	padding: 18px 12px;
+	margin: 0;
+	color: #646970;
+	font-size: 12px;
+	text-align: center;
+	background: #fbfbfb;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
 }
 
 .prbp-add-row {
@@ -247,29 +283,6 @@
 	border-bottom: 1px solid #dcdcde;
 }
 
-.prbp-rules-table tbody tr {
-	transition: background .1s;
-}
-
-.prbp-rules-table tbody tr:hover {
-	background: rgba(13, 148, 136, 0.04);
-}
-
-.prbp-row--deleted td {
-	background: #fff8f8;
-	color: #aaa;
-	text-decoration: line-through;
-	text-decoration-color: #ddd;
-}
-
-.prbp-row--deleted .prbp-col-actions {
-	text-decoration: none;
-}
-
-.prbp-row--deleted .prbp-reset-btn {
-	text-decoration: none;
-}
-
 .prbp-col-sortable {
 	cursor: pointer;
 	user-select: none;
@@ -302,10 +315,6 @@
 	width: 44px;
 	text-align: center;
 	color: #646970;
-}
-
-.prbp-col-attribute {
-	width: 28%;
 }
 
 .prbp-col-value {
@@ -370,6 +379,8 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	align-self: center;
+	flex-shrink: 0;
 	gap: 6px;
 }
 
@@ -417,6 +428,19 @@
 	line-height: 1;
 	vertical-align: middle;
 	margin: 0;
+}
+
+/* Section-level Reset/Delete — labeled, not icon-only like the row actions. */
+.prbp-btn-labeled {
+	width: auto !important;
+	gap: 6px;
+	padding: 0 10px !important;
+}
+
+.prbp-btn-label {
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
 }
 
 /* --------------------------------------------------------------------------
@@ -475,6 +499,7 @@
 
 /* Dropdown panel. */
 .ts-dropdown {
+	min-width: 220px;
 	border-color: #8c8f94 !important;
 	border-radius: 0 0 3px 3px !important;
 	font-size: 13px !important;
@@ -483,6 +508,9 @@
 
 .ts-dropdown .option {
 	padding: 5px 8px !important;
+	overflow: hidden;
+	white-space: nowrap !important;
+	text-overflow: ellipsis;
 }
 
 .ts-dropdown .option.active {
@@ -750,8 +778,9 @@
 		align-self: flex-start;
 	}
 
-	.prbp-section-heading {
+	.prbp-section-toggle {
 		flex-direction: column;
+		align-items: flex-start;
 		gap: 2px;
 	}
 

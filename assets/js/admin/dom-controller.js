@@ -12,7 +12,7 @@
  * @package PriceBlueprint
  */
 
-/* global prbpAdmin, Alpine, TomSelect */
+/* global prbpAdmin, prbpCurrencySymbol, Alpine, TomSelect */
 
 // ---------------------------------------------------------------------------
 // Module-level utility
@@ -31,6 +31,28 @@ function sprintf( str, ...args ) {
 		const idx = pos ? parseInt( pos, 10 ) - 1 : i++;
 		return args[ idx ] !== undefined ? String( args[ idx ] ) : '';
 	} );
+}
+
+/**
+ * Build the "N value(s) · price" summary shown in a section's collapsed header.
+ * Assumes section.rows has at least one row (guaranteed by makeSection()).
+ *
+ * @param  {Object} section
+ * @param  {string} currencySymbol
+ * @param  {string} valueCountFormat  i18n string with one %d placeholder.
+ * @return {string}
+ */
+function formatSectionSummary( section, currencySymbol, valueCountFormat ) {
+	const count  = section.rows.length;
+	const prices = section.rows.map( row => parseFloat( row.price ) || 0 );
+	const min    = Math.min( ...prices );
+	const max    = Math.max( ...prices );
+
+	const priceText = min === max
+		? `${ currencySymbol }${ min.toFixed( 2 ) }`
+		: `${ currencySymbol }${ min.toFixed( 2 ) }–${ currencySymbol }${ max.toFixed( 2 ) }`;
+
+	return `${ sprintf( valueCountFormat, count ) } · ${ priceText }`;
 }
 
 // ---------------------------------------------------------------------------
@@ -94,6 +116,7 @@ export class DomController {
 				attribute:       '',
 				attribute_label: '',
 				rows:            [],
+				expanded:        false,
 			},
 			data
 		);
@@ -136,7 +159,7 @@ export class DomController {
 			items:          [],
 			placeholder:    prbpAdmin.i18n.select_value,
 			create:         false,
-			dropdownParent: null,
+			dropdownParent: 'body',
 
 			shouldLoad: ( query ) => {
 				const total = Object.keys( ts.options ).length;
@@ -407,9 +430,10 @@ export class DomController {
 					} );
 
 					const hasVisibleRows = rows.some( rowEntry => rowEntry.inDom );
-					const sectionInDom = ! q || attributeMatches || hasVisibleRows;
+					const sectionInDom   = ! q || attributeMatches || hasVisibleRows;
+					const forceExpand    = !! q && ! attributeMatches && hasVisibleRows;
 
-					return { section, rows, sectionInDom };
+					return { section, rows, sectionInDom, forceExpand, expanded: section.expanded || forceExpand };
 				} );
 			},
 
@@ -422,12 +446,20 @@ export class DomController {
 				return this.displaySections.some( entry => entry.sectionInDom );
 			},
 
+			sectionSummary( section ) {
+				return formatSectionSummary( section, prbpCurrencySymbol, prbpAdmin.i18n.section_value_count );
+			},
+
 			// ── Sorting ───────────────────────────────────────────────────────
 
 			toggleSort() {
 				if ( this.sortDir === null )  { this.sortDir = 'asc';  return; }
 				if ( this.sortDir === 'asc' ) { this.sortDir = 'desc'; return; }
 				this.sortDir = null;
+			},
+
+			toggleSection( section ) {
+				section.expanded = ! section.expanded;
 			},
 
 			// ── Section / row CRUD ────────────────────────────────────────────
@@ -444,6 +476,7 @@ export class DomController {
 					attribute:       attr.slug,
 					attribute_label: attr.label,
 					rows:            [ {} ],
+					expanded:        true,
 				} ) );
 
 				select.value = '';
@@ -566,13 +599,15 @@ export class DomController {
 					} );
 				} );
 
-				for ( const section of payload ) {
-					const seen = Object.create( null );
+				for ( let s = 0; s < payload.length; s++ ) {
+					const section = payload[ s ];
+					const seen    = Object.create( null );
 					for ( const row of section.rows ) {
 						for ( let i = 0; i < row.value_slugs.length; i++ ) {
 							const slug = row.value_slugs[ i ];
 							if ( ! slug ) { continue; }
 							if ( seen[ slug ] ) {
+								this.sections[ s ].expanded = true;
 								event.preventDefault();
 								this.errorMsg = sprintf(
 									prbpAdmin.i18n.duplicate_msg,
@@ -609,11 +644,6 @@ export class DomController {
 				if ( ! q ) { return true; }
 				const values = row.value_labels.join( ' ' ).toLowerCase();
 				return values.includes( q );
-			},
-
-			_sectionMatchesQuery( section, q ) {
-				return this._attributeMatchesQuery( section, q )
-					|| section.rows.some( row => row.status !== 'deleted' && this._rowMatchesQuery( row, q ) );
 			},
 
 		} ) );

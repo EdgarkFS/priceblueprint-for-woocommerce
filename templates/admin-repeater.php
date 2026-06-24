@@ -54,6 +54,7 @@ var prbpAttrsData = <?php echo wp_json_encode(
 		)
 	)
 ); ?>;
+var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_woocommerce_currency_symbol() ) ); ?>;
 </script>
 
 <div class="prbp-admin-wrap"
@@ -142,30 +143,34 @@ var prbpAttrsData = <?php echo wp_json_encode(
 			<div class="prbp-section" x-show="entry.sectionInDom">
 
 				<div class="prbp-section-header">
-					<div class="prbp-section-heading">
+					<button type="button"
+					        class="prbp-section-toggle"
+					        @click="toggleSection(entry.section)">
+						<span class="prbp-section-chevron" :class="{ 'prbp-section-chevron--open': entry.expanded }" aria-hidden="true"></span>
 						<h4 class="prbp-section-title" x-text="entry.section.attribute_label || entry.section.attribute"></h4>
-						<span class="prbp-section-slug" x-text="entry.section.attribute"></span>
-					</div>
+						<span class="prbp-section-summary" x-text="sectionSummary(entry.section)"></span>
+					</button>
 
 					<div class="prbp-section-actions">
 						<button type="button"
-						        class="prbp-reset-btn button button-small"
+						        class="prbp-reset-btn prbp-btn-labeled button button-small"
 						        title="<?php esc_attr_e( 'Reset', 'priceblueprint-for-woocommerce' ); ?>"
 						        @click="resetSection(entry.section)">
 							<span class="dashicons dashicons-update"></span>
+							<span class="prbp-btn-label"><?php esc_html_e( 'Reset', 'priceblueprint-for-woocommerce' ); ?></span>
 						</button>
 
 						<button type="button"
-						        class="prbp-delete-btn button button-small"
+						        class="prbp-delete-btn prbp-btn-labeled button button-small"
 						        title="<?php esc_attr_e( 'Delete', 'priceblueprint-for-woocommerce' ); ?>"
 						        @click="deleteSection(entry.section)">
 							<span class="dashicons dashicons-trash"></span>
+							<span class="prbp-btn-label"><?php esc_html_e( 'Delete', 'priceblueprint-for-woocommerce' ); ?></span>
 						</button>
 					</div>
 				</div>
 
-				<table class="prbp-rules-table prbp-section-table widefat"
-				       x-show="entry.section.status !== 'deleted'">
+				<table class="prbp-rules-table prbp-section-table widefat" x-show="entry.expanded">
 					<thead>
 						<tr>
 							<th class="prbp-col-index">#</th>
@@ -177,8 +182,7 @@ var prbpAttrsData = <?php echo wp_json_encode(
 					<tbody>
 
 						<template x-for="rowEntry in entry.rows" :key="rowEntry.row._uid">
-							<tr x-show="rowEntry.inDom"
-							    :class="{'prbp-row--deleted': rowEntry.row.status === 'deleted'}">
+							<tr x-show="rowEntry.inDom">
 
 								<td class="prbp-col-index">
 									<span x-text="rowEntry.pos || ''"></span>
@@ -225,7 +229,7 @@ var prbpAttrsData = <?php echo wp_json_encode(
 						</template>
 
 						<tr class="prbp-empty-row"
-						    x-show="entry.section.status !== 'deleted' && !entry.rows.some((rowEntry) => rowEntry.inDom)">
+						    x-show="!entry.rows.some((rowEntry) => rowEntry.inDom)">
 							<td colspan="4">
 								<?php esc_html_e( 'No active values in this section.', 'priceblueprint-for-woocommerce' ); ?>
 							</td>
@@ -234,7 +238,7 @@ var prbpAttrsData = <?php echo wp_json_encode(
 					</tbody>
 				</table>
 
-				<p class="prbp-add-row" x-show="entry.section.status !== 'deleted'">
+				<p class="prbp-add-row" x-show="entry.expanded">
 					<button type="button" class="button button-secondary button-small" @click="addRow(entry.section)">
 						<?php esc_html_e( '+ Add value', 'priceblueprint-for-woocommerce' ); ?>
 					</button>
@@ -244,6 +248,12 @@ var prbpAttrsData = <?php echo wp_json_encode(
 		</template>
 
 	</div><!-- /.prbp-sections -->
+
+	<p class="prbp-no-results"
+	   x-show="activeSectionsCount > 0 && ! hasFilterResults"
+	   style="display:none;">
+		<?php esc_html_e( 'No attributes or values match your filter.', 'priceblueprint-for-woocommerce' ); ?>
+	</p>
 
 	<!-- ── Add section ───────────────────────────────────────────────────── -->
 	<p class="prbp-add-section" x-show="availableAttributes.length > 0">
