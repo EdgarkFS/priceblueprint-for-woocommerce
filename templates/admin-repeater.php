@@ -155,7 +155,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 					<button type="button"
 					        class="prbp-section-toggle"
 					        @click="toggleSection(entry.section)">
-						<span class="prbp-section-chevron" :class="{ 'prbp-section-chevron--open': entry.expanded }" aria-hidden="true"></span>
+						<span class="prbp-section-chevron dashicons dashicons-arrow-down-alt2" :class="{ 'prbp-section-chevron--open': entry.expanded }" aria-hidden="true"></span>
 						<h4 class="prbp-section-title" x-text="entry.section.attribute_label || entry.section.attribute"></h4>
 						<span class="prbp-section-summary" x-text="sectionSummary(entry.section)"></span>
 					</button>
