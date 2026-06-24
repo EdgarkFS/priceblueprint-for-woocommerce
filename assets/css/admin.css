@@ -166,15 +166,9 @@
 
 .prbp-section-chevron {
 	flex-shrink: 0;
-	display: inline-block;
 	color: #50575e;
-	font-size: 22px;
-	line-height: 1;
+	font-size: 20px;
 	transition: transform .15s;
-}
-
-.prbp-section-chevron::after {
-	content: '▾';
 }
 
 .prbp-section-chevron--open {
