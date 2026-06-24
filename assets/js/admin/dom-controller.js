@@ -480,29 +480,6 @@ export class DomController {
 				return this.draggedSectionUid === section._uid;
 			},
 
-			// Touch-friendly fallback for devices where native HTML5 drag
-			// doesn't fire (e.g. iOS Safari).
-
-			moveSectionUp( section ) {
-				const index = this.sections.findIndex( item => item._uid === section._uid );
-				if ( index <= 0 ) { return; }
-				[ this.sections[ index - 1 ], this.sections[ index ] ] = [ this.sections[ index ], this.sections[ index - 1 ] ];
-			},
-
-			moveSectionDown( section ) {
-				const index = this.sections.findIndex( item => item._uid === section._uid );
-				if ( index === -1 || index >= this.sections.length - 1 ) { return; }
-				[ this.sections[ index ], this.sections[ index + 1 ] ] = [ this.sections[ index + 1 ], this.sections[ index ] ];
-			},
-
-			isFirstSection( section ) {
-				return this.sections.length > 0 && this.sections[ 0 ]._uid === section._uid;
-			},
-
-			isLastSection( section ) {
-				return this.sections.length > 0 && this.sections[ this.sections.length - 1 ]._uid === section._uid;
-			},
-
 			// ── Section / row CRUD ────────────────────────────────────────────
 
 			addSection( event ) {
