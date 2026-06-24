@@ -2,8 +2,8 @@
 Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
-Tested up to: 6.9
-Stable tag: 1.4.0
+Tested up to: 7.0
+Stable tag: 1.5.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,12 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 6. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.5.0 =
+* New: Pricing Rules editor now groups rules into collapsible attribute sections, with filtering and a live term count.
+* New: Attribute sections in the Pricing Rules editor can now be reordered via drag & drop — the order you set also controls the order attribute selects appear in on the product page.
+* New: Product edit screen now shows a link to the selected Price Blueprint's edit screen, right under the Price Blueprint dropdown.
+* Fix: Pricing Rules section summary now counts the actual number of selected terms instead of the number of rows.
 
 = 1.4.0 =
 * New: Sale price support for configurable products — set a sale price and schedule dates the same way as a WooCommerce simple product. Shop listings show the strikethrough pair ("From ~~regular~~ sale"), the product page configurator updates live with sale-aware totals, and the Block cart displays the correct strikethrough on both the base and attribute additions.
