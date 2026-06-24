@@ -23,7 +23,7 @@ if ( empty( $attribute_taxonomies ) ) : ?>
 					<?php esc_html_e( 'No WooCommerce attributes found', 'priceblueprint-for-woocommerce' ); ?>
 				</h3>
 				<p class="prbp-qs-panel-desc">
-					<?php esc_html_e( 'Price Blueprints require WooCommerce global attributes. Create at least one attribute and its values before building rules.', 'priceblueprint-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Price Blueprints require WooCommerce global attributes. Create at least one attribute and its terms before building rules.', 'priceblueprint-for-woocommerce' ); ?>
 				</p>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=product&page=product_attributes' ) ); ?>"
 				   class="prbp-qs-btn">
@@ -239,7 +239,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 	<p class="prbp-no-results"
 	   x-show="activeSectionsCount > 0 && ! hasFilterResults"
 	   style="display:none;">
-		<?php esc_html_e( 'No attributes or values match your filter.', 'priceblueprint-for-woocommerce' ); ?>
+		<?php esc_html_e( 'No attributes or terms match your filter.', 'priceblueprint-for-woocommerce' ); ?>
 	</p>
 
 	<!-- ── Add section ───────────────────────────────────────────────────── -->
