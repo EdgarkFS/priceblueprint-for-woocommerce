@@ -126,7 +126,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 	     style="display:none;">
 		<input type="text"
 		       x-model.debounce.200ms="query"
-		       placeholder="<?php esc_attr_e( 'Filter by attribute or value…', 'priceblueprint-for-woocommerce' ); ?>"
+		       placeholder="<?php esc_attr_e( 'Filter by attribute or term…', 'priceblueprint-for-woocommerce' ); ?>"
 		       autocomplete="off">
 		<span class="prbp-rules-count" x-text="countLabel"></span>
 	</div>
