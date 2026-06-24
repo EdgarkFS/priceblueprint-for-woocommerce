@@ -34,16 +34,18 @@ function sprintf( str, ...args ) {
 }
 
 /**
- * Build the "N value(s) · price" summary shown in a section's collapsed header.
+ * Build the "N term(s) · price" summary shown in a section's collapsed header.
+ * Counts individual selected terms across all rows (a row may hold more than
+ * one term sharing a price), not the number of rows.
  * Assumes section.rows has at least one row (guaranteed by makeSection()).
  *
  * @param  {Object} section
  * @param  {string} currencySymbol
- * @param  {string} valueCountFormat  i18n string with one %d placeholder.
+ * @param  {string} termCountFormat  i18n string with one %d placeholder.
  * @return {string}
  */
-function formatSectionSummary( section, currencySymbol, valueCountFormat ) {
-	const count  = section.rows.length;
+function formatSectionSummary( section, currencySymbol, termCountFormat ) {
+	const count  = section.rows.reduce( ( sum, row ) => sum + row.value_ids.length, 0 );
 	const prices = section.rows.map( row => parseFloat( row.price ) || 0 );
 	const min    = Math.min( ...prices );
 	const max    = Math.max( ...prices );
@@ -52,7 +54,7 @@ function formatSectionSummary( section, currencySymbol, valueCountFormat ) {
 		? `${ currencySymbol }${ min.toFixed( 2 ) }`
 		: `${ currencySymbol }${ min.toFixed( 2 ) }–${ currencySymbol }${ max.toFixed( 2 ) }`;
 
-	return `${ sprintf( valueCountFormat, count ) } · ${ priceText }`;
+	return `${ sprintf( termCountFormat, count ) } · ${ priceText }`;
 }
 
 // ---------------------------------------------------------------------------
