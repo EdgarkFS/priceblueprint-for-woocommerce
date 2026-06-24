@@ -135,9 +135,22 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 	<div class="prbp-sections" x-show="sections.length > 0" style="display:none;">
 
 		<template x-for="entry in displaySections" :key="entry.section._uid">
-			<div class="prbp-section" x-show="entry.sectionInDom">
+			<div class="prbp-section"
+			     :class="sectionDragClass(entry.section)"
+			     x-show="entry.sectionInDom"
+			     @dragover.prevent="onSectionDragOver($event, entry.section)"
+			     @drop.prevent="onSectionDrop($event, entry.section)">
 
 				<div class="prbp-section-header">
+					<button type="button"
+					        class="prbp-section-drag-handle"
+					        draggable="true"
+					        aria-label="<?php esc_attr_e( 'Drag to reorder', 'priceblueprint-for-woocommerce' ); ?>"
+					        @dragstart="onSectionDragStart($event, entry.section)"
+					        @dragend="onSectionDragEnd()">
+						<span class="dashicons dashicons-move" aria-hidden="true"></span>
+					</button>
+
 					<button type="button"
 					        class="prbp-section-toggle"
 					        @click="toggleSection(entry.section)">
