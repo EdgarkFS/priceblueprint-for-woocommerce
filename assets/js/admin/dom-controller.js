@@ -365,7 +365,6 @@ export class DomController {
 
 			sections: [],
 			query:    '',
-			sortDir:  null,   // null | 'asc' | 'desc'
 			errorMsg: '',
 			attrs:    attrsData || [],
 
@@ -410,17 +409,7 @@ export class DomController {
 
 			get displaySections() {
 				const q      = this.query.toLowerCase();
-				let   source = this.sections.slice();
-
-				if ( this.sortDir ) {
-					source.sort( ( a, b ) => {
-						const la = ( a.attribute_label || a.attribute ).toLowerCase();
-						const lb = ( b.attribute_label || b.attribute ).toLowerCase();
-						return this.sortDir === 'asc'
-							? la.localeCompare( lb )
-							: lb.localeCompare( la );
-					} );
-				}
+				const source = this.sections.slice();
 
 				return source.map( section => {
 					const attributeMatches = this._attributeMatchesQuery( section, q );
@@ -450,14 +439,6 @@ export class DomController {
 
 			sectionSummary( section ) {
 				return formatSectionSummary( section, prbpCurrencySymbol, prbpAdmin.i18n.section_term_count );
-			},
-
-			// ── Sorting ───────────────────────────────────────────────────────
-
-			toggleSort() {
-				if ( this.sortDir === null )  { this.sortDir = 'asc';  return; }
-				if ( this.sortDir === 'asc' ) { this.sortDir = 'desc'; return; }
-				this.sortDir = null;
 			},
 
 			toggleSection( section ) {
