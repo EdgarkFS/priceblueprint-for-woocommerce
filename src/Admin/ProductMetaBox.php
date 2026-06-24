@@ -76,6 +76,14 @@ class ProductMetaBox {
 					'options'     => self::buildOptions( $templates ),
 				] );
 				?>
+				<p class="form-field" <?php echo $current ? '' : 'style="display:none;"'; ?>>
+					<span></span>
+					<a href="<?php echo esc_url( $current ? admin_url( 'post.php?post=' . $current . '&action=edit' ) : '#' ); ?>"
+					   id="prbp-template-edit-link"
+					   target="_blank" rel="noopener">
+						<?php esc_html_e( 'Edit Price Blueprint →', 'priceblueprint-for-woocommerce' ); ?>
+					</a>
+				</p>
 				<?php if ( empty( $templates ) ) : ?>
 				<p class="form-field">
 					<span></span>
