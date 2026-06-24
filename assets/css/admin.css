@@ -145,12 +145,8 @@
 	cursor: grabbing;
 }
 
-.prbp-section--drag-over-before {
-	box-shadow: 0 -3px 0 0 #0D9488;
-}
-
-.prbp-section--drag-over-after {
-	box-shadow: 0 3px 0 0 #0D9488;
+.prbp-section--dragging {
+	opacity: 0.4;
 }
 
 .prbp-section-toggle {
