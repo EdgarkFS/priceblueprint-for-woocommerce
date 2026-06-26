@@ -8,20 +8,13 @@ Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Replace WooCommerce variations with reusable pricing blueprints. One update — all products reflect it instantly.
+Set a price per attribute value — Size XL +$3, Material Cotton +$5. Customers select options, price updates live. No variations needed.
 
 == Description ==
 
-If you sell products with multiple attributes in WooCommerce, you've likely run into the variation problem.
-Four sizes, three materials, two colors — and you already have 24 variations just to define pricing. Change the price of a single material and you end up editing multiple records across your catalog.
-WooCommerce variations were not designed for this.
+PriceBlueprint lets you set a price per attribute value: Color = Red adds $2, Material = Cotton adds $5. As customers make their selections, the price updates live. No variations needed.
 
-**PriceBlueprint is a WooCommerce variations alternative that replaces combinations with pricing rules.**
-
-Instead of generating every possible variation, you define simple rules:
-"Size XL adds $10" or "Material Leather adds $25".
-
-Attach one Price Blueprint to multiple products. Update one rule — every linked product reflects the change instantly.
+Attach one blueprint to multiple products. Update one rule — every linked product reflects the change instantly.
 
 **What's included:**
 
