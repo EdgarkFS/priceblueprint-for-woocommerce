@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -74,6 +74,10 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 6. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.6.0 =
+* New: Informational blueprint type — check "Informational blueprint" in the Blueprint Settings sidebar box to sync all WooCommerce global attributes to every linked product for filtering and display. No configurator UI or pricing rules are applied; the product uses its own WooCommerce price as-is.
+* New: Blueprint Settings sidebar meta box on the blueprint editor — switch a blueprint between pricing mode (default) and informational mode with a single checkbox.
 
 = 1.5.0 =
 * New: Pricing Rules editor now groups rules into collapsible attribute sections, with filtering and a live term count.
