@@ -9,6 +9,7 @@
 
 namespace PRBP\Ajax;
 
+use PRBP\Utils\BlueprintType;
 use PRBP\Utils\RulesCache;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -38,6 +39,10 @@ class CalculatePrice {
 
 		if ( ! $template_id ) {
 			wp_send_json_error( [ 'message' => __( 'No price blueprint assigned.', 'priceblueprint-for-woocommerce' ) ] );
+		}
+
+		if ( BlueprintType::isInformational( $template_id ) ) {
+			wp_send_json_error( [ 'message' => __( 'This product has no pricing options.', 'priceblueprint-for-woocommerce' ) ] );
 		}
 
 		$rules     = RulesCache::get( $template_id );

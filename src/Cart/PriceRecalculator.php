@@ -10,6 +10,7 @@
 
 namespace PRBP\Cart;
 
+use PRBP\Utils\BlueprintType;
 use PRBP\Utils\RulesCache;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,7 +40,7 @@ class PriceRecalculator {
 			$selections  = $cart_item['prbp_selections']  ?? [];
 			$base        = $cart_item['prbp_base_price']  ?? 0.0;
 
-			if ( ! $template_id || ! $selections ) {
+			if ( ! $template_id || ! $selections || BlueprintType::isInformational( $template_id ) ) {
 				continue;
 			}
 

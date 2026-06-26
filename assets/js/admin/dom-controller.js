@@ -44,17 +44,17 @@ function sprintf( str, ...args ) {
  * @param  {string} termCountFormat  i18n string with one %d placeholder.
  * @return {string}
  */
-function formatSectionSummary( section, currencySymbol, termCountFormat ) {
-	const count  = section.rows.reduce( ( sum, row ) => sum + row.value_ids.length, 0 );
+function formatSectionSummary( section, currencySymbol, termCountFormat, showPrice = true ) {
+	const count = section.rows.reduce( ( sum, row ) => sum + row.value_ids.length, 0 );
+	const label = sprintf( termCountFormat, count );
+	if ( ! showPrice ) return label;
 	const prices = section.rows.map( row => parseFloat( row.price ) || 0 );
 	const min    = Math.min( ...prices );
 	const max    = Math.max( ...prices );
-
 	const priceText = min === max
 		? `${ currencySymbol }${ min.toFixed( 2 ) }`
 		: `${ currencySymbol }${ min.toFixed( 2 ) }–${ currencySymbol }${ max.toFixed( 2 ) }`;
-
-	return `${ sprintf( termCountFormat, count ) } · ${ priceText }`;
+	return `${ label } · ${ priceText }`;
 }
 
 // ---------------------------------------------------------------------------
@@ -361,6 +361,8 @@ export class DomController {
 	register() {
 		const ctrl = this;
 
+		Alpine.store( 'prbpType', { isInformational: false } );
+
 		Alpine.data( 'rulesRepeater', ( rulesData, attrsData ) => ( {
 
 			sections: [],
@@ -369,6 +371,10 @@ export class DomController {
 			attrs:    attrsData || [],
 
 			draggedSectionUid: null,
+
+			get isInformational() {
+				return Alpine.store( 'prbpType' ).isInformational;
+			},
 
 			quickSetupProductId: null,
 			quickSetupLoading:   false,
@@ -440,7 +446,7 @@ export class DomController {
 			},
 
 			sectionSummary( section ) {
-				return formatSectionSummary( section, prbpCurrencySymbol, prbpAdmin.i18n.section_term_count );
+				return formatSectionSummary( section, prbpCurrencySymbol, prbpAdmin.i18n.section_term_count, ! this.isInformational );
 			},
 
 			toggleSection( section ) {
@@ -664,6 +670,17 @@ export class DomController {
 				return values.includes( q );
 			},
 
+		} ) );
+
+		Alpine.data( 'blueprintTypeBox', ( isInformational ) => ( {
+			isInformational: !! isInformational,
+
+			init() {
+				Alpine.store( 'prbpType' ).isInformational = this.isInformational;
+				this.$watch( 'isInformational', val => {
+					Alpine.store( 'prbpType' ).isInformational = val;
+				} );
+			},
 		} ) );
 	}
 }

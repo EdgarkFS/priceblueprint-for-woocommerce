@@ -7,6 +7,7 @@
 
 namespace PRBP\Cart;
 
+use PRBP\Utils\BlueprintType;
 use PRBP\Utils\RulesCache;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,6 +37,10 @@ class CartItemMeta {
 
 		$template_id = (int) get_post_meta( $product_id, 'prbp_template_id', true );
 		if ( ! $template_id ) {
+			return $passed;
+		}
+
+		if ( BlueprintType::isInformational( $template_id ) ) {
 			return $passed;
 		}
 
@@ -76,6 +81,11 @@ class CartItemMeta {
 		}
 
 		$template_id = (int) get_post_meta( $product_id, 'prbp_template_id', true );
+
+		if ( BlueprintType::isInformational( $template_id ) ) {
+			return $cart_item_data;
+		}
+
 		$rules       = RulesCache::get( $template_id );
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput
 		$selections  = array_map( 'sanitize_key', wp_unslash( (array) ( $_POST['prbp_selections'] ?? [] ) ) );
