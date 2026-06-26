@@ -61,6 +61,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
      x-data="rulesRepeater(prbpRulesData, prbpAttrsData)"
      x-cloak>
 
+
 	<!-- ── Quick Setup (visible only when no sections exist) ────────────── -->
 	<div class="prbp-quick-setup"
 	     x-show="sections.length === 0"
@@ -196,7 +197,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 									</select>
 								</td>
 
-								<td class="prbp-col-price">
+								<td class="prbp-col-price" x-show="!isInformational">
 									<span class="prbp-price-wrap">
 										<input type="number"
 										       class="prbp-price-input"

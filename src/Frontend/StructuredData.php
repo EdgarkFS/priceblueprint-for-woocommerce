@@ -10,6 +10,8 @@
 
 namespace PRBP\Frontend;
 
+use PRBP\Utils\BlueprintType;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -27,6 +29,11 @@ class StructuredData {
 	 */
 	public static function override( array $markup, \WC_Product $product ): array {
 		if ( $product->get_type() !== 'prbp_configurable_product' ) {
+			return $markup;
+		}
+
+		$template_id = (int) get_post_meta( $product->get_id(), 'prbp_template_id', true );
+		if ( ! $template_id || BlueprintType::isInformational( $template_id ) ) {
 			return $markup;
 		}
 

@@ -36,6 +36,12 @@ class SaveHandler {
 			return;
 		}
 
+		// Persist blueprint type — driven by the sidebar checkbox.
+		$blueprint_type = ( isset( $_POST['prbp_is_informational'] ) && '1' === wp_unslash( $_POST['prbp_is_informational'] ) )
+			? 'informational'
+			: 'pricing';
+		update_post_meta( $post_id, 'prbp_blueprint_type', $blueprint_type );
+
 		// JSON must not be run through a string sanitizer — content is validated by RuleValidator after decode.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$raw_json = isset( $_POST['prbp_rules_json'] ) ? wp_unslash( $_POST['prbp_rules_json'] ) : '';

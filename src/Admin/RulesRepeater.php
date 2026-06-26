@@ -16,8 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class RulesRepeater {
 
 	public static function register(): void {
-		add_action( 'add_meta_boxes',        [ self::class, 'addBox' ],        10 );
-		add_action( 'admin_enqueue_scripts', [ self::class, 'enqueueAssets' ], 10 );
+		add_action( 'add_meta_boxes',        [ self::class, 'addBox' ],         10 );
+		add_action( 'add_meta_boxes',        [ self::class, 'addSidebarBox' ],  10 );
+		add_action( 'admin_enqueue_scripts', [ self::class, 'enqueueAssets' ],  10 );
 	}
 
 	public static function addBox(): void {
@@ -31,6 +32,23 @@ class RulesRepeater {
 		);
 	}
 
+	public static function addSidebarBox(): void {
+		add_meta_box(
+			'prbp_blueprint_settings',
+			__( 'Blueprint Settings', 'priceblueprint-for-woocommerce' ),
+			[ self::class, 'renderSidebarBox' ],
+			'price_blueprint',
+			'side',
+			'default'
+		);
+	}
+
+	public static function renderSidebarBox( \WP_Post $post ): void {
+		$is_informational = 'informational' === ( get_post_meta( $post->ID, 'prbp_blueprint_type', true ) ?: 'pricing' );
+
+		require PRBP_PLUGIN_DIR . 'templates/blueprint-type-box.php';
+	}
+
 	public static function render( \WP_Post $post ): void {
 		$raw   = get_post_meta( $post->ID, 'prbp_template_rules', true );
 		$rules = [];
@@ -42,7 +60,6 @@ class RulesRepeater {
 			}
 		}
 
-		// Fetch all WC global attributes (pa_* taxonomies).
 		$attribute_taxonomies = wc_get_attribute_taxonomies();
 
 		require PRBP_PLUGIN_DIR . 'templates/admin-repeater.php';
@@ -159,8 +176,8 @@ class RulesRepeater {
 				'qs_fetch_error'      => __( 'Could not load attributes. Please try again.', 'priceblueprint-for-woocommerce' ),
 				'qs_search_prompt'    => __( 'Search for a product…', 'priceblueprint-for-woocommerce' ),
 				'qs_add_manually_btn' => __( '+ Add Attribute', 'priceblueprint-for-woocommerce' ),
-				'no_terms_msg'        => __( 'No terms for this attribute.', 'priceblueprint-for-woocommerce' ),
-				'no_terms_link'       => __( 'Add terms →', 'priceblueprint-for-woocommerce' ),
+				'no_terms_msg'          => __( 'No terms for this attribute.', 'priceblueprint-for-woocommerce' ),
+				'no_terms_link'         => __( 'Add terms →', 'priceblueprint-for-woocommerce' ),
 			],
 		] );
 	}

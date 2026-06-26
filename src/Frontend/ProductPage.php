@@ -7,6 +7,7 @@
 
 namespace PRBP\Frontend;
 
+use PRBP\Utils\BlueprintType;
 use PRBP\Utils\RulesCache;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -77,7 +78,12 @@ class ProductPage {
 			return $price_html;
 		}
 
-		$product_id = $product->get_id();
+		$product_id  = $product->get_id();
+		$template_id = (int) get_post_meta( $product_id, 'prbp_template_id', true );
+		if ( ! $template_id || BlueprintType::isInformational( $template_id ) ) {
+			return $price_html;
+		}
+
 		$active_min = self::getMinPrice( $product_id );
 
 		$price = $product->is_on_sale()
@@ -111,6 +117,11 @@ class ProductPage {
 			return;
 		}
 
+		if ( BlueprintType::isInformational( $template_id ) ) {
+			require PRBP_PLUGIN_DIR . 'templates/add-to-cart.php';
+			return;
+		}
+
 		$rules = RulesCache::get( $template_id );
 
 		if ( empty( $rules ) ) {
@@ -135,6 +146,10 @@ class ProductPage {
 		$template_id = (int) get_post_meta( $product_id, 'prbp_template_id', true );
 
 		if ( ! $template_id ) {
+			return;
+		}
+
+		if ( BlueprintType::isInformational( $template_id ) ) {
 			return;
 		}
 
@@ -164,6 +179,11 @@ class ProductPage {
 
 		$product = wc_get_product();
 		if ( ! $product || $product->get_type() !== 'prbp_configurable_product' ) {
+			return;
+		}
+
+		$template_id = (int) get_post_meta( $product->get_id(), 'prbp_template_id', true );
+		if ( BlueprintType::isInformational( $template_id ) ) {
 			return;
 		}
 
