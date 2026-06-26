@@ -19,10 +19,6 @@ jobs:
         run: |
           SVN_BASE="https://plugins.svn.wordpress.org/priceblueprint-for-woocommerce"
 
-          # Extract stable tag from readme.txt
-          STABLE_TAG=$(grep -i "^Stable tag:" "$GITHUB_WORKSPACE/readme.txt" | awk '{print $NF}' | tr -d '[:space:]')
-          echo "Stable tag: $STABLE_TAG"
-
           # Update trunk
           svn checkout --depth empty "$SVN_BASE/trunk" svn-trunk
           cd svn-trunk
@@ -37,14 +33,14 @@ jobs:
             -m "Update readme and main plugin file in trunk"
           cd "$GITHUB_WORKSPACE"
 
-          # Update stable tag folder (so the plugin page reflects changes)
-          svn checkout --depth empty "$SVN_BASE/tags/$STABLE_TAG" svn-tag
-          cd svn-tag
-          svn update readme.txt
-          cp "$GITHUB_WORKSPACE/readme.txt" readme.txt
+          # Update assets folder (banners, icons, screenshots)
+          svn checkout --depth infinity "$SVN_BASE/assets" svn-assets
+          cd svn-assets
+          cp "$GITHUB_WORKSPACE/assets-svn/"* .
+          svn add --force .
           svn commit \
             --username "$SVN_USERNAME" \
             --password "$SVN_PASSWORD" \
             --no-auth-cache \
             --non-interactive \
-            -m "Update readme in tags/$STABLE_TAG"
+            -m "Update assets (banners, icons, screenshots)"
