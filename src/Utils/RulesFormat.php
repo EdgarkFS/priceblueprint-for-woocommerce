@@ -96,6 +96,9 @@ class RulesFormat {
 				if ( isset( $row['status'] ) ) {
 					$entry['status'] = $row['status'];
 				}
+				if ( ! empty( $row['image_id'] ) ) {
+					$entry['image_id'] = (int) $row['image_id'];
+				}
 				$flat[] = $entry;
 			}
 		}

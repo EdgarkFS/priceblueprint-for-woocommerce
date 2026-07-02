@@ -17,10 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class ProductPage {
 
 	public static function register(): void {
-		add_action( 'woocommerce_prbp_configurable_product_add_to_cart', [ self::class, 'renderAddToCart' ], 10 );
-		add_action( 'woocommerce_before_add_to_cart_button',              [ self::class, 'renderSelects' ],   10 );
-		add_action( 'wp_enqueue_scripts',                                 [ self::class, 'enqueueAssets' ],   10 );
-		add_filter( 'woocommerce_get_price_html',                         [ self::class, 'filterPriceHtml' ], 10, 2 );
+		add_action( 'woocommerce_prbp_configurable_product_add_to_cart', [ self::class, 'renderAddToCart' ],        10 );
+		add_action( 'woocommerce_before_add_to_cart_button',              [ self::class, 'renderSelects' ],          10 );
+		add_action( 'wp_enqueue_scripts',                                 [ self::class, 'enqueueAssets' ],          10 );
+		add_filter( 'woocommerce_get_price_html',                         [ self::class, 'filterPriceHtml' ],        10, 2 );
+		add_action( 'woocommerce_product_thumbnails',                     [ self::class, 'renderGallerySlides' ],    20 );
+		add_filter( 'woocommerce_single_product_image_thumbnail_html',    [ self::class, 'suppressGalleryPlaceholder' ], 10, 2 );
 	}
 
 	/**
@@ -159,7 +161,8 @@ class ProductPage {
 			return;
 		}
 
-		$grouped_rules = [];
+		$prbp_slide_map = self::buildImageSlides( $rules, $product );
+		$grouped_rules  = [];
 		foreach ( $rules as $rule ) {
 			$grouped_rules[ $rule['attribute'] ][] = $rule;
 		}
@@ -170,6 +173,79 @@ class ProductPage {
 		$regular_min_total = self::getMinPrice( $product_id, '_regular_price' );
 
 		require PRBP_PLUGIN_DIR . 'templates/configurator-selects.php';
+	}
+
+	/**
+	 * Remove the WC placeholder image when the product has no featured image but has
+	 * rule images that will act as the gallery. The placeholder is a non-slide sibling
+	 * inside .woocommerce-product-gallery__wrapper; it offsets flexslider's horizontal
+	 * slide positions, making the main viewport appear blank.
+	 */
+	public static function suppressGalleryPlaceholder( string $html, int|string $attachment_id ): string {
+		if ( $attachment_id ) {
+			return $html;
+		}
+		if ( ! is_product() ) {
+			return $html;
+		}
+		$product = wc_get_product();
+		if ( ! $product || $product->get_type() !== 'prbp_configurable_product' ) {
+			return $html;
+		}
+		$template_id = (int) get_post_meta( $product->get_id(), 'prbp_template_id', true );
+		if ( ! $template_id || BlueprintType::isInformational( $template_id ) ) {
+			return $html;
+		}
+		// WC gallery images serve as base slides; keep the placeholder so slide
+		// indices match the base_index calculated in buildImageSlides().
+		if ( count( $product->get_gallery_image_ids() ) > 0 ) {
+			return $html;
+		}
+		$rules  = RulesCache::get( $template_id );
+		$slides = empty( $rules ) ? [] : self::buildImageSlides( $rules, $product );
+		if ( empty( $slides['order'] ) ) {
+			return $html;
+		}
+		return '';
+	}
+
+	public static function buildGallerySlidesHtml( array $imageIdsInOrder ): string {
+		$html = '';
+		foreach ( $imageIdsInOrder as $image_id ) {
+			$html .= wc_get_gallery_image_html( $image_id );
+		}
+		return $html;
+	}
+
+	public static function renderGallerySlides(): void {
+		if ( ! is_product() ) return;
+		$product = wc_get_product();
+		if ( ! $product || $product->get_type() !== 'prbp_configurable_product' ) return;
+		$template_id = (int) get_post_meta( $product->get_id(), 'prbp_template_id', true );
+		if ( ! $template_id || BlueprintType::isInformational( $template_id ) ) return;
+		$rules = RulesCache::get( $template_id );
+		if ( empty( $rules ) ) return;
+		$slides = self::buildImageSlides( $rules, $product );
+		if ( empty( $slides['order'] ) ) return;
+		echo self::buildGallerySlidesHtml( $slides['order'] ); // phpcs:ignore WordPress.Security.EscapeOutput
+	}
+
+	public static function buildImageSlides( array $rules, \WC_Product $product ): array {
+		$base_index = ( $product->get_image_id() ? 1 : 0 ) + count( $product->get_gallery_image_ids() );
+		$order = []; $index_by_image = []; $attr_map = [];
+		foreach ( $rules as $rule ) {
+			$image_id = (int) ( $rule['image_id'] ?? 0 );
+			if ( ! $image_id ) continue;
+			if ( ! isset( $index_by_image[ $image_id ] ) ) {
+				$index_by_image[ $image_id ] = $base_index + count( $order );
+				$order[] = $image_id;
+			}
+			$attr = $rule['attribute'];
+			foreach ( (array) ( $rule['value_slugs'] ?? [] ) as $slug ) {
+				if ( $slug ) $attr_map[ $attr ][ $slug ] = $index_by_image[ $image_id ];
+			}
+		}
+		return [ 'order' => $order, 'index_by_image' => $index_by_image, 'attr_map' => $attr_map ];
 	}
 
 	public static function enqueueAssets(): void {
@@ -210,11 +286,14 @@ class ProductPage {
 			return $tag;
 		}, 10, 2 );
 
+		$has_base_slide = (bool) ( $product->get_image_id() || count( $product->get_gallery_image_ids() ) > 0 );
+
 		wp_localize_script( 'prbp-frontend', 'prbpFrontend', [
-			'ajax_url'   => admin_url( 'admin-ajax.php' ),
-			'nonce'      => wp_create_nonce( 'prbp_frontend_nonce' ),
-			'product_id' => get_the_ID(),
-			'currency'   => get_woocommerce_currency_symbol(),
+			'ajax_url'       => admin_url( 'admin-ajax.php' ),
+			'nonce'          => wp_create_nonce( 'prbp_frontend_nonce' ),
+			'product_id'     => get_the_ID(),
+			'currency'       => get_woocommerce_currency_symbol(),
+			'has_base_slide' => $has_base_slide,
 			'i18n'       => [
 				/* translators: %s: Attribute label, e.g. "Color" */
 				'select_option' => __( '— Select %s —', 'priceblueprint-for-woocommerce' ),

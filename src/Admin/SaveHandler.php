@@ -84,12 +84,16 @@ class SaveHandler {
 		foreach ( $sections as $section ) {
 			$rows = [];
 			foreach ( (array) ( $section['rows'] ?? [] ) as $row ) {
-				$rows[] = [
+				$row_data = [
 					'value_ids'    => array_map( 'absint',              (array) ( $row['value_ids']    ?? [] ) ),
 					'value_slugs'  => array_map( 'sanitize_key',        (array) ( $row['value_slugs']  ?? [] ) ),
 					'value_labels' => array_map( 'sanitize_text_field', (array) ( $row['value_labels'] ?? [] ) ),
 					'price'        => (string) max( 0.0, (float) ( $row['price'] ?? 0 ) ),
 				];
+				if ( ! empty( $row['image_id'] ) ) {
+					$row_data['image_id'] = absint( $row['image_id'] );
+				}
+				$rows[] = $row_data;
 			}
 
 			$clean[] = [

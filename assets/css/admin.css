@@ -287,6 +287,96 @@
 	width: 132px;
 }
 
+.prbp-col-image {
+	width: 110px;
+}
+
+.prbp-image-cell {
+	display: flex;
+	align-items: center;
+}
+
+.prbp-image-pick-btn {
+	white-space: nowrap;
+	font-size: 11px !important;
+	padding: 2px 7px !important;
+	height: auto !important;
+	line-height: 1.6 !important;
+}
+
+/* Thumbnail wrapper — relative so the overlay can position against it */
+.prbp-image-wrap {
+	position: relative;
+	display: inline-block;
+	line-height: 0;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.prbp-image-thumb {
+	display: block;
+	width: 88px;
+	height: 88px;
+	object-fit: cover;
+	border-radius: 4px;
+	border: 1px solid #dcdcde;
+}
+
+/* Overlay — hidden by default, fades in on hover */
+.prbp-image-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	background: rgba(0, 0, 0, 0.45);
+	opacity: 0;
+	transition: opacity .15s;
+	border-radius: 4px;
+}
+
+.prbp-image-wrap:hover .prbp-image-overlay {
+	opacity: 1;
+}
+
+/* Individual overlay icon buttons */
+.prbp-image-overlay-btn {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 30px !important;
+	height: 30px !important;
+	padding: 0 !important;
+	border: none !important;
+	border-radius: 4px !important;
+	cursor: pointer;
+	line-height: 1 !important;
+	background: rgba(255, 255, 255, 0.9) !important;
+	color: #1d2327 !important;
+	transition: background .1s, color .1s;
+}
+
+.prbp-image-overlay-btn:hover {
+	background: #fff !important;
+}
+
+.prbp-image-edit-btn:hover {
+	color: #0D9488 !important;
+}
+
+.prbp-image-remove-btn:hover {
+	color: #b32d2e !important;
+}
+
+.prbp-image-overlay-btn .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	margin: 0;
+}
+
 .prbp-col-actions {
 	width: 86px;
 	text-align: center;

@@ -89,13 +89,15 @@ export class DomController {
 	makeRow( section, data = {} ) {
 		return Object.assign(
 			{
-				_uid:            ++this._uid,
-				attribute:       section.attribute || '',
-				attribute_label: section.attribute_label || '',
-				value_ids:       [],
-				value_slugs:     [],
-				value_labels:    [],
-				price:           '0',
+				_uid:             ++this._uid,
+				attribute:        section.attribute || '',
+				attribute_label:  section.attribute_label || '',
+				value_ids:        [],
+				value_slugs:      [],
+				value_labels:     [],
+				price:            '0',
+				image_id:         0,
+				_image_thumb_url: '',
 			},
 			data,
 			{
@@ -125,10 +127,12 @@ export class DomController {
 
 		section.rows = Array.isArray( section.rows )
 			? section.rows.map( row => this.makeRow( section, {
-				value_ids:    Array.isArray( row.value_ids )    ? row.value_ids.map( String )    : [],
-				value_slugs:  Array.isArray( row.value_slugs )  ? row.value_slugs.map( String )  : [],
-				value_labels: Array.isArray( row.value_labels ) ? row.value_labels.map( String ) : [],
-				price:        row.price || '0',
+				value_ids:        Array.isArray( row.value_ids )    ? row.value_ids.map( String )    : [],
+				value_slugs:      Array.isArray( row.value_slugs )  ? row.value_slugs.map( String )  : [],
+				value_labels:     Array.isArray( row.value_labels ) ? row.value_labels.map( String ) : [],
+				price:            row.price || '0',
+				image_id:         parseInt( row.image_id ?? 0, 10 ) || 0,
+				_image_thumb_url: row._image_thumb_url || '',
 			} ) )
 			: [];
 
@@ -525,10 +529,12 @@ export class DomController {
 			},
 
 			resetRow( row ) {
-				row.value_ids = [];
-				row.value_slugs = [];
-				row.value_labels = [];
-				row.price = '0';
+				row.value_ids        = [];
+				row.value_slugs      = [];
+				row.value_labels     = [];
+				row.price            = '0';
+				row.image_id         = 0;
+				row._image_thumb_url = '';
 				ctrl.resetRowSelect( row );
 			},
 
@@ -547,6 +553,27 @@ export class DomController {
 
 			initProductSelect( el ) {
 				ctrl.initProductSelect( el, this );
+			},
+
+			openMediaPicker( row ) {
+				/* global wp */
+				const frame = wp.media( {
+					title:    prbpAdmin.i18n.media_title,
+					button:   { text: prbpAdmin.i18n.media_insert },
+					multiple: false,
+					library:  { type: 'image' },
+				} );
+				frame.on( 'select', () => {
+					const attachment = frame.state().get( 'selection' ).first().toJSON();
+					row.image_id         = attachment.id;
+					row._image_thumb_url = attachment.sizes?.thumbnail?.url || attachment.url;
+				} );
+				frame.open();
+			},
+
+			removeImage( row ) {
+				row.image_id         = 0;
+				row._image_thumb_url = '';
 			},
 
 			productEditUrl( id ) {
@@ -608,12 +635,16 @@ export class DomController {
 							selectedIds = selectedIds ? [ selectedIds ] : [];
 						}
 
-						rows.push( {
+						const rowPayload = {
 							value_ids:    selectedIds,
 							value_slugs:  selectedIds.map( id => ts?.options[ id ]?.slug ?? '' ),
 							value_labels: selectedIds.map( id => ts?.options[ id ]?.name ?? '' ),
 							price:        row.price,
-						} );
+						};
+						if ( row.image_id ) {
+							rowPayload.image_id = row.image_id;
+						}
+						rows.push( rowPayload );
 					} );
 
 					payload.push( {

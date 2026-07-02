@@ -209,6 +209,40 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 									</span>
 								</td>
 
+								<td class="prbp-col-image">
+									<div class="prbp-image-cell">
+										<!-- No image: plain "Choose Image" text button -->
+										<button type="button"
+										        x-show="!rowEntry.row._image_thumb_url"
+										        class="button button-small prbp-image-pick-btn"
+										        @click="openMediaPicker(rowEntry.row)">
+											<?php esc_html_e( 'Choose Image', 'priceblueprint-for-woocommerce' ); ?>
+										</button>
+										<!-- Has image: thumbnail with overlaid icon buttons -->
+										<div class="prbp-image-wrap"
+										     x-show="rowEntry.row._image_thumb_url"
+										     style="display:none;">
+											<img :src="rowEntry.row._image_thumb_url"
+											     class="prbp-image-thumb"
+											     alt="">
+											<div class="prbp-image-overlay">
+												<button type="button"
+												        class="prbp-image-overlay-btn prbp-image-edit-btn"
+												        :title="$store.prbpI18n?.change_image || '<?php esc_attr_e( 'Change', 'priceblueprint-for-woocommerce' ); ?>'"
+												        @click="openMediaPicker(rowEntry.row)">
+													<span class="dashicons dashicons-edit" aria-hidden="true"></span>
+												</button>
+												<button type="button"
+												        class="prbp-image-overlay-btn prbp-image-remove-btn"
+												        :title="$store.prbpI18n?.remove_image || '<?php esc_attr_e( 'Remove image', 'priceblueprint-for-woocommerce' ); ?>'"
+												        @click="removeImage(rowEntry.row)">
+													<span class="dashicons dashicons-trash" aria-hidden="true"></span>
+												</button>
+											</div>
+										</div>
+									</div>
+								</td>
+
 								<td class="prbp-col-actions">
 									<div class="prbp-row-actions">
 										<button type="button"
@@ -232,7 +266,7 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 
 						<tr class="prbp-empty-row"
 						    x-show="!entry.rows.some((rowEntry) => rowEntry.inDom)">
-							<td colspan="4">
+							<td colspan="5">
 								<?php esc_html_e( 'No active terms in this section.', 'priceblueprint-for-woocommerce' ); ?>
 							</td>
 						</tr>

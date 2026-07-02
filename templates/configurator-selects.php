@@ -66,8 +66,10 @@ $prbp_initial_price = $precomputed_price ?? $prbp_min_total;
 				foreach ( $prbp_slugs as $prbp_vi => $prbp_slug ) :
 					$prbp_label = $prbp_labels[ $prbp_vi ] ?? $prbp_slug;
 				?>
+				<?php $prbp_slide = $prbp_slide_map['attr_map'][ $prbp_attribute ][ $prbp_slug ] ?? null; ?>
 				<option value="<?php echo esc_attr( $prbp_slug ); ?>"
 				        data-price="<?php echo esc_attr( $prbp_rule['price'] ); ?>"
+				        <?php if ( null !== $prbp_slide ) : ?>data-prbp-slide="<?php echo esc_attr( $prbp_slide ); ?>"<?php endif; ?>
 				        <?php selected( $prbp_slug === $prbp_selected_slug ); ?>>
 					<?php echo esc_html( $prbp_label ); ?>
 				</option>
