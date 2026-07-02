@@ -60,6 +60,19 @@ class RulesRepeater {
 			}
 		}
 
+		// Enrich rows with thumbnail URLs for display in the admin repeater.
+		foreach ( $rules as &$section ) {
+			foreach ( $section['rows'] as &$row ) {
+				$row['_image_thumb_url'] = '';
+				if ( ! empty( $row['image_id'] ) ) {
+					$thumb                   = wp_get_attachment_image_src( (int) $row['image_id'], [ 32, 32 ] );
+					$row['_image_thumb_url'] = $thumb ? $thumb[0] : '';
+				}
+			}
+			unset( $row );
+		}
+		unset( $section );
+
 		$attribute_taxonomies = wc_get_attribute_taxonomies();
 
 		require PRBP_PLUGIN_DIR . 'templates/admin-repeater.php';
@@ -75,6 +88,11 @@ class RulesRepeater {
 		if ( ! $post || 'price_blueprint' !== $post->post_type ) {
 			return;
 		}
+
+		// ------------------------------------------------------------------
+		// Media library — required for the wp.media image picker.
+		// ------------------------------------------------------------------
+		wp_enqueue_media();
 
 		// ------------------------------------------------------------------
 		// Tom Select — loaded first so TomSelect global is available when
@@ -178,6 +196,11 @@ class RulesRepeater {
 				'qs_add_manually_btn' => __( '+ Add Attribute', 'priceblueprint-for-woocommerce' ),
 				'no_terms_msg'          => __( 'No terms for this attribute.', 'priceblueprint-for-woocommerce' ),
 				'no_terms_link'         => __( 'Add terms →', 'priceblueprint-for-woocommerce' ),
+				'media_title'           => __( 'Choose an image', 'priceblueprint-for-woocommerce' ),
+				'media_insert'          => __( 'Use this image', 'priceblueprint-for-woocommerce' ),
+				'choose_image'          => __( 'Choose Image', 'priceblueprint-for-woocommerce' ),
+				'change_image'          => __( 'Change', 'priceblueprint-for-woocommerce' ),
+				'remove_image'          => __( 'Remove image', 'priceblueprint-for-woocommerce' ),
 			],
 		] );
 	}

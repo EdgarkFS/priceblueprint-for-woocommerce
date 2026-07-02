@@ -13,13 +13,17 @@
 /* global prbpFrontend */
 
 import { updatePrice }        from './single-product/update-price.js';
+import { updateImage, initImageSync } from './single-product/update-image.js';
 import { bindFormValidation } from './single-product/validate-form.js';
+
+initImageSync();
 
 document.querySelectorAll( '.prbp-configurator' ).forEach( function ( configurator ) {
 
 	configurator.querySelectorAll( '.prbp-attribute-select' ).forEach( function ( select ) {
 		select.addEventListener( 'change', function () {
 			updatePrice( configurator );
+			updateImage( configurator );
 		} );
 	} );
 
