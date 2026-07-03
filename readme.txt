@@ -3,7 +3,7 @@ Contributors: wpedgar
 Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 1.6.0
+Stable tag: 1.7.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -74,6 +74,14 @@ Yes, just set the add-on to `0.00`. Handy for your base option that should not c
 6. Attribute selections and final price visible in the order details.
 
 == Changelog ==
+
+= 1.7.0 =
+* New: Native WooCommerce gallery integration — attribute rule images now navigate the flexslider directly instead of swapping the DOM.
+* New: Default gallery image priority — featured image first, then WC gallery images, then rule images.
+* New: Image picker in admin settings — thumbnails enlarged, change/delete actions moved inside the image as hover icon overlays.
+* New: Modernized admin settings page UI — card layout, DM Sans font, teal accents, column headers.
+* Fix: TypeError on product pages when no featured image is set (PHP 8 strict type mismatch in `suppressGalleryPlaceholder()`).
+* Accessibility: Admin UI now passes WCAG 2.1 AA color contrast across all foreground/background pairs.
 
 = 1.6.0 =
 * New: Informational blueprint type — check "Informational blueprint" in the Blueprint Settings sidebar box to sync all WooCommerce global attributes to every linked product for filtering and display. No configurator UI or pricing rules are applied; the product uses its own WooCommerce price as-is.
