@@ -181,6 +181,15 @@ var prbpCurrencySymbol = <?php echo wp_json_encode( html_entity_decode( get_wooc
 				</div>
 
 				<table class="prbp-rules-table prbp-section-table widefat" x-show="entry.expanded">
+					<thead>
+						<tr>
+							<th class="prbp-col-index">#</th>
+							<th class="prbp-col-value"><?php esc_html_e( 'Term(s)', 'priceblueprint-for-woocommerce' ); ?></th>
+							<th class="prbp-col-price" x-show="!isInformational"><?php esc_html_e( 'Price Modifier', 'priceblueprint-for-woocommerce' ); ?></th>
+							<th class="prbp-col-image"><?php esc_html_e( 'Image', 'priceblueprint-for-woocommerce' ); ?></th>
+							<th class="prbp-col-actions"></th>
+						</tr>
+					</thead>
 					<tbody>
 
 						<template x-for="rowEntry in entry.rows" :key="rowEntry.row._uid">

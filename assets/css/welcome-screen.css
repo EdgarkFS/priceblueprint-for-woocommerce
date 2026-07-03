@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap');
+
 body.index_page_prbp-welcome #wpcontent {
 	padding-left: 0;
 }
 .prbp-welcome {
 	max-width: 700px;
 	margin: 40px auto;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	font-family: 'DM Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* ── Hero ── */
@@ -74,10 +76,11 @@ body.index_page_prbp-welcome #wpcontent {
 /* ── Steps ── */
 .prbp-welcome-steps {
 	background: #fff;
-	border: 1px solid #e0e0e0;
+	border: 1px solid #E2E8F0;
 	border-radius: 12px;
 	padding: 32px 40px;
 	margin-bottom: 12px;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 .prbp-welcome-steps-title {
 	font-size: 11px;
@@ -107,7 +110,7 @@ body.index_page_prbp-welcome #wpcontent {
 	border-radius: 50%;
 	background: rgba(13,148,136,.1);
 	border: 1px solid rgba(13,148,136,.25);
-	color: #0D9488;
+	color: #0a7a70;
 	font-size: 13px;
 	font-weight: 700;
 	display: flex;
@@ -119,13 +122,13 @@ body.index_page_prbp-welcome #wpcontent {
 	display: block;
 	font-size: 14px;
 	font-weight: 600;
-	color: #1d2327;
-	margin-bottom: 2px;
+	color: #1E293B;
+	margin-bottom: 3px;
 }
 .prbp-welcome-step-body span {
 	font-size: 13px;
-	color: #646970;
-	line-height: 1.5;
+	color: #64748B;
+	line-height: 1.6;
 }
 
 /* ── Actions ── */
@@ -168,10 +171,11 @@ body.index_page_prbp-welcome #wpcontent {
 /* ── Demo Import ── */
 .prbp-welcome-demo {
 	background: #fff;
-	border: 1px solid #e0e0e0;
+	border: 1px solid #E2E8F0;
 	border-radius: 12px;
 	padding: 28px 40px;
 	margin-top: 12px;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 .prbp-welcome-demo .prbp-welcome-steps-title {
 	margin-bottom: 12px;
@@ -207,8 +211,8 @@ body.index_page_prbp-welcome #wpcontent {
 	white-space: nowrap;
 }
 .prbp-welcome-demo-btn:hover {
-	border-color: #0D9488;
-	color: #0D9488;
+	border-color: #0a7a70;
+	color: #0a7a70;
 }
 .prbp-welcome-demo-btn:disabled {
 	cursor: not-allowed;
@@ -254,7 +258,7 @@ body.index_page_prbp-welcome #wpcontent {
 }
 .prbp-demo-links a:not(:first-child) {
 	background: rgba(13,148,136,.08);
-	color: #0D9488 !important;
+	color: #0a7a70 !important;
 	border: 1px solid rgba(13,148,136,.2);
 }
 .prbp-demo-links a:not(:first-child):hover {
