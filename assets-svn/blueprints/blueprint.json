@@ -2,11 +2,8 @@
   "$schema": "https://playground.wordpress.net/blueprint-schema.json",
   "preferredVersions": {
     "php": "8.2",
-    "wp": "latest"
+    "wp": "6.7"
   },
-  "phpExtensionBundles": [
-    "kitchen-sink"
-  ],
   "landingPage": "/shop",
   "steps": [
     {
@@ -16,7 +13,7 @@
     },
     {
       "step": "installPlugin",
-      "pluginZipFile": {
+      "pluginData": {
         "resource": "wordpress.org/plugins",
         "slug": "woocommerce"
       },
@@ -26,7 +23,7 @@
     },
     {
       "step": "installPlugin",
-      "pluginZipFile": {
+      "pluginData": {
         "resource": "wordpress.org/plugins",
         "slug": "priceblueprint-for-woocommerce"
       },
