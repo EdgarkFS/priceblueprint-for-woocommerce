@@ -1,0 +1,41 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "preferredVersions": {
+    "php": "8.2",
+    "wp": "latest"
+  },
+  "features": {
+    "networking": true
+  },
+  "landingPage": "/shop",
+  "login": true,
+  "steps": [
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "woocommerce"
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "priceblueprint-for-woocommerce"
+      }
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "PriceBlueprint Demo Store",
+        "woocommerce_currency": "USD",
+        "woocommerce_store_address": "123 Demo Street",
+        "woocommerce_default_country": "US"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nrequire '/wordpress/wp-load.php';\n\n// Activate WooCommerce if not active\nif ( ! class_exists( 'WooCommerce' ) ) {\n    activate_plugin( 'woocommerce/woocommerce.php' );\n    WC_Install::install();\n}\n\n// Create WooCommerce shop pages\nWC_Install::create_pages();\n\n// Helper: create WC attribute and return id\nfunction demo_create_attribute( $name, $slug ) {\n    $result = wc_create_attribute( [\n        'name'         => $name,\n        'slug'         => $slug,\n        'type'         => 'select',\n        'order_by'     => 'menu_order',\n        'has_archives' => false,\n    ] );\n    return is_wp_error( $result ) ? 0 : $result;\n}\n\n// Register taxonomy for this request then insert terms\nfunction demo_register_and_insert_terms( $taxonomy, $terms ) {\n    $ids = [];\n    if ( ! taxonomy_exists( $taxonomy ) ) {\n        register_taxonomy( $taxonomy, 'product', [\n            'hierarchical' => false,\n            'public'       => true,\n        ] );\n    }\n    foreach ( $terms as $term ) {\n        $existing = get_term_by( 'slug', sanitize_title( $term ), $taxonomy );\n        if ( $existing ) {\n            $ids[ $term ] = $existing->term_id;\n        } else {\n            $inserted = wp_insert_term( $term, $taxonomy );\n            $ids[ $term ] = is_array( $inserted ) ? $inserted['term_id'] : 0;\n        }\n    }\n    return $ids;\n}\n\n// Create Size attribute\n$size_attr_id = demo_create_attribute( 'Size', 'size' );\n$size_terms   = demo_register_and_insert_terms( 'pa_size', [ 'Small', 'Medium', 'Large', 'XL' ] );\n\n// Create Material attribute\n$material_attr_id = demo_create_attribute( 'Material', 'material' );\n$material_terms   = demo_register_and_insert_terms( 'pa_material', [ 'Cotton', 'Polyester', 'Premium Cotton' ] );\n\n// Build rules JSON\n$rules = [\n    [\n        'attribute'       => 'pa_size',\n        'attribute_label' => 'Size',\n        'rows'            => [\n            [ 'value_ids' => [ $size_terms['Small'] ],          'value_slugs' => [ 'small' ],          'value_labels' => [ 'Small' ],          'price' => '19.99', 'status' => 'active' ],\n            [ 'value_ids' => [ $size_terms['Medium'] ],         'value_slugs' => [ 'medium' ],         'value_labels' => [ 'Medium' ],         'price' => '22.99', 'status' => 'active' ],\n            [ 'value_ids' => [ $size_terms['Large'] ],          'value_slugs' => [ 'large' ],          'value_labels' => [ 'Large' ],          'price' => '25.99', 'status' => 'active' ],\n            [ 'value_ids' => [ $size_terms['XL'] ],             'value_slugs' => [ 'xl' ],             'value_labels' => [ 'XL' ],             'price' => '29.99', 'status' => 'active' ],\n        ],\n    ],\n    [\n        'attribute'       => 'pa_material',\n        'attribute_label' => 'Material',\n        'rows'            => [\n            [ 'value_ids' => [ $material_terms['Cotton'] ],         'value_slugs' => [ 'cotton' ],         'value_labels' => [ 'Cotton' ],         'price' => '0.00', 'status' => 'active' ],\n            [ 'value_ids' => [ $material_terms['Polyester'] ],      'value_slugs' => [ 'polyester' ],      'value_labels' => [ 'Polyester' ],      'price' => '3.00', 'status' => 'active' ],\n            [ 'value_ids' => [ $material_terms['Premium Cotton'] ], 'value_slugs' => [ 'premium-cotton' ], 'value_labels' => [ 'Premium Cotton' ], 'price' => '8.00', 'status' => 'active' ],\n        ],\n    ],\n];\n\n// Create price_blueprint CPT post\n$blueprint_id = wp_insert_post( [\n    'post_title'  => 'T-Shirt Pricing',\n    'post_type'   => 'price_blueprint',\n    'post_status' => 'publish',\n] );\n\nif ( $blueprint_id && ! is_wp_error( $blueprint_id ) ) {\n    update_post_meta( $blueprint_id, 'prbp_template_rules', json_encode( $rules ) );\n}\n\n// Create product\n$product_id = wp_insert_post( [\n    'post_title'  => 'Custom T-Shirt',\n    'post_type'   => 'product',\n    'post_status' => 'publish',\n] );\n\nif ( $product_id && ! is_wp_error( $product_id ) ) {\n    wp_set_object_terms( $product_id, 'prbp_configurable_product', 'product_type' );\n    update_post_meta( $product_id, 'prbp_template_id', $blueprint_id );\n    update_post_meta( $product_id, '_price', '19.99' );\n    update_post_meta( $product_id, '_regular_price', '19.99' );\n    update_post_meta( $product_id, '_stock_status', 'instock' );\n    update_post_meta( $product_id, '_manage_stock', 'no' );\n    update_post_meta( $product_id, '_visibility', 'visible' );\n\n    // Assign attributes to product\n    $product_attributes = [];\n    foreach ( [ 'pa_size' => $size_terms, 'pa_material' => $material_terms ] as $taxonomy => $terms ) {\n        $term_ids = array_values( $terms );\n        wp_set_object_terms( $product_id, $term_ids, $taxonomy );\n        $product_attributes[ $taxonomy ] = [\n            'name'         => $taxonomy,\n            'value'        => '',\n            'position'     => 0,\n            'is_visible'   => 1,\n            'is_variation' => 0,\n            'is_taxonomy'  => 1,\n        ];\n    }\n    update_post_meta( $product_id, '_product_attributes', $product_attributes );\n}\n\necho 'PriceBlueprint demo data created. Blueprint ID: ' . $blueprint_id . ', Product ID: ' . $product_id;\n"
+    }
+  ]
+}
