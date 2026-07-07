@@ -7,9 +7,6 @@
   "phpExtensionBundles": [
     "kitchen-sink"
   ],
-  "features": {
-    "networking": true
-  },
   "landingPage": "/shop",
   "steps": [
     {
