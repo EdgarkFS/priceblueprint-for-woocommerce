@@ -4,24 +4,37 @@
     "php": "8.2",
     "wp": "latest"
   },
+  "phpExtensionBundles": [
+    "kitchen-sink"
+  ],
   "features": {
     "networking": true
   },
   "landingPage": "/shop",
-  "login": true,
   "steps": [
     {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    },
+    {
       "step": "installPlugin",
-      "pluginData": {
+      "pluginZipFile": {
         "resource": "wordpress.org/plugins",
         "slug": "woocommerce"
+      },
+      "options": {
+        "activate": true
       }
     },
     {
       "step": "installPlugin",
-      "pluginData": {
+      "pluginZipFile": {
         "resource": "wordpress.org/plugins",
         "slug": "priceblueprint-for-woocommerce"
+      },
+      "options": {
+        "activate": true
       }
     },
     {
