@@ -1,4 +1,4 @@
-name: Update Trunk Files on WordPress.org
+name: Update Assets on WordPress.org
 
 on:
   workflow_dispatch:
@@ -36,7 +36,7 @@ jobs:
           # Update assets folder (banners, icons, screenshots)
           svn checkout --depth infinity "$SVN_BASE/assets" svn-assets
           cd svn-assets
-          cp "$GITHUB_WORKSPACE/assets-svn/"* .
+          rsync -rc "$GITHUB_WORKSPACE/assets-svn/" .
           svn add --force .
           svn commit \
             --username "$SVN_USERNAME" \
