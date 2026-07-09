@@ -1,6 +1,6 @@
 === PriceBlueprint — Configurable Product Pricing for WooCommerce ===
 Contributors: wpedgar
-Tags: woocommerce, pricing, product attributes, pricing rules, attribute pricing
+Tags: woocommerce, product-options, variable-products, pricing-rules, product-attributes
 Requires at least: 6.0
 Tested up to: 7.0
 Stable tag: 1.7.0
