@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       PriceBlueprint — Configurable Product Pricing for WooCommerce
+ * Plugin Name:       WooCommerce Attribute Pricing — PriceBlueprint
  * Description:       Reusable pricing blueprints for WooCommerce. Assign one blueprint to multiple products — define attribute-based pricing rules once, update everywhere instantly.
  * Version:           1.7.0
  * Requires at least: 6.0
@@ -14,7 +14,7 @@
  * Domain Path:       /languages
  * Requires Plugins:  woocommerce
  * WC requires at least: 6.0
- * WC tested up to:   9.0
+ * WC tested up to:   10.9.4
  *
  * @package PriceBlueprintWC
  */
