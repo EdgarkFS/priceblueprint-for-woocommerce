@@ -52,6 +52,10 @@ class ImportDemo {
 
 		$attr_data = self::ensureAttributesAndTerms( $json['attributes'] );
 
+		if ( is_wp_error( $attr_data ) ) {
+			wp_send_json_error( [ 'message' => $attr_data->get_error_message() ] );
+		}
+
 		$blueprint_id = self::createBlueprint( $json['title'], $attr_data );
 		if ( is_wp_error( $blueprint_id ) ) {
 			wp_send_json_error( [ 'message' => $blueprint_id->get_error_message() ] );
@@ -70,9 +74,9 @@ class ImportDemo {
 
 	/**
 	 * @param  array<int, array<string, mixed>> $attributes
-	 * @return array<string, array<string, mixed>>
+	 * @return array<string, array<string, mixed>>|\WP_Error
 	 */
-	private static function ensureAttributesAndTerms( array $attributes ): array {
+	private static function ensureAttributesAndTerms( array $attributes ) {
 		$attr_data = [];
 
 		foreach ( $attributes as $attr ) {
@@ -90,11 +94,15 @@ class ImportDemo {
 			}
 
 			if ( ! $existing ) {
-				wc_create_attribute( [
+				$created = wc_create_attribute( [
 					'name' => $name,
 					'slug' => $slug,
 					'type' => 'select',
 				] );
+
+				if ( is_wp_error( $created ) ) {
+					return $created;
+				}
 			}
 
 			// Ensure taxonomy is available in the current request.
@@ -110,9 +118,14 @@ class ImportDemo {
 					$term_id   = $term->term_id;
 					$term_slug = $term->slug;
 				} else {
-					$result   = wp_insert_term( $value['label'], $taxonomy );
-					$term_id  = $result['term_id'];
-					$term_obj = get_term( $term_id, $taxonomy );
+					$result = wp_insert_term( $value['label'], $taxonomy );
+
+					if ( is_wp_error( $result ) ) {
+						return $result;
+					}
+
+					$term_id   = $result['term_id'];
+					$term_obj  = get_term( $term_id, $taxonomy );
 					$term_slug = ( $term_obj instanceof \WP_Term ) ? $term_obj->slug : sanitize_title( $value['label'] );
 				}
 
